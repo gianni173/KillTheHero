@@ -26,6 +26,7 @@ ExportedObj/
 *.opendb
 *.VC.db
 *.log
+*.idea
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -40,8 +41,3 @@ sysinfo.txt
 
 # Crashlytics generated file
 Assets/StreamingAssets/crashlytics-build.properties
-Zelot-Beta-Slime_Project/.idea
-Zelot-Beta-Slime_Project/Assets/Plugins/Sirenix/Demos/Custom Attribute Processors.unitypackage.meta
-Zelot-Beta-Slime_Project/Assets/Plugins/Sirenix/Demos/Custom Drawers.unitypackage.meta
-Zelot-Beta-Slime_Project/Assets/Plugins/Sirenix/Demos/Editor Windows.unitypackage.meta
-Zelot-Beta-Slime_Project/Assets/Plugins/Sirenix/Demos/Sample - RPG Editor.unitypackage.meta
