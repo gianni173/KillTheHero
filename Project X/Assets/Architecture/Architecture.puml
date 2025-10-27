@@ -1,0 +1,223 @@
+﻿@startuml
+package DRAGGABLE{
+    interface IDraggable
+    {
+        usa le interfacce di unity
+        onPointerEnter, onPointerExit, etc...
+    }
+    class RoomDraggableSystem <<(M, lightblue)>>
+    {
+        -List<IDraggable> : Draggables
+        
+        +RegisterDraggable(Idraggable))
+        +UnregisterDraggable(Idraggable)
+    }
+    class RoomContentDraggableSystem <<(M, lightblue)>>
+        {
+            -List<IDraggable> : Draggables
+            
+            +RegisterDraggable(Idraggable))
+            +UnregisterDraggable(Idraggable)
+        }
+}
+class Room<<(M, lightblue)>>
+{
+  +Action<Vector3> : OnPickup
+  +Action<Vector3> : OnRelease
+  +RoomData : Data
+  
+  +Init(RoomData)
+}
+
+
+  class SaveData
+  {
+    +Grid
+    +PlayerStats
+  }
+
+package ROOM_DATA
+{
+  class Grid
+  {
+    -Vector2Int : _maxSize
+    -Vector2Int : _currentSize
+    -Vector3    : _origin
+    -Vector2    : _worldCellSize
+    -Dictionary<int, AGridContent> : _content
+    -Dictionary<int, int[]> _connections
+    -Vector2Int : _availableTiles
+    
+    +IndexToGridCoord(int) : Vector2
+    +GridCoordToIndex(Vector2int) : int
+    +GridToWorldCoord(Vector2) : Vector3
+    +GetGridContent(int) : GridContent
+    +RemoveContent(int) : GridContent
+    +AddContent(int, GridContent)
+  }
+    
+  class AGridContent
+  {
+    +Vector2int : Size
+  }
+  
+  class RoomData
+  {
+    ARoomContentData[] : Contents
+    Interact(Entity)-->Contents.Interact(Entity) 
+  }
+  
+  class GridManager<<(M, lightblue) singleton>>
+  {
+    -Grid : _grid
+    +SetGridSize(Vector2Int)
+  }
+
+}
+  
+interface IEntityInteractable
+{
+    +Interact(Entity)
+} 
+ 
+package PLAYER_DATA
+{
+  enum ResourceType
+  {
+    FAME
+    GOLD
+  }
+  class Resource 
+  {
+    +string : Name
+    +int : Quantity
+    +ResourceType : Type
+  }
+   class PlayerStats
+   {
+     Resource[] : Resources
+     Purchasable[] : PurchasedItems
+   }
+    
+}
+  
+package MARKET
+{
+  class Purchasable<<(S, red)>>
+  {
+    +Sprite : Sprite
+    +int : MaxPurchases
+    +int : Price
+    +int : FameNeeded
+    +Purchase();
+  }
+  class Market<<(M, lightblue)>>
+  {
+    +Purchasable[] : items
+    +TryPurchase(Purchasable) : bool
+    +CanPurchase(Purchasable) : bool
+  }
+
+}
+
+package ENTITY
+{
+  class Entity<<(M, lightblue)>>
+  {
+    +EntityTag[] : tagMask
+    +Dictionary<ResourceType,Resource> : ResourcesGained
+    
+    +AddResources(Resource) : void
+  }
+  
+  enum EntityTag
+  {
+  Paladin, Assassin,
+  Strong, weak, ...
+  }
+}
+
+package CONTENT {
+  abstract class ARoomContentData{
+    -string : _name
+    -int : _usages
+    -EntityTag[] : _interactableTagMask
+    
+    +Interact(Entity)
+    +Reset()
+  }
+  class RoomContent <<(M,lightblue)>>
+  {
+    +Action<Vector3> : OnPickup
+    +Action<Vector3> : OnRelease
+    +Init(ARoomContentData)
+  }
+  class Entrance
+
+  class Mimik {
+     +Interact(Entity) --> devour Entity(gets gold)
+  }
+  
+  class Trap{
+    -int : _damage
+    -EntityTag[] : _disarmTagMask
+    
+    +Interact(Entity) --> kill Entity / Disarm() / ignore
+    +Disarm()
+  }
+  
+  class Monster{
+    -int : _health
+    -int : _damage
+    -int : _fameReward
+    -EntityTag[] : _killTagMask
+    
+    +Interact(Entity) --> kill Entity / Kill() / ignore
+    +Kill()
+  }
+  
+  abstract class AItem{
+    +Interact(Entity) --> collect 
+  }
+  
+  class Item
+  {
+  treasure, sword, ...
+  }
+  ARoomContentData o-- Entrance
+  ARoomContentData o-- Mimik
+  ARoomContentData o-- Trap
+  ARoomContentData o-- Monster
+  ARoomContentData o-- AItem
+  
+  AItem --* Item
+}
+IEntityInteractable <|.. ARoomContentData
+RoomData .|> IEntityInteractable
+
+Grid *-- AGridContent
+AGridContent <|-- RoomData
+
+PlayerStats --o SaveData
+
+GridManager *-- Grid
+
+Market *- Purchasable
+
+Market --> PlayerStats : uses
+
+EntityTag --* Entity
+
+Room ..|> IDraggable
+IDraggable -o RoomDraggableSystem
+IDraggable --o RoomContentDraggableSystem
+IDraggable <|. RoomContent
+
+RoomData -* Room
+
+RoomData *-- ARoomContentData
+ARoomContentData -* RoomContent
+PlayerStats *- Resource
+Resource *- ResourceType
+@enduml
+
