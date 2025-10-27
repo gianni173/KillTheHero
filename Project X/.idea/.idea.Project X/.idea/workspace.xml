@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="84ffcb0f-f81e-4027-95ad-7d59a53af4cf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Project X/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Project X/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SceneScripts/SceneManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SceneScripts/SceneManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SceneScripts/SceneLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SceneScripts/SceneLoader.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/StartupScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/StartupScene.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -110,6 +109,7 @@
       <updated>1761597431073</updated>
       <workItem from="1761597435373" duration="639000" />
       <workItem from="1761599295404" duration="131000" />
+      <workItem from="1761599561927" duration="733000" />
     </task>
     <servers />
   </component>
