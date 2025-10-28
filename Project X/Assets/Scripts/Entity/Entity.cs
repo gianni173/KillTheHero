@@ -3,7 +3,15 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    //public EntityTag[] tagMask = new EntityTag[];
+    public enum EntityTag
+    {
+        Paladin,
+        Assassin,
+        Strong,
+        Weak
+    };
+    
+    public List <EntityTag> tagMask = new List<EntityTag>();
     //private Dictionary<ResourceType, Resource> ResourcesGained;
 
     /*public void AddResources(Resource resource)
@@ -11,5 +19,6 @@ public class Entity : MonoBehaviour
         resource.quantity++;
         //other things
     }*/
-    
+
+
 }
