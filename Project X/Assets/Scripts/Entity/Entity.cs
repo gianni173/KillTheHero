@@ -1,16 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    //public EntityTag[] tagMask = new EntityTag[];
+    //private Dictionary<ResourceType, Resource> ResourcesGained;
 
-    // Update is called once per frame
-    void Update()
+    /*public void AddResources(Resource resource)
     {
-        
-    }
+        resource.quantity++;
+        //other things
+    }*/
+    
 }
