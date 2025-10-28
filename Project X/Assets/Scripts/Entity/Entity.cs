@@ -20,5 +20,16 @@ public class Entity : MonoBehaviour
         //other things
     }*/
 
+    public bool CheckEntityTag(EntityTag enemyEntityTag)
+    {
+        if(tagMask.Contains(enemyEntityTag))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 }
