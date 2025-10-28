@@ -4,11 +4,11 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public List <EntityTag> tagMask = new List<EntityTag>();
-    //private Dictionary<ResourceType, Resource> ResourcesGained;
+    //private Dictionary<ResourceType, Resource> ResourcesGained = new Dictionary<ResourceType, Resource>();
 
     /*public void AddResources(Resource resource)
     {
-        resource.quantity++;
+        ResourcesGained[resource.ResourceType] += resource.quantity ;
         //other things
     }*/
 
