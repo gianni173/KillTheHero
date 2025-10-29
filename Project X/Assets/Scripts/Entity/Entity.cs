@@ -42,4 +42,9 @@ public class Entity : MonoBehaviour
         return false;
     }
 
+    public void Die()
+    {
+        // Entity death logic
+    }
+
 }
