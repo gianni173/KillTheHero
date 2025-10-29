@@ -29,8 +29,11 @@ public class Grid
 
     public Vector3 GridCoordToWorldCoord(Vector2 coord)
     {
-        //To Do
-        return Vector3.zero;
+        return new Vector3(
+            _origin.x + coord.x * _worldCellSize.x,
+            _origin.y + coord.y * _worldCellSize.y,
+            _origin.z
+        );
     }
     public AGridContent GetGridContent(int index)
     {
