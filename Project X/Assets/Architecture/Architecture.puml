@@ -129,6 +129,8 @@ package ENTITY
     +Dictionary<ResourceType,Resource> : ResourcesGained
     
     +AddResources(Resource) : void
+    +Die() : void
+    +CheckEntityTag(EntityTag) : bool --> con override per supportare List e array
   }
   
   enum EntityTag
@@ -143,6 +145,7 @@ package CONTENT {
     #string : _name
     #int : _usages
     #EntityTag[] : _interactableTagMask
+    #bool : _isUsable
     
     +Interact(Entity)
     +Reset()
