@@ -6,8 +6,8 @@ using UnityEngine;
 public class Grid
 {
     [Header("Grid Dimensions")]
-    [SerializeField] private Vector2Int _maxSize;     // Dimensione massima griglia
-    [SerializeField] private Vector2Int _currentSize;   // Dimensione attualmente accessibile al player
+    [SerializeField] private Vector2Int _maxSize;     // max grid dimension
+    [SerializeField] private Vector2Int _currentSize;   // current grid dimension visible to the player
     
     [Header("World Settings")]
     [SerializeField] private Vector3 _origin = Vector3.zero;
@@ -59,5 +59,26 @@ public class Grid
     {
         _content.Add(index , content);
     }
+    
+    public void SetCurrentSize(Vector2Int newSize)
+    {
+        // check size 
+        if (newSize.x <= 0 || newSize.y <= 0)
+        {
+            Debug.LogError($"new grid dimension not valid: {newSize}.");
+            return;
+        }
+    
+        if (newSize.x > _maxSize.x || newSize.y > _maxSize.y)
+        {
+            Debug.LogError($"new grid dimension not valid: ({newSize}) bigger than ({_maxSize})!");
+            return;
+        }
+    
+        // Se arriviamo qui, i valori sono validi
+        _currentSize = newSize;
+        Debug.Log($"[Grid] Visible grid updated at: {_currentSize}");
+    }
+
 }
 

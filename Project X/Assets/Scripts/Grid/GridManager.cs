@@ -17,7 +17,14 @@ public  class GridManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    
+    public void SetCurrentGridSize(Vector2Int newSize)
+    {
+        if (_grid != null)
+        {
+            _grid.SetCurrentSize(newSize);
+        }
+    }
+
 
     public Grid GetGrid()
     {
