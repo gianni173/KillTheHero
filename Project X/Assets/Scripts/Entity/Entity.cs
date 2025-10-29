@@ -4,13 +4,21 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public List <EntityTag> tagMask = new List<EntityTag>();
-    //private Dictionary<ResourceType, Resource> ResourcesGained = new Dictionary<ResourceType, Resource>();
+    private Dictionary<ResourceType, Resource> ResourcesGained = new Dictionary<ResourceType, Resource>();
 
-    /*public void AddResources(Resource resource)
+    public void AddResources(Resource resource)
     {
-        ResourcesGained[resource.ResourceType] += resource.quantity ;
+        foreach (var item in ResourcesGained)
+        {
+            if (item.Key == resource.Type)
+            {
+                item.Value.Quantity += resource.Quantity;
+                return;
+            }
+        }
+        //codice vecchio probabilmente sbagliato ResourcesGained[resource.Type] = resource.Quantity ;
         //other things
-    }*/
+    }
 
     public bool CheckEntityTag(EntityTag enemyEntityTag)
     {
