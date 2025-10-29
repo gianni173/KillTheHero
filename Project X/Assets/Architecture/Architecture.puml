@@ -160,7 +160,6 @@ package CONTENT {
   }
   
   class Trap{
-    -int : _damage
     -EntityTag[] : _disarmTagMask
     
     +Interact(Entity) --> kill Entity / Disarm() / ignore
