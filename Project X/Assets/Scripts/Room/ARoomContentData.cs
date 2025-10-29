@@ -3,7 +3,7 @@ public abstract class ARoomContentData : IEntityInteractable
 {
     private string _name;
     private int _usage;
-    private EntityTag[] _interactableTagMask;
+    protected EntityTag[] _interactableTagMask;
     
     public virtual void Interact(Entity entity)
     {
