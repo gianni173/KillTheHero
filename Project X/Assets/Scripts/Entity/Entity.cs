@@ -8,28 +8,18 @@ public class Entity : MonoBehaviour
 
     public void AddResources(Resource resource)
     {
-        foreach (var item in ResourcesGained)
-        {
-            if (item.Key == resource.Type)
-            {
-                item.Value.Quantity += resource.Quantity;
-                return;
-            }
-        }
-        //codice vecchio probabilmente sbagliato ResourcesGained[resource.Type] = resource.Quantity ;
+        // Adding resources logic
+        if (ResourcesGained.ContainsKey(resource.Type))
+            ResourcesGained[resource.Type].Quantity += resource.Quantity;
+        else
+            ResourcesGained[resource.Type] = resource;
         //other things
     }
 
+    // Check if the entity has a specific tag
     public bool CheckEntityTag(EntityTag enemyEntityTag)
     {
-        if(tagMask.Contains(enemyEntityTag))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return tagMask.Contains(enemyEntityTag);
     }
 
 }
