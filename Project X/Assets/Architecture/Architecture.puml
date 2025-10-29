@@ -140,9 +140,9 @@ package ENTITY
 
 package CONTENT {
   abstract class ARoomContentData{
-    -string : _name
-    -int : _usages
-    -EntityTag[] : _interactableTagMask
+    #string : _name
+    #int : _usages
+    #EntityTag[] : _interactableTagMask
     
     +Interact(Entity)
     +Reset()
@@ -168,8 +168,6 @@ package CONTENT {
   }
   
   class Monster{
-    -int : _health
-    -int : _damage
     -int : _fameReward
     -EntityTag[] : _killTagMask
     
