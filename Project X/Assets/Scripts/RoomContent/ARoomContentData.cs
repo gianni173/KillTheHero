@@ -4,7 +4,7 @@ public abstract class ARoomContentData : IEntityInteractable
     protected string _name;
     protected int _usage;
     protected EntityTag[] _interactableTagMask;
-    protected bool _isUsable;
+    protected bool _isUsable = true;
     
     public virtual void Interact(Entity entity)
     {
@@ -14,7 +14,6 @@ public abstract class ARoomContentData : IEntityInteractable
 
     public void Reset()
     {
-        //to do
-        throw new System.NotImplementedException();
+        _isUsable = true;
     }
 }
