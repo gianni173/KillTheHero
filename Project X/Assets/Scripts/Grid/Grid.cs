@@ -5,15 +5,22 @@ using UnityEngine;
 [Serializable]
 public class Grid
 {
-    [SerializeField] private Vector2Int _maxSize;
-    [SerializeField] private Vector2Int _currentSize;
-    [SerializeField] private Vector3 _origin;
-    [SerializeField] private Vector2 _worldCellSize;
+    [Header("Grid Dimensions")]
+    [SerializeField] private Vector2Int _maxSize;     // Dimensione massima griglia
+    [SerializeField] private Vector2Int _currentSize;   // Dimensione attualmente accessibile al player
+    
+    [Header("World Settings")]
+    [SerializeField] private Vector3 _origin = Vector3.zero;
+    [SerializeField] private Vector2 _worldCellSize = Vector2.one;
+    
+    [Header("Player Resources")]
+    [SerializeField] private int _availableTiles;
+    
+    
     private Dictionary<int, AGridContent> _content = new Dictionary<int, AGridContent>();
     private Dictionary<int, int[]> _connections = new Dictionary<int, int[]>();
-    [SerializeField] private Vector2Int _availableTiles;
-
-
+    
+    
     public static Vector2 IndexToGridCoord(int index)
     {
         var grid = GridManager.Instance.GetGrid();
