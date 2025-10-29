@@ -1,8 +1,8 @@
 ﻿
 public abstract class ARoomContentData : IEntityInteractable
 {
-    private string _name;
-    private int _usage;
+    protected string _name;
+    protected int _usage;
     protected EntityTag[] _interactableTagMask;
     
     public virtual void Interact(Entity entity)
