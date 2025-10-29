@@ -8,6 +8,8 @@ public class Monster : ARoomContentData
 
     public override void Interact(Entity entity)
     {
+        if(_isUsable == false)
+            return;
         if(entity.CheckEntityTag(_killTagMask))
             Kill();
         if (entity.CheckEntityTag(_interactableTagMask))
@@ -17,6 +19,6 @@ public class Monster : ARoomContentData
     public void Kill()
     {
         //add logic to kill the monster itself
-        throw new System.NotImplementedException();
+        _isUsable = false;
     }
 }
