@@ -185,11 +185,11 @@ package CONTENT {
   {
   treasure, sword, ...
   }
-  ARoomContentData o-- Entrance
-  ARoomContentData o-- Mimik
-  ARoomContentData o-- Trap
-  ARoomContentData o-- Monster
-  ARoomContentData o-- AItem
+  ARoomContentData <|-- Entrance
+  ARoomContentData <|-- Mimik
+  ARoomContentData <|-- Trap
+  ARoomContentData <|-- Monster
+  ARoomContentData <|-- AItem
   
   AItem --* Item
 }
