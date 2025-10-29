@@ -4,7 +4,7 @@ using UnityEngine;
 
 public  class GridManager : MonoBehaviour
 {
-    private Grid _grid;
+    [SerializeField] private Grid _grid;
     public static GridManager Instance;
 
     public void Awake()

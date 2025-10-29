@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[SerializeField]
+[System.Serializable]
 public class Grid
 {
-    private Vector2Int _maxSize;
-    private Vector2Int _currentSize;
-    private Vector3 _origin;
-    private Vector2 _worldCellSize;
+    [SerializeField] private Vector2Int _maxSize;
+    [SerializeField] private Vector2Int _currentSize;
+    [SerializeField] private Vector3 _origin;
+    [SerializeField] private Vector2 _worldCellSize;
     private Dictionary<int, AGridContent> _content = new Dictionary<int, AGridContent>();
     private Dictionary<int, int[]> _connections = new Dictionary<int, int[]>();
-    private Vector2Int _availableTiles;
+    [SerializeField] private Vector2Int _availableTiles;
 
 
     public static Vector2 IndexToGridCoord(int index)

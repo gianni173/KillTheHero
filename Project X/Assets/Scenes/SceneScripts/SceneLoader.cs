@@ -1,32 +1,27 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class SceneLoader : MonoBehaviour
 {
-    
+    [SerializeField] private float mainSceneLoadTime = 5f;
+
     void Start()
     {
+        StartCoroutine(LoadTimeStartup());
+    }
+
+    IEnumerator LoadTimeStartup()
+    {
+        Debug.Log("Loading time startup: " + mainSceneLoadTime + " seconds");
+        yield return new WaitForSecondsRealtime(mainSceneLoadTime);
+        Debug.Log("Loading scene");
         LoadScene("MainScene");
     }
-    
-    void Update()
-    {
-        
-    }
 
-    public void LoadScene(string sceneName)
+    public static void LoadScene(string sceneName)
     {
+        Debug.Log("Loading " + sceneName);
         SceneManager.LoadSceneAsync(sceneName);
-    }
-
-    public void PlayGame()
-    {
-        LoadScene("GameplayScene");
-    }
-
-    public void QuitGame()
-    {
-        Debug.Log("Game Quit");
-        Application.Quit();
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[SerializeField]
+[System.Serializable]
 public abstract class AGridContent
 {
     public Vector2Int Size;
