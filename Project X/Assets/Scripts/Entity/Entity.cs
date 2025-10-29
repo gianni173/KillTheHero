@@ -22,4 +22,14 @@ public class Entity : MonoBehaviour
         return tagMask.Contains(enemyEntityTag);
     }
 
+    public bool CheckEntityTag(List<EntityTag> enemyEntityTags)
+    {
+        foreach (EntityTag tag in enemyEntityTags)
+        {
+            if (tagMask.Contains(tag))
+                return true;
+        }
+        return false;
+    }
+
 }
