@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class Grid
 {
     [SerializeField] private Vector2Int _maxSize;
@@ -16,15 +16,16 @@ public class Grid
 
     public static Vector2 IndexToGridCoord(int index)
     {
-        int X = index % GridManager.Instance.GetGrid()._maxSize.x;
-        int Y = Mathf.FloorToInt(index / GridManager.Instance.GetGrid()._maxSize.x);
-
+        var grid = GridManager.Instance.GetGrid();
+        int X = index % grid._maxSize.x;
+        int Y = Mathf.FloorToInt(index / grid._maxSize.x);
         return new Vector2(X, Y);
     }
 
     public static int GridCoordToIndex(Vector2Int coord)
     {
-        return coord.y * GridManager.Instance.GetGrid()._maxSize.x + coord.x;
+        var grid = GridManager.Instance.GetGrid();
+        return coord.y * grid._maxSize.x + coord.x;
     }
 
     public Vector3 GridCoordToWorldCoord(Vector2 coord)
