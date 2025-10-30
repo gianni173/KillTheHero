@@ -13,9 +13,6 @@ public class Grid
     [SerializeField] private Vector3 _origin = Vector3.zero;
     [SerializeField] private Vector2 _worldCellSize = Vector2.one;
     
-    [Header("Player Resources")]
-    [SerializeField] private int _availableTiles;
-    
     
     private Dictionary<int, AGridContent> _content = new Dictionary<int, AGridContent>();
     private Dictionary<int, int[]> _connections = new Dictionary<int, int[]>();
@@ -59,7 +56,7 @@ public class Grid
     {
         _content.Add(index , content);
     }
-    
+
     public void SetCurrentSize(Vector2Int newSize)
     {
         // check size 
@@ -68,16 +65,35 @@ public class Grid
             Debug.LogError($"new grid dimension not valid: {newSize}.");
             return;
         }
-    
+
         if (newSize.x > _maxSize.x || newSize.y > _maxSize.y)
         {
             Debug.LogError($"new grid dimension not valid: ({newSize}) bigger than ({_maxSize})!");
             return;
         }
-    
+
         // Se arriviamo qui, i valori sono validi
         _currentSize = newSize;
         Debug.Log($"[Grid] Visible grid updated at: {_currentSize}");
+    }
+
+    public int[] GetAvailableGridIndices()
+    {
+        List<int> availableIndices = new List<int>();
+        for(int x = 0; x < _currentSize.x; x++)
+        {
+            for(int y = 0; y < _currentSize.y; y++)
+            {
+                int index = GridCoordToIndex(new Vector2Int(x, y));
+                if(!_content.ContainsKey(index))
+                {
+                    availableIndices.Add(index);
+                }
+            }
+        }
+        
+
+        return availableIndices.ToArray();
     }
 
 }
