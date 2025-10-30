@@ -2,7 +2,7 @@ using UnityEngine;
 
 public  class GridManager : MonoBehaviour
 {
-    [SerializeField] private Grid _grid;
+    [SerializeField] private Grid _grid = null;
     public static GridManager Instance;
 
     public void Awake()
@@ -15,6 +15,14 @@ public  class GridManager : MonoBehaviour
         else
         {
             Destroy(this.gameObject);
+        }
+    }
+
+    public void Start()
+    {
+        if (_grid.MaxSize == Vector2Int.zero)
+        {
+            _grid = Grid.DefaultGrid();
         }
     }
     public void SetCurrentGridSize(Vector2Int newSize)
