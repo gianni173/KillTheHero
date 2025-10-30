@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerData
+public class PlayerStats
 {
     public Resource[] Resources;
     //public Purchasable[] PurchasableItems;
