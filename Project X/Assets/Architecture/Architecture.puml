@@ -46,7 +46,6 @@ package ROOM_DATA
     -Vector2    : _worldCellSize
     -Dictionary<int, AGridContent> : _content
     -Dictionary<int, int[]> _connections
-    -Vector2Int : _availableTiles
     
     {static}+IndexToGridCoord(int) : Vector2
     {static}+GridCoordToIndex(Vector2int) : int
