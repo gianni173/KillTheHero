@@ -22,6 +22,7 @@ public class PlayerStats
         resources[1] = new Resource { Name = "Gold", Type = ResourceType.Gold, Quantity = 0 };
         
         // when is ready do the same logic for PurchasableItems
+        Debug.Log($"Resources initialized: {resources[0].Name}({resources[0].Quantity}), {resources[1].Name}({resources[1].Quantity})");
     }
 
     public void AddResource(ResourceType type, int quantity)
@@ -31,6 +32,7 @@ public class PlayerStats
             if (resource.Type == type)
             {
                 resource.Quantity += quantity;
+                Debug.Log($"Added {quantity} {type}. Total: {resource.Quantity}");
                 return;
             }
         }
@@ -42,6 +44,7 @@ public class PlayerStats
         {
             if (resource.Type == type)
             {
+                Debug.Log($"checking {type} amount. Total: {resource.Quantity}");
                 return resource.Quantity;
             }
         }
