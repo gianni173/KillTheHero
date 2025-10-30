@@ -13,6 +13,7 @@ public class Grid
     [Header("World Settings")]
     [SerializeField] private Vector3 _origin = Vector3.zero;
     [SerializeField] private Vector2 _worldCellSize = Vector2.one;
+    public Vector2 WorldCellSize => _worldCellSize;
     
     
     private Dictionary<int, AGridContent> _content = new Dictionary<int, AGridContent>();
@@ -102,7 +103,7 @@ public class Grid
         Grid defaultGrid = new Grid
         {
             _maxSize = new Vector2Int(10, 10),
-            _currentSize = new Vector2Int(10, 10),
+            _currentSize = new Vector2Int(3, 3),
             _origin = Vector3.zero,
             _worldCellSize = Vector2.one
         };
