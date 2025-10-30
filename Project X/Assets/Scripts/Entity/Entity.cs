@@ -4,24 +4,47 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public List <EntityTag> tagMask = new List<EntityTag>();
-    //private Dictionary<ResourceType, Resource> ResourcesGained = new Dictionary<ResourceType, Resource>();
+    private Dictionary<ResourceType, Resource> ResourcesGained = new Dictionary<ResourceType, Resource>();
 
-    /*public void AddResources(Resource resource)
+    public void AddResources(Resource resource)
     {
-        ResourcesGained[resource.ResourceType] += resource.quantity ;
+        // Adding resources logic
+        if (ResourcesGained.ContainsKey(resource.Type))
+            ResourcesGained[resource.Type].Quantity += resource.Quantity;
+        else
+            ResourcesGained[resource.Type] = resource;
         //other things
-    }*/
+    }
 
+    // Check if the entity has a specific tag
     public bool CheckEntityTag(EntityTag enemyEntityTag)
     {
-        if(tagMask.Contains(enemyEntityTag))
+        return tagMask.Contains(enemyEntityTag);
+    }
+
+    public bool CheckEntityTag(List<EntityTag> enemyEntityTags)
+    {
+        foreach (EntityTag tag in enemyEntityTags)
         {
-            return true;
+            if (tagMask.Contains(tag))
+                return true;
         }
-        else
+        return false;
+    }
+
+    public bool CheckEntityTag(EntityTag[] enemyEntityTags)
+    {
+        foreach (EntityTag tag in enemyEntityTags)
         {
-            return false;
+            if (tagMask.Contains(tag))
+                return true;
         }
+        return false;
+    }
+
+    public void Die()
+    {
+        // Entity death logic
     }
 
 }
