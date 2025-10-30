@@ -80,21 +80,32 @@ public class Grid
     public int[] GetAvailableGridIndices()
     {
         List<int> availableIndices = new List<int>();
-        for(int x = 0; x < _currentSize.x; x++)
+        for (int x = 0; x < _currentSize.x; x++)
         {
-            for(int y = 0; y < _currentSize.y; y++)
+            for (int y = 0; y < _currentSize.y; y++)
             {
                 int index = GridCoordToIndex(new Vector2Int(x, y));
-                if(!_content.ContainsKey(index))
+                if (!_content.ContainsKey(index))
                 {
                     availableIndices.Add(index);
                 }
             }
         }
-        
+
 
         return availableIndices.ToArray();
     }
+    
+    static public Grid DefaultGrid()
+    {
+        Grid defaultGrid = new Grid
+        {
+            _maxSize = new Vector2Int(10, 10),
+            _currentSize = new Vector2Int(10, 10),
+            _origin = Vector3.zero,
+            _worldCellSize = Vector2.one
+        };
+        return defaultGrid;
+    }
 
 }
-
