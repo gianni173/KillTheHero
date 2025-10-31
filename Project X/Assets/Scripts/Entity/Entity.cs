@@ -4,8 +4,8 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public List <EntityTag> TagMask = new();
+    private Resource[] _resourcesGained;
 
-    private Dictionary<ResourceType, Resource> _resourcesGained = new();
 
     public void AddResources(Resource resource)
     {
