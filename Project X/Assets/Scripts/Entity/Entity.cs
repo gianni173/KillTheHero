@@ -45,9 +45,13 @@ public class Entity : MonoBehaviour
         }
         return false;
     }
-
+    //Jachy Hu 31/10: TODO add a logic when gaining a new tag? 
+    //i don't know TagMask is public, maybe directly on AItem interact()?
     public void Die()
     {
-        // Entity death logic
+        var FameGained = _resourcesGained[0].Quantity;  // Jachy Hu 31/10: Horrendous, you need to know which slot in [] 
+                                                            // contains the specific type of resource, need to fix later
+        PlayerStats.Instance.AddResource(ResourceType.Fame, FameGained);
+        gameObject.SetActive(false);
     }
 }
