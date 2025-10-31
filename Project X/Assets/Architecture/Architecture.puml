@@ -47,8 +47,8 @@ package ROOM_DATA
     -Dictionary<int, AGridContent> : _content
     -Dictionary<int, int[]> _connections
     
-    {static}+IndexToGridCoord(int) : Vector2
-    {static}+GridCoordToIndex(Vector2int) : int
+    +IndexToGridCoord(int) : Vector2
+    +GridCoordToIndex(Vector2Int) : int
     +GridCoordToWorldCoord(Vector2) : Vector3
     +GetGridContent(int) : GridContent
     +RemoveContent(int) : GridContent
