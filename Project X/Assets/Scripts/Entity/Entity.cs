@@ -6,8 +6,6 @@ public class Entity : MonoBehaviour
     public List <EntityTag> TagMask = new();
     private Resource[] _resourcesGained;
 
-
-    public void AddResources(Resource resource)
     {
         // Adding resources logic
         if (_resourcesGained.ContainsKey(resource.Type))
@@ -24,13 +22,18 @@ public class Entity : MonoBehaviour
     }
 
     public bool CheckEntityTag(List<EntityTag> enemyEntityTags)
+    public void AddEntityResource(ResourceType type, int quantity)
     {
-        foreach (EntityTag tag in enemyEntityTags)
+        foreach (var resource in _resourcesGained)
         {
-            if (TagMask.Contains(tag))
-                return true;
+            if (resource.Type == type)
+            {
+                resource.Quantity += quantity;
+                Debug.Log($"Added {quantity} {type}. Total: {resource.Quantity}");
+                return;
+            }
         }
-        return false;
+    }
     }
 
     public bool CheckEntityTag(EntityTag[] enemyEntityTags)
