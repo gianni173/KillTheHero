@@ -6,11 +6,16 @@ public class Entity : MonoBehaviour
     public List <EntityTag> TagMask = new();
     private Resource[] _resourcesGained;
 
+    private void Awake()
     {
+        InitializeEntityResources();
     }
 
+    private void InitializeEntityResources()
     {
-        return TagMask.Contains(enemyEntityTag);
+        _resourcesGained = new Resource[2];
+        _resourcesGained[0] = new Resource { Name = "Fame", Type = ResourceType.Fame, Quantity = 0 };
+        _resourcesGained[1] = new Resource { Name = "Gold", Type = ResourceType.Gold, Quantity = 0 };
     }
 
     public void AddEntityResource(ResourceType type, int quantity)
