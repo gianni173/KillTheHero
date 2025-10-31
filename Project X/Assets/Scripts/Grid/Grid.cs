@@ -18,6 +18,7 @@ public class Grid
 
     [SerializeField] private Dictionary<int, AGridContent> _content = new();
     [SerializeField] private Dictionary<int, int[]> _connections = new();
+    public Dictionary<int, int[]> Connections => _connections;
     
     
     public Vector2 IndexToGridCoord(int index)
