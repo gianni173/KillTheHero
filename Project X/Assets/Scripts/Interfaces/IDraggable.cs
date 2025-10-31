@@ -3,9 +3,9 @@ using UnityEngine.EventSystems;
 
 public interface IDraggable : IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    bool IsDragging { get; }
-    bool IsDraggable { get; set; }
-    void RegisterToSystem();
-    void UnregisterFromSystem();
-    bool IsValidDropPosition(Vector3 position);
+    public bool IsDragging { get; }
+    public bool IsDraggable { get; set; }
+    public void RegisterToSystem();
+    public void UnregisterFromSystem();
+    public bool IsValidDropPosition(Vector3 position);
 }
