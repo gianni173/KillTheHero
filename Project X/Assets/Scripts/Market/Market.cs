@@ -3,7 +3,7 @@ using UnityEngine;
 public class Market : MonoBehaviour
 {
     public Purchasable[] Items;
-    public PlayerData PlayerData;
+    public PlayerStats PlayerStats;
 
     //"return false" for now, waiting until PlayerData is completed.
     public bool CanPurchase(Purchasable Item)

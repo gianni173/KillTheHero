@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+
+[Serializable]
 public abstract class ARoomContentData : IEntityInteractable
 {
     protected string _name;
@@ -8,8 +10,8 @@ public abstract class ARoomContentData : IEntityInteractable
     
     public virtual void Interact(Entity entity)
     {
-        //to do
-        throw new System.NotImplementedException();
+        //TODO
+        throw new NotImplementedException();
     }
 
     public void Reset()

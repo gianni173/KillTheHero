@@ -46,10 +46,9 @@ package ROOM_DATA
     -Vector2    : _worldCellSize
     -Dictionary<int, AGridContent> : _content
     -Dictionary<int, int[]> _connections
-    -Vector2Int : _availableTiles
     
-    {static}+IndexToGridCoord(int) : Vector2
-    {static}+GridCoordToIndex(Vector2int) : int
+    +IndexToGridCoord(int) : Vector2
+    +GridCoordToIndex(Vector2Int) : int
     +GridCoordToWorldCoord(Vector2) : Vector3
     +GetGridContent(int) : GridContent
     +RemoveContent(int) : GridContent
@@ -94,10 +93,13 @@ package PLAYER_DATA
     +int : Quantity
     +ResourceType : Type
   }
-   class PlayerStats
+   class PlayerStats <<singleton>>
    {
-     Resource[] : Resources
-     Purchasable[] : PurchasedItems
+     -Resource[] : resources
+     -Purchasable[] : purchasedItems
+     -initializeResources()
+     +AddResource(ResourceType, int)
+     +GetResourceQuantity(ResourceType)
    }
     
 }
@@ -138,6 +140,28 @@ package ENTITY
   Paladin, Assassin,
   Strong, weak, ...
   }
+}
+
+package PATHFINDING
+{
+    class PathFinder
+    {
+        static GetGridPath(Grid, int fromIndex, int toIndex) : Path
+    }
+    
+    class Path{
+        -int[] : _path
+        -Grid : _grid
+        -int : _currenStep
+        NextStep();
+        PreviousStep();
+    }
+    
+    class EntityPath<<(M, lightblue)>>
+    {
+        -Entity : _entity
+        -Path : _path
+    }
 }
 
 package CONTENT {
@@ -220,5 +244,9 @@ RoomData *-- ARoomContentData
 ARoomContentData -* RoomContent
 PlayerStats *- Resource
 Resource *- ResourceType
+
+PathFinder -> Path : uses
+EntityPath *-- Path
+Entity <-- EntityPath : interacts with
 @enduml
 

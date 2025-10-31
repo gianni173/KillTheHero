@@ -1,6 +1,4 @@
-using UnityEngine;
-
 public interface IEntityInteractable
 {
-    void Interact(Entity entity);
+    public void Interact(Entity entity);
 }
