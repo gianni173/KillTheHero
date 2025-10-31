@@ -25,7 +25,7 @@ public class Entity : MonoBehaviour
             if (resource.Type == type)
             {
                 resource.Quantity += quantity;
-                Debug.Log($"Added {quantity} {type}. Total: {resource.Quantity}");
+                Debug.Log($"Added Entity {quantity} {type}. Total: {resource.Quantity}");
                 return;
             }
         }
