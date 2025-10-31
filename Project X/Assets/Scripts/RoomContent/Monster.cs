@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Monster : ARoomContentData
@@ -11,14 +10,17 @@ public class Monster : ARoomContentData
         if(_isUsable == false)
             return;
         if(entity.CheckEntityTag(_killTagMask))
-            Kill();
+            Kill(entity);
         if (entity.CheckEntityTag(_interactableTagMask))
             entity.Die();
     }
 
-    public void Kill()
+    public void Kill(Entity entity)
     {
-        //add logic to kill the monster itself
+        //GetComponent<Renderer>().enabled = false; 
+        //Jachy Hu 30/10: doesn't work because AroomContentData it's just a plain class
+        //Integrate it into RoomContent, maybe with _isUsable OnChange event?
+        entity.AddEntityResource(ResourceType.Fame, _fameReward);
         _isUsable = false;
     }
 }
