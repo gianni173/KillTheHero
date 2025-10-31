@@ -9,7 +9,8 @@ public class Purchasable : ScriptableObject
     public int FameNeeded;
 
     public void Purchase()
-    { 
-        //logic
+    {
+        PlayerStats.Instance.AddResource(ResourceType.Gold , -Price);
+        PlayerStats.Instance.AddPurchasableItem(this);
     }
 }

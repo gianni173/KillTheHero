@@ -53,6 +53,8 @@ public class PlayerStats
         }
         return 0;
     }
+    
+    
 
     public void AddPurchasableItem(Purchasable purchasableItem)
     {
