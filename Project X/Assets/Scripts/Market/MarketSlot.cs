@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class MarketSlot : MonoBehaviour
 {
     public Purchasable SlotData;
-    private Market _market;
+    private Market _market; // Sarebbe meglio rendere Market un singleton
     private Button _button;
     private Image _image;
 
