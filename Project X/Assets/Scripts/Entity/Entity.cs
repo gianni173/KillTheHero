@@ -7,21 +7,12 @@ public class Entity : MonoBehaviour
     private Resource[] _resourcesGained;
 
     {
-        // Adding resources logic
-        if (_resourcesGained.ContainsKey(resource.Type))
-            _resourcesGained[resource.Type].Quantity += resource.Quantity;
-        else
-            _resourcesGained[resource.Type] = resource;
-        //other things
     }
 
-    // Check if the entity has a specific tag
-    public bool CheckEntityTag(EntityTag enemyEntityTag)
     {
         return TagMask.Contains(enemyEntityTag);
     }
 
-    public bool CheckEntityTag(List<EntityTag> enemyEntityTags)
     public void AddEntityResource(ResourceType type, int quantity)
     {
         foreach (var resource in _resourcesGained)
@@ -34,6 +25,10 @@ public class Entity : MonoBehaviour
             }
         }
     }
+    // Check if the entity has a specific tag
+    public bool CheckEntityTag(EntityTag enemyEntityTag)
+    {
+        return TagMask.Contains(enemyEntityTag);
     }
 
     public bool CheckEntityTag(EntityTag[] enemyEntityTags)
