@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class SwapSceneButtons : MonoBehaviour
 {
-    // Funzioni da mettere sui bottoni dei menu
     [SerializeField] 
     private Button _toGameplayButton;
 
