@@ -5,6 +5,7 @@ public class Entity : MonoBehaviour
 {
     public List <EntityTag> TagMask = new();
     private Resource[] _resourcesGained;
+    private bool _hasReachedMimik = false;
 
     private void Awake()
     {
@@ -49,9 +50,18 @@ public class Entity : MonoBehaviour
     //i don't know TagMask is public, maybe directly on AItem interact()?
     public void Die()
     {
-        var FameGained = _resourcesGained[0].Quantity;  // Jachy Hu 31/10: Horrendous, you need to know which slot in [] 
-                                                            // contains the specific type of resource, need to fix later
-        PlayerStats.Instance.AddResource(ResourceType.Fame, FameGained);
+        if (_hasReachedMimik)
+        {
+            var GoldGained = _resourcesGained[1].Quantity;
+            PlayerStats.Instance.AddResource(ResourceType.Gold, GoldGained);
+        }
+        else
+        {
+            var FameGained =
+                _resourcesGained[0].Quantity; // Jachy Hu 31/10: Horrendous, you need to know which slot in [] 
+            // contains the specific type of resource, need to fix later
+            PlayerStats.Instance.AddResource(ResourceType.Fame, FameGained);
+        }
         gameObject.SetActive(false);
     }
 }
