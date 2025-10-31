@@ -14,15 +14,15 @@ public class Grid
     [SerializeField] private Vector3 _origin = Vector3.zero;
     [SerializeField] private Vector2 _worldCellSize = Vector2.one;
     public Vector2 WorldCellSize => _worldCellSize;
-    
-    
-    private Dictionary<int, AGridContent> _content = new Dictionary<int, AGridContent>();
-    private Dictionary<int, int[]> _connections = new Dictionary<int, int[]>();
+
+
+    [SerializeField] private Dictionary<int, AGridContent> _content = new();
+    [SerializeField] private Dictionary<int, int[]> _connections = new();
     
     
     public static Vector2 IndexToGridCoord(int index)
     {
-        var grid = GridManager.Instance.GetGrid();
+        var grid = GridManager.Instance.Grid;
         int X = index % grid._maxSize.x;
         int Y = Mathf.FloorToInt(index / grid._maxSize.x);
         return new Vector2(X, Y);
@@ -30,7 +30,7 @@ public class Grid
 
     public static int GridCoordToIndex(Vector2Int coord)
     {
-        var grid = GridManager.Instance.GetGrid();
+        var grid = GridManager.Instance.Grid;
         return coord.y * grid._maxSize.x + coord.x;
     }
 
@@ -49,14 +49,14 @@ public class Grid
 
     public void RemoveGridContent(int index)
     {
-        //Salvo la reference per un futuro Destroy() o SetActive(false)
+        //TODO: Salvo la reference per un futuro Destroy() o SetActive(false)
         //AGridContent gridContent = _content[index]; 
         _content.Remove(index);
     }
 
     public void AddContent(int index, AGridContent content)
     {
-        _content.Add(index , content);
+        _content.Add(index , content); 
     }
 
     public void SetCurrentSize(Vector2Int newSize)
@@ -81,7 +81,7 @@ public class Grid
 
     public int[] GetAvailableGridIndices()
     {
-        List<int> availableIndices = new List<int>();
+        var availableIndices = new List<int>();
         for (int x = 0; x < _currentSize.x; x++)
         {
             for (int y = 0; y < _currentSize.y; y++)
@@ -94,20 +94,17 @@ public class Grid
             }
         }
 
-
         return availableIndices.ToArray();
     }
     
     static public Grid DefaultGrid()
     {
-        Grid defaultGrid = new Grid
+        return new Grid
         {
             _maxSize = new Vector2Int(10, 10),
             _currentSize = new Vector2Int(3, 3),
             _origin = Vector3.zero,
             _worldCellSize = Vector2.one
         };
-        return defaultGrid;
     }
-
 }

@@ -1,44 +1,43 @@
 using UnityEngine;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 
-public  class GridManager : MonoBehaviour
+public class GridManager : SerializedMonoBehaviour
 {
-    [SerializeField] private Grid _grid = null;
+    [OdinSerialize] private Grid _grid = null;
+    public Grid Grid => _grid;
+
     public static GridManager Instance;
 
-    public void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    public void Start()
+    private void Start()
     {
         if (_grid.MaxSize == Vector2Int.zero)
         {
             _grid = Grid.DefaultGrid();
         }
     }
+
     public void SetCurrentGridSize(Vector2Int newSize)
     {
-        if (_grid != null)
+        if (_grid == null)
         {
-            _grid.SetCurrentSize(newSize);
+            return;
         }
+        _grid.SetCurrentSize(newSize);
     }
 
-    public Grid GetGrid()
-    {
-        return _grid;
-    }
-
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         if (_grid != null)
