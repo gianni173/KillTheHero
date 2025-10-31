@@ -142,6 +142,28 @@ package ENTITY
   }
 }
 
+package PATHFINDING
+{
+    class PathFinder
+    {
+        static GetGridPath(Grid, int fromIndex, int toIndex) : Path
+    }
+    
+    class Path{
+        -int[] : _path
+        -Grid : _grid
+        -int : _currenStep
+        NextStep();
+        PreviousStep();
+    }
+    
+    class EntityPath<<(M, lightblue)>>
+    {
+        -Entity : _entity
+        -Path : _path
+    }
+}
+
 package CONTENT {
   abstract class ARoomContentData{
     #string : _name
@@ -222,5 +244,9 @@ RoomData *-- ARoomContentData
 ARoomContentData -* RoomContent
 PlayerStats *- Resource
 Resource *- ResourceType
+
+PathFinder -> Path : uses
+EntityPath *-- Path
+Entity <-- EntityPath : interacts with
 @enduml
 
