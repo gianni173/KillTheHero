@@ -837,8 +837,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7682012775418698549, guid: d266ba2683ae2a34bbaeaf63e0d6c993, type: 3}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+      - m_Target: {fileID: 5980447991531636175, guid: d266ba2683ae2a34bbaeaf63e0d6c993, type: 3}
+        m_TargetAssemblyTypeName: ButtonLogic, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
@@ -970,8 +970,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7682012775418698549, guid: d266ba2683ae2a34bbaeaf63e0d6c993, type: 3}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+      - m_Target: {fileID: 5980447991531636175, guid: d266ba2683ae2a34bbaeaf63e0d6c993, type: 3}
+        m_TargetAssemblyTypeName: ButtonLogic, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 1
         m_Arguments:
