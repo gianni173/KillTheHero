@@ -166,14 +166,14 @@ public class Room : SerializedMonoBehaviour, IDraggable
         if (_draggableSystem == null)
             _draggableSystem = FindAnyObjectByType<RoomDraggableSystem>();
 
-        if (_draggableSystem != null)
-            _draggableSystem.RegisterDraggable(this);
+        //if (_draggableSystem != null)
+            //_draggableSystem.RegisterDraggable(this);
     }
 
     public void UnregisterFromSystem()
     {
-        if (_draggableSystem != null)
-            _draggableSystem.UnregisterDraggable(this);
+        //if (_draggableSystem != null)
+           //_draggableSystem.UnregisterDraggable(this);
     }
 
     public bool IsValidDropPosition(Vector3 position)
