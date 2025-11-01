@@ -2,19 +2,20 @@ using System.Collections.Generic;
 
 public class Inventory
 {
-    private List<PurchasableRoomContent>  _purchasedRoomContents;
+    private List<ARoomContentData>  _purchasedRoomContents;
+    
 
-    public List<PurchasableRoomContent> GetInventoryContents()
+    public List<ARoomContentData> GetInventoryContents()
     {
         return _purchasedRoomContents;
     }
 
-    public void AddItemToInventory(PurchasableRoomContent item)
+    public void AddItemToInventory(ARoomContentData item)
     {
         _purchasedRoomContents.Add(item);
     }
 
-    public void RemoveItemFromInventory(PurchasableRoomContent item)
+    public void RemoveItemFromInventory(ARoomContentData item)
     {
         _purchasedRoomContents.Remove(item);
     }
