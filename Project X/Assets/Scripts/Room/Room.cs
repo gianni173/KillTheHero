@@ -10,6 +10,9 @@ public class Room : SerializedMonoBehaviour, IDraggable
     [OdinSerialize]
     private RoomData Data { get; set; }
 
+    public Action<Vector3> OnPickupProperty { get => OnPickup; set => OnPickup = value; }
+    public Action<Vector3> OnReleaseProperty { get => OnRelease; set => OnRelease = value; }
+    public bool IsDragging { get; private set; }
     [SerializeField] 
     private bool _isDraggable = true;
 
@@ -26,8 +29,7 @@ public class Room : SerializedMonoBehaviour, IDraggable
     //TODO: implementare gli eventi e logica interfacce dentro RoomDraggableSystem
     public Action<Vector3> OnPickup;
     public Action<Vector3> OnRelease;
-    
-    public bool IsDragging { get; private set; }
+
     public bool IsDraggable
     {
         get => _isDraggable;
