@@ -9,6 +9,7 @@ public class Grid
     [SerializeField] private Vector2Int _maxSize;     // max grid dimension
     public Vector2Int MaxSize => _maxSize;
     [SerializeField] private Vector2Int _currentSize;   // current grid dimension visible to the player
+    public Vector2Int CurrentSize => _currentSize;
     
     [Header("World Settings")]
     [SerializeField] private Vector3 _origin = Vector3.zero;
