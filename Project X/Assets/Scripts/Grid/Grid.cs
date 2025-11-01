@@ -20,18 +20,16 @@ public class Grid
     [SerializeField] private Dictionary<int, int[]> _connections = new();
     
     
-    public static Vector2 IndexToGridCoord(int index)
+    public Vector2 IndexToGridCoord(int index)
     {
-        var grid = GridManager.Instance.Grid;
-        int X = index % grid._maxSize.x;
-        int Y = Mathf.FloorToInt(index / grid._maxSize.x);
+        int X = index % _maxSize.x;
+        int Y = Mathf.FloorToInt(index / _maxSize.x);
         return new Vector2(X, Y);
     }
 
-    public static int GridCoordToIndex(Vector2Int coord)
+    public int GridCoordToIndex(Vector2Int coord)
     {
-        var grid = GridManager.Instance.Grid;
-        return coord.y * grid._maxSize.x + coord.x;
+        return coord.y * _maxSize.x + coord.x;
     }
 
     public Vector3 GridCoordToWorldCoord(Vector2 coord)
