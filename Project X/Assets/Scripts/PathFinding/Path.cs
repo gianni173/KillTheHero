@@ -1,5 +1,8 @@
+using UnityEngine;
+
 public class Path
 {
+    [SerializeField]
     private int[] _path;
     private Grid _grid;
     private int _currentStep;
@@ -33,5 +36,26 @@ public class Path
         }
 
         return _path[--_currentStep];
+    }
+
+    public Vector2 GetCurrentStepGridCoord()
+    {
+        if (_currentStep == 0 || _currentStep > _path.Length)
+        {
+            throw new System.InvalidOperationException("Current step is out of bounds.");
+        }
+
+        return _grid.IndexToGridCoord(_path[_currentStep]);
+    }
+    
+    public Vector3 GetCurrentStepWorldCoord()
+    {
+        if (_currentStep == 0 || _currentStep > _path.Length)
+        {
+            throw new System.InvalidOperationException("Current step is out of bounds.");
+        }
+
+        Vector2 gridCoord = _grid.IndexToGridCoord(_path[_currentStep]);
+        return _grid.GridCoordToWorldCoord(gridCoord);
     }
 }
