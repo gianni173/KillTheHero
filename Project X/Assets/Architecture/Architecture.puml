@@ -120,6 +120,16 @@ package MARKET
     +TryPurchase(Purchasable) : bool
     +CanPurchase(Purchasable) : bool
   }
+  
+  class MarketSlot<<(M , lightblue)>>
+  {
+   +Purchasable : slotData
+   -Button : _button
+   -Image : _image
+   -Market : _market
+   +void : Initialize(Purchasable , Market)
+   +void : OnClick()
+  }
 
 }
 
@@ -228,7 +238,7 @@ PlayerStats --o SaveData
 GridManager *-- Grid
 
 Market *- Purchasable
-
+MarketSlot <- Market : Instantiate
 Market --> PlayerStats : uses
 
 EntityTag --* Entity
