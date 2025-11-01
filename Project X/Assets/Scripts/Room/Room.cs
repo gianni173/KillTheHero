@@ -41,6 +41,19 @@ public class Room : SerializedMonoBehaviour, IDraggable
         // OnRelease event invoke
         OnRelease?.Invoke(dropPosition);
     }
+    public void RegisterToSystem()
+    {
+        if (_draggableSystem == null)
+            _draggableSystem = FindAnyObjectByType<RoomDraggableSystem>();
+
+        if (_draggableSystem != null)
+            _draggableSystem.RegisterDraggable(this);
+    }
+
+    public void UnregisterFromSystem()
+    {
+        if (_draggableSystem != null)
+            _draggableSystem.UnregisterDraggable(this);
     }
     #endregion
 }
