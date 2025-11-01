@@ -81,6 +81,11 @@ public class Grid
         Debug.Log($"[Grid] Visible grid updated at: {_currentSize}");
     }
 
+    public Vector2Int GetGridCurrentSize()
+    {
+        return _currentSize;
+    }
+    
     public int[] GetAvailableGridIndices()
     {
         var availableIndices = new List<int>();
