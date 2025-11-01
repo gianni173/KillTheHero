@@ -777,7 +777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 6043256397311762242, guid: 4e82b52e593213e49a4f0423c7e418f2, type: 3}
-  entrancePrefab: {fileID: 2007510645466157406, guid: c4a549f69f215134c9fe37b184566c1e, type: 3}
+  entrancePrefab: {fileID: 6159274556552184454, guid: 07f13719cc6ef0d42957677f4daa7cd8, type: 3}
   mimicPrefab: {fileID: 4055793984384622388, guid: 70d7b2b9caf012b48b12617d10c2e970, type: 3}
 --- !u!1 &1657475765
 GameObject:
