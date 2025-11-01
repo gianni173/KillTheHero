@@ -40,6 +40,23 @@ public class Room : SerializedMonoBehaviour, IDraggable
             _collider2D = gameObject.AddComponent<BoxCollider2D>();
 
     }
+
+    private void Start()
+    {
+        RegisterToSystem();
+    }
+
+    private void OnDestroy()
+    {
+        UnregisterFromSystem();
+    }
+
+    private void Init(RoomData roomData)
+    {
+        Data = new RoomData();
+        Data = roomData;
+    }
+
     #region IDraggable Implementation
 
     public void OnPointerEnter(PointerEventData eventData)
