@@ -121,19 +121,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7110794420815742879}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5980447991531636175, guid: d266ba2683ae2a34bbaeaf63e0d6c993, type: 3}
-        m_TargetAssemblyTypeName: ButtonLogic, Assembly-CSharp
-        m_MethodName: PlayGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &253282654793488747
 MonoBehaviour:
   m_ObjectHideFlags: 0

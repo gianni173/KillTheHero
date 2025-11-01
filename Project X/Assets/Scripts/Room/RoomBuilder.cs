@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class RoomBuilder : MonoBehaviour
 {
-    [Header("Prefabs da spawnare")] public GameObject tilePrefab;
+    [Header("Prefabs to spawn")] 
+    public GameObject tilePrefab;
     public GameObject entrancePrefab;
     public GameObject mimicPrefab;
 
     private GridManager gridManager;
-
+    
     private void Start()
     {
         gridManager = GridManager.Instance;
@@ -22,7 +23,7 @@ public class RoomBuilder : MonoBehaviour
         BuildContents();
     }
 
-    private void BuildRooms()
+    public void BuildRooms()
     {
         Grid grid = gridManager.Grid;
 
@@ -40,7 +41,7 @@ public class RoomBuilder : MonoBehaviour
         }
     }
 
-    private void BuildContents()
+    public void BuildContents()
     {
         Grid grid = gridManager.Grid;
         Vector2Int size = gridManager.Grid.CurrentSize;
@@ -57,12 +58,22 @@ public class RoomBuilder : MonoBehaviour
                     // Spawn dell’entrata sopra la tile
                     Instantiate(entrancePrefab, pos + Vector3.up * 0.01f, Quaternion.identity);
                 }
-                else if (index == size.x * size.y - 1)
+                else if (index == size.x - 1)
                 {
                     // Spawn del Mimic sopra la tile
                     Instantiate(mimicPrefab, pos + Vector3.up * 0.01f, Quaternion.identity);
                 }
             }
         }
+    }
+
+    public void DestroyRooms()
+    {
+        // logica da aggiungere
+    }
+    
+    public void DestroyContents()
+    {
+        // logica da aggiungere
     }
 }
