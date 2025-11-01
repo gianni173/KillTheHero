@@ -44,7 +44,7 @@ public class PathFinderSystem : MonoBehaviour
             return;
         }
 
-        _currentPath = PathFinding.AStarPathFinding(_grid, startIndex, targetIndex);
+        _currentPath = PathFinder.AStarPathFinding(_grid, startIndex, targetIndex);
         if (_currentPath != null)
         {
             Debug.Log("[PathFinderSystem] Path successfully found.");

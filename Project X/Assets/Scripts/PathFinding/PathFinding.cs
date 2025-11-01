@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathFinding
+public class PathFinder
 {
     public static Path AStarPathFinding(Grid grid, int startIndex, int targetIndex)
     {
