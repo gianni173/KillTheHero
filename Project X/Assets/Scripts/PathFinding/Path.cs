@@ -24,10 +24,10 @@ public class Path
     {
         if (!HasNextStep())
         {
-            throw new System.InvalidOperationException("No more steps in the path.");
+            Debug.LogWarning("No more steps in the path.");
+            return _path[_currentStep];
         }
-
-        return _path[_currentStep++];
+        return _path[++_currentStep];
     }
 
     public int PreviousStep()
