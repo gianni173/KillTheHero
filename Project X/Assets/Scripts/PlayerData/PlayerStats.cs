@@ -61,8 +61,11 @@ public class PlayerStats
         }
         return 0;
     }
-    
-    
+
+    public Inventory GetInventory()
+    {
+        return _playerInventory;
+    }
 
     public void AddPurchasableItem(Purchasable purchasableItem)
     {
