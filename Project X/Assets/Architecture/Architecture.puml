@@ -47,8 +47,8 @@ package ROOM_DATA
     -Dictionary<int, AGridContent> : _content
     -Dictionary<int, int[]> _connections
     
-    {static}+IndexToGridCoord(int) : Vector2
-    {static}+GridCoordToIndex(Vector2int) : int
+    +IndexToGridCoord(int) : Vector2
+    +GridCoordToIndex(Vector2Int) : int
     +GridCoordToWorldCoord(Vector2) : Vector3
     +GetGridContent(int) : GridContent
     +RemoveContent(int) : GridContent
@@ -119,6 +119,16 @@ package MARKET
     +Purchasable[] : items
     +TryPurchase(Purchasable) : bool
     +CanPurchase(Purchasable) : bool
+  }
+  
+  class MarketSlot<<(M , lightblue)>>
+  {
+   +Purchasable : slotData
+   -Button : _button
+   -Image : _image
+   -Market : _market
+   +void : Initialize(Purchasable , Market)
+   +void : OnClick()
   }
 
 }
@@ -228,7 +238,7 @@ PlayerStats --o SaveData
 GridManager *-- Grid
 
 Market *- Purchasable
-
+MarketSlot <- Market : Instantiate
 Market --> PlayerStats : uses
 
 EntityTag --* Entity

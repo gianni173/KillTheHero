@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -9,7 +11,8 @@ public class PlayerStats
                                                                                   // a playerStats manager
 
     private Resource[] _resources;
-
+    private List<Purchasable> _purchasedItems = new();
+    
     //public Purchasable[] PurchasableItems;
     private PlayerStats()
     {
@@ -50,5 +53,17 @@ public class PlayerStats
             }
         }
         return 0;
+    }
+    
+    
+
+    public void AddPurchasableItem(Purchasable purchasableItem)
+    {
+        _purchasedItems.Add(purchasableItem);
+    }
+
+    public int GetPurchasedItems(Purchasable purchasableItem)
+    {
+        return _purchasedItems.Count(p => p == purchasableItem);
     }
 }
