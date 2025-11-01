@@ -4,7 +4,6 @@ using UnityEngine;
 public class Market : MonoBehaviour
 {
     public Purchasable[] Items;
-    public PlayerStats PlayerStats;
     public MarketSlot MarketSlotPrefab;
     public GameObject Container;
     
@@ -23,18 +22,29 @@ public class Market : MonoBehaviour
     //"return false" for now, waiting until PlayerData is completed.
     public bool CanPurchase(Purchasable item)
     {
-        if(item.Price > PlayerStats.Instance.GetResourceQuantity(ResourceType.Gold))
+        if (item.Price > PlayerStats.Instance.GetResourceQuantity(ResourceType.Gold))
+        {
             return false;
-        if(item.FameNeeded > PlayerStats.Instance.GetResourceQuantity(ResourceType.Fame))
+        }
+        if (item.FameNeeded > PlayerStats.Instance.GetResourceQuantity(ResourceType.Fame))
+        {
             return false;
-        //TODO: check on item quantity
+        }
+        if (PlayerStats.Instance.GetPurchasedItems(item) >= item.MaxPurchases)
+        {
+            return false;
+        }
+        
         return true;
     }
 
     public bool TryPurchase(Purchasable item)
     {
         if (!CanPurchase(item))
+        {
             return false;
+        }
+        
         item.Purchase();
         return true;
     }

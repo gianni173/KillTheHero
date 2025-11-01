@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -58,6 +59,11 @@ public class PlayerStats
 
     public void AddPurchasableItem(Purchasable purchasableItem)
     {
-        this._purchasedItems.Add(purchasableItem);
+        _purchasedItems.Add(purchasableItem);
+    }
+
+    public int GetPurchasedItems(Purchasable purchasableItem)
+    {
+        return _purchasedItems.Count(p => p == purchasableItem);
     }
 }
