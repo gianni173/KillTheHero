@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Purchasable", menuName = "Scriptable Objects/Purchasable")]
 public abstract class Purchasable : ScriptableObject
 {
     public Sprite Sprite;
