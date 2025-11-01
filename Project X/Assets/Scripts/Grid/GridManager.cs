@@ -64,6 +64,17 @@ public class GridManager : SerializedMonoBehaviour
                 {
                     // Gizmos.color = Color.black;
                     Gizmos.DrawSphere(cellPos + cellOffset, .2f);
+                    if(_grid.Connections.ContainsKey(gridIndices[i]))
+                    {
+                        int[] connections = _grid.Connections[gridIndices[i]];
+                        Gizmos.color = Color.blue;
+                        for(int j = 0; j < connections.Length; j++)
+                        {
+                            Vector2 connCellCoord = Grid.IndexToGridCoord(connections[j]);
+                            Vector3 connCellPos = _grid.GridCoordToWorldCoord(connCellCoord);
+                            Gizmos.DrawLine(cellPos + cellOffset, connCellPos + cellOffset);
+                        }
+                    }
                 }
             }
         }
