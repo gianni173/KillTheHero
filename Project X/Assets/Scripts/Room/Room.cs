@@ -12,9 +12,21 @@ public class Room : SerializedMonoBehaviour, IDraggable
 
     [SerializeField] 
     private bool _isDraggable = true;
+
+    [Header("Debug Feedback")] 
+    [SerializeField]
+    private bool _enableDebugFeedback = true;
+    [SerializeField]
+    private Color _normalColor = Color.white;
+    [SerializeField] 
+    private Color _hoverColor = Color.yellow;
+    [SerializeField] 
+    private Color _dragColor = Color.green;
+    
     //TODO: implementare gli eventi e logica interfacce dentro RoomDraggableSystem
     public Action<Vector3> OnPickup;
     public Action<Vector3> OnRelease;
+    
     public bool IsDragging { get; private set; }
     public bool IsDraggable
     {
@@ -64,11 +76,25 @@ public class Room : SerializedMonoBehaviour, IDraggable
         if (!IsDraggable) return;
         
         if (_spriteRenderer != null && _enableDebugFeedback)
+        {
             _spriteRenderer.color = _hoverColor;
+            Debug.Log("Mouse entered in room");
+        }
+
+    }
+
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!IsDraggable) return;
+
+        if (!IsDragging && _spriteRenderer != null && _enableDebugFeedback)
+        {
+            _spriteRenderer.color = _normalColor;
+            Debug.Log("Mouse exit from room");
+        }
+
     }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!IsDraggable) return;
@@ -81,7 +107,14 @@ public class Room : SerializedMonoBehaviour, IDraggable
 
         // pickup event invoke
         OnPickup?.Invoke(transform.position);
+        
+        if (_spriteRenderer != null && _enableDebugFeedback)
+        {
+            _spriteRenderer.color = _dragColor;
+            Debug.Log("room drag started");
+        }
     }
+
     public void OnDrag(PointerEventData eventData)
     {
         if (!IsDraggable || !IsDragging) return;
@@ -101,20 +134,28 @@ public class Room : SerializedMonoBehaviour, IDraggable
         
         if (_collider2D != null)
             _collider2D.enabled = true;
+        
+        if (_spriteRenderer != null  && _enableDebugFeedback)
+            _spriteRenderer.color = _normalColor;
 
         Vector3 dropPosition = transform.position;
         
         if (IsValidDropPosition(dropPosition))
         {
             if (_enableDebugFeedback)
+                Debug.Log("room position valid");
         }
         else
         {
             transform.position = _originalPosition;
+            if (_enableDebugFeedback)
+                Debug.Log("room position invalid, reset to original position");
         }
 
         // OnRelease event invoke
         OnRelease?.Invoke(dropPosition);
+        if (_enableDebugFeedback)
+            Debug.Log("room drag ended");
     
     }
 
