@@ -43,6 +43,8 @@ public class Grid
     }
     public AGridContent GetGridContent(int index)
     {
+        if (!_content.ContainsKey(index))
+            return null;
         return _content[index];
     }
 
@@ -86,16 +88,13 @@ public class Grid
             for (int y = 0; y < _currentSize.y; y++)
             {
                 int index = GridCoordToIndex(new Vector2Int(x, y));
-                if (!_content.ContainsKey(index))
-                {
-                    availableIndices.Add(index);
-                }
+                availableIndices.Add(index);
             }
         }
 
         return availableIndices.ToArray();
     }
-    
+
     static public Grid DefaultGrid()
     {
         return new Grid
@@ -105,5 +104,30 @@ public class Grid
             _origin = Vector3.zero,
             _worldCellSize = Vector2.one
         };
+    }
+    
+    public int[] GetNeighborsIndices(int index)
+    {
+        Vector2 coord = IndexToGridCoord(index);
+        List<int> neighbors = new List<int>();
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue; // Skip the current cell
+
+                Vector2 neighborCoord = new Vector2(coord.x + x, coord.y + y);
+
+                // Check if neighbor is within bounds
+                if (neighborCoord.x >= 0 && neighborCoord.x < _maxSize.x &&
+                    neighborCoord.y >= 0 && neighborCoord.y < _maxSize.y)
+                {
+                    int neighborIndex = GridCoordToIndex(new Vector2Int((int)neighborCoord.x, (int)neighborCoord.y));
+                    neighbors.Add(neighborIndex);
+                }
+            }
+        }
+        return neighbors.ToArray();
     }
 }
