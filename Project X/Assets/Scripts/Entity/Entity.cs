@@ -4,33 +4,37 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public List <EntityTag> TagMask = new();
+    private Resource[] _resourcesGained;
+    private bool _hasReachedMimik = false;
 
-    private Dictionary<ResourceType, Resource> _resourcesGained = new();
-
-    public void AddResources(Resource resource)
+    private void Awake()
     {
-        // Adding resources logic
-        if (_resourcesGained.ContainsKey(resource.Type))
-            _resourcesGained[resource.Type].Quantity += resource.Quantity;
-        else
-            _resourcesGained[resource.Type] = resource;
-        //other things
+        InitializeEntityResources();
     }
 
+    private void InitializeEntityResources()
+    {
+        _resourcesGained = new Resource[2];
+        _resourcesGained[0] = new Resource { Name = "Fame", Type = ResourceType.Fame, Quantity = 0 };
+        _resourcesGained[1] = new Resource { Name = "Gold", Type = ResourceType.Gold, Quantity = 0 };
+    }
+
+    public void AddEntityResource(ResourceType type, int quantity)
+    {
+        foreach (var resource in _resourcesGained)
+        {
+            if (resource.Type == type)
+            {
+                resource.Quantity += quantity;
+                Debug.Log($"Added Entity {quantity} {type}. Total: {resource.Quantity}");
+                return;
+            }
+        }
+    }
     // Check if the entity has a specific tag
     public bool CheckEntityTag(EntityTag enemyEntityTag)
     {
         return TagMask.Contains(enemyEntityTag);
-    }
-
-    public bool CheckEntityTag(List<EntityTag> enemyEntityTags)
-    {
-        foreach (EntityTag tag in enemyEntityTags)
-        {
-            if (TagMask.Contains(tag))
-                return true;
-        }
-        return false;
     }
 
     public bool CheckEntityTag(EntityTag[] enemyEntityTags)
@@ -42,9 +46,22 @@ public class Entity : MonoBehaviour
         }
         return false;
     }
-
+    //Jachy Hu 31/10: TODO add a logic when gaining a new tag? 
+    //i don't know TagMask is public, maybe directly on AItem interact()?
     public void Die()
     {
-        // Entity death logic
+        if (_hasReachedMimik)
+        {
+            var GoldGained = _resourcesGained[1].Quantity;
+            PlayerStats.Instance.AddResource(ResourceType.Gold, GoldGained);
+        }
+        else
+        {
+            var FameGained =
+                _resourcesGained[0].Quantity; // Jachy Hu 31/10: Horrendous, you need to know which slot in [] 
+            // contains the specific type of resource, need to fix later
+            PlayerStats.Instance.AddResource(ResourceType.Fame, FameGained);
+        }
+        gameObject.SetActive(false);
     }
 }
