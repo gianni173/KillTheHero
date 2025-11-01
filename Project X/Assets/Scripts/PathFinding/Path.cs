@@ -50,7 +50,7 @@ public class Path
     
     public Vector3 GetCurrentStepWorldCoord()
     {
-        if (_currentStep == 0 || _currentStep > _path.Length)
+        if (_currentStep > _path.Length)
         {
             throw new System.InvalidOperationException("Current step is out of bounds.");
         }
