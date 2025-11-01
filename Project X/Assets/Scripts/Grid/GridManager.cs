@@ -9,6 +9,9 @@ public class GridManager : SerializedMonoBehaviour
 
     public static GridManager Instance;
 
+    [SerializeField, ReadOnly] 
+    private int[] _gridIndices;
+
     private void Awake()
     {
         if (Instance != null)
@@ -52,21 +55,21 @@ public class GridManager : SerializedMonoBehaviour
                     Gizmos.DrawWireCube(cellPos + cellOffset, cellDimention);
                 }
             }
-            int[] gridIndices = _grid.GetAvailableGridIndices();
-            for(int i = 0; i <gridIndices.Length; i++)
+            _gridIndices = _grid.GetAvailableGridIndices();
+            for(int i = 0; i <_gridIndices.Length; i++)
             {
-                Vector2 cellCoord = Grid.IndexToGridCoord(gridIndices[i]);
+                Vector2 cellCoord = Grid.IndexToGridCoord(_gridIndices[i]);
                 Vector3 cellPos = _grid.GridCoordToWorldCoord(cellCoord);
                 Gizmos.color = Color.black;
                 Gizmos.DrawWireCube(cellPos + cellOffset, cellDimention);
-                AGridContent content = _grid.GetGridContent(gridIndices[i]);
+                AGridContent content = _grid.GetGridContent(_gridIndices[i]);
                 if(content != null)
                 {
                     // Gizmos.color = Color.black;
                     Gizmos.DrawSphere(cellPos + cellOffset, .2f);
-                    if(_grid.Connections.ContainsKey(gridIndices[i]))
+                    if(_grid.Connections.ContainsKey(_gridIndices[i]))
                     {
-                        int[] connections = _grid.Connections[gridIndices[i]];
+                        int[] connections = _grid.Connections[_gridIndices[i]];
                         Gizmos.color = Color.blue;
                         for(int j = 0; j < connections.Length; j++)
                         {
