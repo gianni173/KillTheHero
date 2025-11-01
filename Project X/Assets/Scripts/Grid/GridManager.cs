@@ -59,6 +59,12 @@ public class GridManager : SerializedMonoBehaviour
                 Vector3 cellPos = _grid.GridCoordToWorldCoord(cellCoord);
                 Gizmos.color = Color.black;
                 Gizmos.DrawWireCube(cellPos + cellOffset, cellDimention);
+                AGridContent content = _grid.GetGridContent(gridIndices[i]);
+                if(content != null)
+                {
+                    // Gizmos.color = Color.black;
+                    Gizmos.DrawSphere(cellPos + cellOffset, .2f);
+                }
             }
         }
     }
