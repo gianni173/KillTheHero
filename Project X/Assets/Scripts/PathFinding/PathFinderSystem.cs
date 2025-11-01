@@ -1,26 +1,23 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
-
+using Unity.VisualScripting.Dependencies.NCalc;
 public class PathFinderSystem : MonoBehaviour
 {
 
-    [SerializeField]
-    private int currentIndex = 0;
-    public int CurrentIndex => currentIndex;
+    [SerializeField] private int _currentIndex = 0;
+    public int CurrentIndex => _currentIndex;
 
-    [SerializeField]
-    private Path _currentPath;
+    [SerializeField] private Path _currentPath;
     public Path CurrentPath => _currentPath;
 
-    [SerializeField]
-    private Grid _grid;
+    [SerializeField] private Grid _grid;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        _grid = GridManager.Instance?.Grid;
         if (_grid == null)
         {
-            _grid = GridManager.Instance?.Grid;
+            _grid = Grid.DefaultGrid();
         }
 
         if (_grid == null)
@@ -28,7 +25,9 @@ public class PathFinderSystem : MonoBehaviour
             Debug.LogError("[PathFinderSystem] Grid is not assigned and GridManager instance is null.");
             return;
         }
-        
+
+        ResetPath();
+        UpdatePositionToCurrentStep();
     }
 
     // Update is called once per frame
@@ -60,8 +59,9 @@ public class PathFinderSystem : MonoBehaviour
     public void ResetPath()
     {
         _currentPath = null;
-        currentIndex = 0;
-        FindPath(currentIndex, 20);
+        _currentIndex = 0;
+        FindPath(_currentIndex, 20);
+        UpdatePositionToCurrentStep();
     }
 
     [Button]
@@ -72,9 +72,27 @@ public class PathFinderSystem : MonoBehaviour
             Debug.LogWarning("[PathFinderSystem] No current path to follow.");
             return;
         }
-        
-        currentIndex = _currentPath.GetNextStep();
-        Vector3 worldPos = _grid.GridCoordToWorldCoord(_grid.IndexToGridCoord(currentIndex));
-       
+
+        _currentIndex = _currentPath.GetNextStep();
+        UpdatePositionToCurrentStep();
+    }
+
+    public void UpdatePositionToCurrentStep()
+    {
+        if (_currentPath == null)
+        {
+            Debug.LogWarning("[PathFinderSystem] No current path to follow.");
+            return;
+        }
+
+        Vector3 worldPos = _grid.GridCoordToWorldCoord(_grid.IndexToGridCoord(_currentIndex));
+        Vector3 offset = new Vector3(_grid.WorldCellSize.x / 2, _grid.WorldCellSize.y / 2, 0);
+        transform.position = worldPos + offset;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, 0.3f);
     }
 }
