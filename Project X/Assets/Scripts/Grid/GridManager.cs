@@ -9,9 +9,6 @@ public class GridManager : SerializedMonoBehaviour
 
     public static GridManager Instance;
 
-    [SerializeField, ReadOnly] 
-    private int[] _gridIndices;
-
     private void Awake()
     {
         if (Instance != null)
@@ -55,7 +52,7 @@ public class GridManager : SerializedMonoBehaviour
                     Gizmos.DrawWireCube(cellPos + cellOffset, cellDimention);
                 }
             }
-            _gridIndices = _grid.GetAvailableGridIndices();
+            var _gridIndices = _grid.GetAvailableGridIndices();
             for(int i = 0; i <_gridIndices.Length; i++)
             {
                 Vector2 cellCoord = Grid.IndexToGridCoord(_gridIndices[i]);
