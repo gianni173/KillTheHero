@@ -411,6 +411,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 5579536563692090748, guid: f37246ba742826540a0afd84e5a69e13, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 1048631
+      objectReference: {fileID: 0}
     - target: {fileID: 8873175471217502976, guid: f37246ba742826540a0afd84e5a69e13, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
