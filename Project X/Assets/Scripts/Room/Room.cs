@@ -55,16 +55,6 @@ public class Room : SerializedMonoBehaviour, IDraggable
 
     }
 
-    private void Start()
-    {
-        RegisterToSystem();
-    }
-
-    private void OnDestroy()
-    {
-        UnregisterFromSystem();
-    }
-
     private void Init(RoomData roomData)
     {
         Data = new RoomData();
@@ -160,20 +150,6 @@ public class Room : SerializedMonoBehaviour, IDraggable
             Debug.Log("room drag ended");
     
     }
-
-    public void RegisterToSystem()
-    {
-        if (_draggableSystem == null)
-            _draggableSystem = FindAnyObjectByType<RoomDraggableSystem>();
-
-        //if (_draggableSystem != null)
-            //_draggableSystem.RegisterDraggable(this);
-    }
-
-    public void UnregisterFromSystem()
-    {
-        //if (_draggableSystem != null)
-           //_draggableSystem.UnregisterDraggable(this);
     }
 
     public bool IsValidDropPosition(Vector3 position)
