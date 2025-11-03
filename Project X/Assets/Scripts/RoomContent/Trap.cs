@@ -23,6 +23,5 @@ public class Trap : ARoomContentData
     public void Disarm()
     {
         //add logic to disarm the trap
-        IsUsable = false;
     }
 }

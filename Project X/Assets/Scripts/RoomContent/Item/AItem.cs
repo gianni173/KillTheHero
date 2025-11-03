@@ -14,6 +14,5 @@ public class AItem : ARoomContentData
     public virtual void Collect(Entity entity)
     {
         //add logic to use the item
-        IsUsable = false;
     }
 }

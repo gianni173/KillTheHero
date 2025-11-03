@@ -12,10 +12,10 @@ public class Room : SerializedMonoBehaviour, IDraggable
     private RoomData Data { get; set; }
 
     [SerializeField] 
-    private SpriteRenderer _bgRenderer;
+    private RoomContent _roomContent;
     
     [SerializeField] 
-    private SpriteRenderer _contentRenderer;
+    private SpriteRenderer _bgRenderer;
     
     public Action<IDraggable> OnPickupProperty { get; set; }
     public Action<IDraggable, PointerEventData> OnDragProperty { get; set; }
@@ -35,27 +35,13 @@ public class Room : SerializedMonoBehaviour, IDraggable
     public void Init(RoomData roomData)
     {
         Data = roomData;
+        _roomContent.Init(roomData.Contents.IsNullOrEmpty() ? null : roomData.Contents[0]);
         UpdateGraphics();
     }
 
     public void UpdateGraphics()
     {
         _bgRenderer.enabled = Data != null;
-        _contentRenderer.enabled = Data != null;
-        if (Data == null)
-        {
-            return;
-        }
-
-
-        if (Data.Contents.IsNullOrEmpty())
-        {
-            _contentRenderer.enabled = false;
-            return;
-        }
-
-        _contentRenderer.enabled = true;
-        _contentRenderer.sprite = Data.Contents[0].Sprite;
     }
     
     #region IDraggable Implementation
