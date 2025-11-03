@@ -19,6 +19,5 @@ public class Monster : ARoomContentData
         //Jachy Hu 30/10: doesn't work because AroomContentData it's just a plain class
         //Integrate it into RoomContent, maybe with _isUsable OnChange event?
         entity.AddEntityResource(ResourceType.Fame, _fameReward);
-        IsUsable = false;
     }
 }

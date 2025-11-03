@@ -348,7 +348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Items:
-  - {fileID: 11400000, guid: 35f9f11ca3d9b37438cacac88c176555, type: 2}
-  - {fileID: 11400000, guid: 37bd5596d65b12241ae5cb9d2b7b2f34, type: 2}
+  - {fileID: 11400000, guid: 66217ab2e72640443808dfe6db2578c5, type: 2}
+  - {fileID: 11400000, guid: 57d739ce42ffc854b907351b6e94e1f3, type: 2}
   MarketSlotPrefab: {fileID: 5710508783928337141, guid: 40270006c171d22409cb4c431a936597, type: 3}
   Container: {fileID: 4277963836132201062}
