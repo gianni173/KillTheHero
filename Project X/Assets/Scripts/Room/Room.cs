@@ -3,13 +3,20 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Sirenix.Serialization;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 
 public class Room : SerializedMonoBehaviour, IDraggable
 {
     [Header("Room Configuration")]
-    [OdinSerialize]
+    [OdinSerialize, ReadOnly]
     private RoomData Data { get; set; }
 
+    [SerializeField] 
+    private SpriteRenderer _bgRenderer;
+    
+    [SerializeField] 
+    private SpriteRenderer _contentRenderer;
+    
     public Action<IDraggable> OnPickupProperty { get; set; }
     public Action<IDraggable, PointerEventData> OnDragProperty { get; set; }
     public Action<IDraggable> OnReleaseProperty { get; set; }
@@ -25,16 +32,32 @@ public class Room : SerializedMonoBehaviour, IDraggable
         set => _isDraggable = value;
     }
 
-    private void Awake()
+    public void Init(RoomData roomData)
     {
-        Init(Data);
+        Data = roomData;
+        UpdateGraphics();
     }
 
-    private void Init(RoomData roomData)
+    public void UpdateGraphics()
     {
-        Data = roomData ?? new RoomData();
-    }
+        _bgRenderer.enabled = Data != null;
+        _contentRenderer.enabled = Data != null;
+        if (Data == null)
+        {
+            return;
+        }
 
+
+        if (Data.Contents.IsNullOrEmpty())
+        {
+            _contentRenderer.enabled = false;
+            return;
+        }
+
+        _contentRenderer.enabled = true;
+        _contentRenderer.sprite = Data.Contents[0].Sprite;
+    }
+    
     #region IDraggable Implementation
 
     public void OnPointerEnter(PointerEventData eventData)

@@ -1,12 +1,10 @@
-using UnityEngine;
-
 public class AItem : ARoomContentData
 {
     public override void Interact(Entity entity)
     {
-        if (_isUsable == false)
+        if (IsUsable == false)
             return;
-        if (entity.CheckEntityTag(_interactableTagMask))
+        if (entity.CheckEntityTag(InteractableTagMask))
         {
             //add collection logic to add the item to the entity's inventory
             Collect(entity);
@@ -16,6 +14,6 @@ public class AItem : ARoomContentData
     public virtual void Collect(Entity entity)
     {
         //add logic to use the item
-        _isUsable = false;
+        IsUsable = false;
     }
 }

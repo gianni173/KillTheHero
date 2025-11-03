@@ -34,7 +34,7 @@ public class Path
     {
         if (_currentStep <= 0)
         {
-            throw new System.InvalidOperationException("No previous step available.");
+            throw new InvalidOperationException("No previous step available.");
         }
 
         return _path[--_currentStep];
@@ -44,7 +44,7 @@ public class Path
     {
         if (_currentStep == 0 || _currentStep > _path.Length)
         {
-            throw new System.InvalidOperationException("Current step is out of bounds.");
+            throw new InvalidOperationException("Current step is out of bounds.");
         }
 
         return _grid.IndexToGridCoord(_path[_currentStep]);
@@ -54,10 +54,10 @@ public class Path
     {
         if (_currentStep > _path.Length)
         {
-            throw new System.InvalidOperationException("Current step is out of bounds.");
+            throw new InvalidOperationException("Current step is out of bounds.");
         }
 
-        Vector2 gridCoord = _grid.IndexToGridCoord(_path[_currentStep]);
+        var gridCoord = _grid.IndexToGridCoord(_path[_currentStep]);
         return _grid.GridCoordToWorldCoord(gridCoord);
     }
 }
