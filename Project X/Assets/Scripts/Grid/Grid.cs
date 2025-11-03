@@ -1,32 +1,37 @@
 using System;
 using System.Collections.Generic;
+using Sirenix.Serialization;
 using UnityEngine;
 
 [Serializable]
 public class Grid
 {
-    [Header("Grid Dimensions")]
-    [SerializeField] private Vector2Int _maxSize;     // max grid dimension
+    public Action<Grid> OnChanged;
+
+    [Header("Grid Dimensions")] [SerializeField]
+    private Vector2Int _maxSize; // max grid dimension
+
     public Vector2Int MaxSize => _maxSize;
-    [SerializeField] private Vector2Int _currentSize;   // current grid dimension visible to the player
+    [SerializeField] private Vector2Int _currentSize; // current grid dimension visible to the player
     public Vector2Int CurrentSize => _currentSize;
-    
-    [Header("World Settings")]
-    [SerializeField] private Vector3 _origin = Vector3.zero;
+
+    [Header("World Settings")] [SerializeField]
+    private Vector3 _origin = Vector3.zero;
+
     [SerializeField] private Vector2 _worldCellSize = Vector2.one;
     public Vector2 WorldCellSize => _worldCellSize;
 
 
-    [SerializeField] private Dictionary<int, AGridContent> _content = new();
-    [SerializeField] private Dictionary<int, int[]> _connections = new();
+    [OdinSerialize] private Dictionary<int, AGridContent> _content = new();
+    [OdinSerialize] private Dictionary<int, int[]> _connections = new();
     public Dictionary<int, int[]> Connections => _connections;
-    
-    
-    public Vector2 IndexToGridCoord(int index)
+
+
+    public Vector2Int IndexToGridCoord(int index)
     {
-        int X = index % _maxSize.x;
-        int Y = Mathf.FloorToInt(index / _maxSize.x);
-        return new Vector2(X, Y);
+        var X = index % _maxSize.x;
+        var Y = Mathf.FloorToInt(index / _maxSize.x);
+        return new Vector2Int(X, Y);
     }
 
     public int GridCoordToIndex(Vector2Int coord)
@@ -34,7 +39,7 @@ public class Grid
         return coord.y * _maxSize.x + coord.x;
     }
 
-    public Vector3 GridCoordToWorldCoord(Vector2 coord)
+    public Vector3 GridCoordToWorldCoord(Vector2Int coord)
     {
         return new Vector3(
             _origin.x + coord.x * _worldCellSize.x,
@@ -42,10 +47,14 @@ public class Grid
             _origin.z
         );
     }
+
     public AGridContent GetGridContent(int index)
     {
         if (!_content.ContainsKey(index))
+        {
             return null;
+        }
+
         return _content[index];
     }
 
@@ -54,11 +63,13 @@ public class Grid
         //TODO: Salvo la reference per un futuro Destroy() o SetActive(false)
         //AGridContent gridContent = _content[index]; 
         _content.Remove(index);
+        OnChanged?.Invoke(this);
     }
 
     public void AddContent(int index, AGridContent content)
     {
-        _content.Add(index , content); 
+        _content.Add(index, content);
+        OnChanged?.Invoke(this);
     }
 
     public void SetCurrentSize(Vector2Int newSize)
@@ -79,21 +90,22 @@ public class Grid
         // Se arriviamo qui, i valori sono validi
         _currentSize = newSize;
         Debug.Log($"[Grid] Visible grid updated at: {_currentSize}");
+        OnChanged?.Invoke(this);
     }
 
     public Vector2Int GetGridCurrentSize()
     {
         return _currentSize;
     }
-    
+
     public int[] GetAvailableGridIndices()
     {
         var availableIndices = new List<int>();
-        for (int x = 0; x < _currentSize.x; x++)
+        for (var x = 0; x < _currentSize.x; x++)
         {
-            for (int y = 0; y < _currentSize.y; y++)
+            for (var y = 0; y < _currentSize.y; y++)
             {
-                int index = GridCoordToIndex(new Vector2Int(x, y));
+                var index = GridCoordToIndex(new Vector2Int(x, y));
                 availableIndices.Add(index);
             }
         }
@@ -101,7 +113,7 @@ public class Grid
         return availableIndices.ToArray();
     }
 
-    static public Grid DefaultGrid()
+    public static Grid DefaultGrid()
     {
         return new Grid
         {
@@ -111,29 +123,33 @@ public class Grid
             _worldCellSize = Vector2.one
         };
     }
-    
+
     public int[] GetNeighborsIndices(int index)
     {
-        Vector2 coord = IndexToGridCoord(index);
-        List<int> neighbors = new List<int>();
-        for (int x = -1; x <= 1; x++)
+        var coord = IndexToGridCoord(index);
+        var neighbors = new List<int>();
+        for (var x = -1; x <= 1; x++)
         {
-            for (int y = -1; y <= 1; y++)
+            for (var y = -1; y <= 1; y++)
             {
                 if (x == 0 && y == 0)
+                {
                     continue; // Skip the current cell
+                }
 
-                Vector2 neighborCoord = new Vector2(coord.x + x, coord.y + y);
+                var neighborCoord = new Vector2(coord.x + x, coord.y + y);
 
                 // Check if neighbor is within bounds
-                if (neighborCoord.x >= 0 && neighborCoord.x < _maxSize.x &&
-                    neighborCoord.y >= 0 && neighborCoord.y < _maxSize.y)
+                if (!(neighborCoord.x >= 0) || !(neighborCoord.x < _maxSize.x) ||
+                    !(neighborCoord.y >= 0) || !(neighborCoord.y < _maxSize.y))
                 {
-                    int neighborIndex = GridCoordToIndex(new Vector2Int((int)neighborCoord.x, (int)neighborCoord.y));
-                    neighbors.Add(neighborIndex);
+                    continue;
                 }
+                var neighborIndex = GridCoordToIndex(new Vector2Int((int)neighborCoord.x, (int)neighborCoord.y));
+                neighbors.Add(neighborIndex);
             }
         }
+
         return neighbors.ToArray();
     }
 }
