@@ -16,12 +16,10 @@ public class GridManager : SerializedMonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
-
-    private void Start()
-    {
+        
         if (_grid.MaxSize == Vector2Int.zero)
         {
             _grid = Grid.DefaultGrid();
@@ -34,48 +32,56 @@ public class GridManager : SerializedMonoBehaviour
         {
             return;
         }
+
         _grid.SetCurrentSize(newSize);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        if (_grid != null)
+        if (_grid == null)
         {
-            Vector3 cellOffset = new Vector3(_grid.WorldCellSize.x / 2, _grid.WorldCellSize.y / 2, 0);
-            Vector3 cellDimention = new Vector3(_grid.WorldCellSize.x, _grid.WorldCellSize.y, 0);
-            for (int x = 0; x < _grid.MaxSize.x; x++)
+            return;
+        }
+
+        var cellOffset = new Vector3(_grid.WorldCellSize.x / 2, _grid.WorldCellSize.y / 2, 0);
+        var cellDimention = new Vector3(_grid.WorldCellSize.x, _grid.WorldCellSize.y, 0);
+        for (var x = 0; x < _grid.MaxSize.x; x++)
+        {
+            for (var y = 0; y < _grid.MaxSize.y; y++)
             {
-                for (int y = 0; y < _grid.MaxSize.y; y++)
-                {
-                    Vector3 cellPos = _grid.GridCoordToWorldCoord(new Vector2(x, y));
-                    Gizmos.DrawWireCube(cellPos + cellOffset, cellDimention);
-                }
-            }
-            var _gridIndices = _grid.GetAvailableGridIndices();
-            for(int i = 0; i <_gridIndices.Length; i++)
-            {
-                Vector2 cellCoord = Grid.IndexToGridCoord(_gridIndices[i]);
-                Vector3 cellPos = _grid.GridCoordToWorldCoord(cellCoord);
-                Gizmos.color = Color.black;
+                var cellPos = _grid.GridCoordToWorldCoord(new Vector2Int(x, y));
                 Gizmos.DrawWireCube(cellPos + cellOffset, cellDimention);
-                AGridContent content = _grid.GetGridContent(_gridIndices[i]);
-                if(content != null)
-                {
-                    // Gizmos.color = Color.black;
-                    Gizmos.DrawSphere(cellPos + cellOffset, .2f);
-                    if(_grid.Connections.ContainsKey(_gridIndices[i]))
-                    {
-                        int[] connections = _grid.Connections[_gridIndices[i]];
-                        Gizmos.color = Color.blue;
-                        for(int j = 0; j < connections.Length; j++)
-                        {
-                            Vector2 connCellCoord = Grid.IndexToGridCoord(connections[j]);
-                            Vector3 connCellPos = _grid.GridCoordToWorldCoord(connCellCoord);
-                            Gizmos.DrawLine(cellPos + cellOffset, connCellPos + cellOffset);
-                        }
-                    }
-                }
+            }
+        }
+
+        var _gridIndices = _grid.GetAvailableGridIndices();
+        for (var i = 0; i < _gridIndices.Length; i++)
+        {
+            var cellCoord = Grid.IndexToGridCoord(_gridIndices[i]);
+            var cellPos = _grid.GridCoordToWorldCoord(cellCoord);
+            Gizmos.color = Color.black;
+            Gizmos.DrawWireCube(cellPos + cellOffset, cellDimention);
+            var content = _grid.GetGridContent(_gridIndices[i]);
+            if (content == null)
+            {
+                continue;
+            }
+
+            // Gizmos.color = Color.black;
+            Gizmos.DrawSphere(cellPos + cellOffset, .2f);
+            if (!_grid.Connections.ContainsKey(_gridIndices[i]))
+            {
+                continue;
+            }
+
+            var connections = _grid.Connections[_gridIndices[i]];
+            Gizmos.color = Color.blue;
+            for (var j = 0; j < connections.Length; j++)
+            {
+                var connCellCoord = Grid.IndexToGridCoord(connections[j]);
+                var connCellPos = _grid.GridCoordToWorldCoord(connCellCoord);
+                Gizmos.DrawLine(cellPos + cellOffset, connCellPos + cellOffset);
             }
         }
     }

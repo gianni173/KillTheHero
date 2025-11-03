@@ -1,21 +1,18 @@
 ﻿using System;
+using UnityEngine;
 
 [Serializable]
 public abstract class ARoomContentData : IEntityInteractable
 {
-    protected string _name;
-    protected int _usage;
-    protected EntityTag[] _interactableTagMask;
-    protected bool _isUsable = true;
+    public string Name;
+    public Sprite Sprite;
+    public EntityTag[] InteractableTagMask;
+    public int MaxUsages = 999;
+    public int Usages = 999;
+    public bool IsUsable => Usages > 0;
     
     public virtual void Interact(Entity entity)
     {
-        //TODO
-        throw new NotImplementedException();
-    }
-
-    public void Reset()
-    {
-        _isUsable = true;
+        Usages--;
     }
 }
