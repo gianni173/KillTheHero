@@ -29,12 +29,41 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
         Debug.Log($"Total registered draggables: {_draggables.Count}");
     }
     
+    public void RegisterDraggable(IDraggable draggable)
+    {
+        if (draggable == null || _draggables.Contains(draggable)) return;
+        
+        _draggables.Add(draggable);
+        
+        // Sottoscrivi agli eventi
+        draggable.OnPickupProperty += OnDraggablePickup;
+        draggable.OnDragProperty += OnDraggableDrag;
+        draggable.OnReleaseProperty += OnDraggableRelease;
+    }
 
-    }//RegisterDraggable
+    public void UnregisterDraggable(IDraggable draggable)
+    {
+        if (draggable == null || !_draggables.Contains(draggable)) return;
+        
+        _draggables.Remove(draggable);
+        
+        // Rimuovi sottoscrizione agli eventi
+        draggable.OnPickupProperty -= OnDraggablePickup;
+        draggable.OnDragProperty -= OnDraggableDrag;
+        draggable.OnReleaseProperty -= OnDraggableRelease;
+    }
 
-    public void UnregisterDraggable(IDraggable iDraggable)
     {
 
-    }//UnregisterDraggable
 
+}
+    private void OnDestroy()
+    {
+        // Cleanup quando il sistema viene distrutto
+        foreach (IDraggable draggable in _draggables)
+        {
+            UnregisterDraggable(draggable);
+        }
+        _draggables.Clear();
+    }
 }
