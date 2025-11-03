@@ -22,6 +22,15 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
             _camera = FindAnyObjectByType<Camera>();
     }
 
+    private void Update()
+    {
+        //DEBUG: Call RegisterAllDraggables() on runtime with a key, since it registers draggables before they can be built.
+        if (Input.GetKeyDown(KeyCode.V)) 
+        {
+            RegisterAllDraggables();
+        }
+    }
+
     private void RegisterAllDraggables()
     {
         Room[] allRooms = FindObjectsByType<Room>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
