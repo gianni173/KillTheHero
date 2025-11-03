@@ -1,6 +1,7 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public abstract class Purchasable : ScriptableObject
+public abstract class Purchasable : SerializedScriptableObject
 {
     public Sprite Sprite;
     public int MaxPurchases;

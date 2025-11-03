@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "PurchasableRoomContent_", menuName = "Purchasable/RoomContent")]
 public class PurchasableRoomContent : Purchasable
 {
     public string Name;

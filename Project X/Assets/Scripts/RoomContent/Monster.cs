@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class Monster : ARoomContentData
 {
     private int _fameReward;
@@ -7,11 +5,11 @@ public class Monster : ARoomContentData
 
     public override void Interact(Entity entity)
     {
-        if(_isUsable == false)
+        if(IsUsable == false)
             return;
         if(entity.CheckEntityTag(_killTagMask))
             Kill(entity);
-        if (entity.CheckEntityTag(_interactableTagMask))
+        if (entity.CheckEntityTag(InteractableTagMask))
             entity.Die();
     }
 
@@ -21,6 +19,5 @@ public class Monster : ARoomContentData
         //Jachy Hu 30/10: doesn't work because AroomContentData it's just a plain class
         //Integrate it into RoomContent, maybe with _isUsable OnChange event?
         entity.AddEntityResource(ResourceType.Fame, _fameReward);
-        _isUsable = false;
     }
 }

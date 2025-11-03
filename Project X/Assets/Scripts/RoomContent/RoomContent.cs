@@ -2,15 +2,26 @@ using UnityEngine;
 
 public class RoomContent : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] 
+    private SpriteRenderer _contentRenderer;
 
-    // Update is called once per frame
-    void Update()
+    private ARoomContentData Data { get; set; }
+
+    public void Init(ARoomContentData roomContentData)
     {
-        
+        Data = roomContentData;
+        UpdateGraphics();
+    }
+    
+    public void UpdateGraphics()
+    {
+        if (Data == null)
+        {
+            _contentRenderer.enabled = false;
+            return;
+        }
+ 
+        _contentRenderer.enabled = true;
+        _contentRenderer.sprite = Data.Sprite;
     }
 }

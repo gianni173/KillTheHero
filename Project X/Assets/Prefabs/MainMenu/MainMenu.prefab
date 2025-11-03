@@ -44,6 +44,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainMenuCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2033589280474375384, guid: 53f1772ac6293b04ea55800fb58c7e85, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 1048631
+      objectReference: {fileID: 0}
     - target: {fileID: 3059463982436645540, guid: 53f1772ac6293b04ea55800fb58c7e85, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

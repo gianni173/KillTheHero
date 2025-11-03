@@ -3,13 +3,23 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Sirenix.Serialization;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 
 public class Room : SerializedMonoBehaviour, IDraggable
 {
     [Header("Room Configuration")]
-    [OdinSerialize]
+    [OdinSerialize, ReadOnly]
     private RoomData Data { get; set; }
 
+    [SerializeField] 
+    private RoomContent _roomContent;
+    
+    [SerializeField] 
+    private SpriteRenderer _bgRenderer;
+    
+    private Color _originalColor;
+    private Color _newColor = Color.red;
+    
     public Action<IDraggable> OnPickupProperty { get; set; }
     public Action<IDraggable, PointerEventData> OnDragProperty { get; set; }
     public Action<IDraggable> OnReleaseProperty { get; set; }
@@ -24,31 +34,41 @@ public class Room : SerializedMonoBehaviour, IDraggable
         get => _isDraggable;
         set => _isDraggable = value;
     }
-
-    private void Awake()
+    private void Start()
     {
-        Init(Data);
+        _originalColor = _bgRenderer.color;
+    }
+    public void Init(RoomData roomData)
+    {
+        Data = roomData;
+        _roomContent.Init(roomData.Contents.IsNullOrEmpty() ? null : roomData.Contents[0]);
+        UpdateGraphics();
     }
 
-    private void Init(RoomData roomData)
+    public void UpdateGraphics()
     {
-        Data = roomData ?? new RoomData();
+        _bgRenderer.enabled = Data != null;
     }
-
+    
     #region IDraggable Implementation
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         // TODO:maybe when mouse enters the tile becomes highlighted?
+        Debug.Log("[ROOM] Mouse entered.");
+        _bgRenderer.color = _newColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         // TODO:revert onPointerEnter highlight
+        Debug.Log("[ROOM] Mouse exited.");
+        _bgRenderer.color = _originalColor;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        Debug.Log("[ROOM] Mouse picked up.");
         if (!IsDraggable) return;
         OnPickupProperty?.Invoke(this);
     }

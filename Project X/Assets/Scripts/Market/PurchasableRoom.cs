@@ -1,7 +1,6 @@
-using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PurchasableRoom_", menuName = "Scriptable Objects/Purchasable/Room")]
+[CreateAssetMenu(fileName = "PurchasableRoom_", menuName = "Purchasable/Room")]
 public class PurchasableRoom : Purchasable
 {
     //checks if there are any free slots in the grid
