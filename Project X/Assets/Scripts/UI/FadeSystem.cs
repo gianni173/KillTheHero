@@ -1,21 +1,28 @@
+using System.Collections;
 using UnityEngine;
 
 public class FadeSystem : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private Coroutine _fadeToBlack;
+    [SerializeField]
+    private PhaseManager _phaseManager;
 
     private void OnEnable()
     {
-        
+        _phaseManager.OnPhaseChanged += EnterFade;
     }
+
+    private void EnterFade() 
+    {
+        if (_fadeToBlack == null) 
+        {
+            _fadeToBlack = StartCoroutine(FadeToBlack());
+        }
+    }
+
+    private IEnumerator FadeToBlack() 
+    {
+        yield return null;
+    }
+
 }
