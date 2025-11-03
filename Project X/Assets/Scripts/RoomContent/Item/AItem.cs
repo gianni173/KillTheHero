@@ -1,4 +1,4 @@
-public class AItem : ARoomContentData
+public abstract class AItem : ARoomContentData
 {
     public override void Interact(Entity entity)
     {
