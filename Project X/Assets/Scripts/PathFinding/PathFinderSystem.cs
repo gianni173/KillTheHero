@@ -1,12 +1,34 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting.Dependencies.NCalc;
 public class PathFinderSystem : MonoBehaviour
 {
 
-    [SerializeField] private int _currentIndex = 0;
-    public int CurrentIndex => _currentIndex;
+    [SerializeField, ReadOnly] private int _currentIndex = 0;
+    public int CurrentIndex
+    {
+        get
+        {
+            return _currentIndex;
+        }
+        set
+        {
+            _currentIndex = value;
+        }
+    }
 
+    [SerializeField]
+    private int _targetIndex = 20;
+    public int TargetIndex
+    {
+        get
+        {
+            return _targetIndex;
+        }
+        set
+        {
+            _targetIndex = value;
+        }
+    }
     [SerializeField] private Path _currentPath;
     public Path CurrentPath => _currentPath;
 
@@ -26,7 +48,7 @@ public class PathFinderSystem : MonoBehaviour
             return;
         }
 
-        ResetPath();
+        UpdatePath();
         UpdatePositionToCurrentStep();
     }
 
@@ -36,7 +58,7 @@ public class PathFinderSystem : MonoBehaviour
 
     }
 
-    public void FindPath(int startIndex, int targetIndex)
+    public void FindPath()
     {
         if (_grid == null)
         {
@@ -44,7 +66,7 @@ public class PathFinderSystem : MonoBehaviour
             return;
         }
 
-        _currentPath = PathFinding.AStarPathFinding(_grid, startIndex, targetIndex);
+        _currentPath = PathFinding.AStarPathFinding(_grid, _currentIndex, _targetIndex);
         if (_currentPath != null)
         {
             Debug.Log("[PathFinderSystem] Path successfully found.");
@@ -56,11 +78,10 @@ public class PathFinderSystem : MonoBehaviour
     }
 
     [Button]
-    public void ResetPath()
+    public void UpdatePath()
     {
         _currentPath = null;
-        _currentIndex = 0;
-        FindPath(_currentIndex, 20);
+        FindPath();
         UpdatePositionToCurrentStep();
     }
 
