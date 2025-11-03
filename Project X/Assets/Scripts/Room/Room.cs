@@ -68,8 +68,8 @@ public class Room : SerializedMonoBehaviour, IDraggable
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("[ROOM] Mouse picked up.");
         if (!IsDraggable) return;
+        Debug.Log("[ROOM] Mouse clicked.");
         OnPickupProperty?.Invoke(this);
     }
 
@@ -83,6 +83,7 @@ public class Room : SerializedMonoBehaviour, IDraggable
     public void OnEndDrag(PointerEventData eventData)
     {
         if (!IsDraggable) return;
+        Debug.Log("[ROOM] Mouse released.");
         OnReleaseProperty?.Invoke(this);
     }
     #endregion
