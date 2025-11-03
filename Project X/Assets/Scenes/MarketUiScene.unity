@@ -450,6 +450,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1703406183}
     m_Modifications:
+    - target: {fileID: 184434683072135112, guid: 908eef5dddfad924ead50091f5c641b3, type: 3}
+      propertyPath: m_Spacing.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 184434683072135112, guid: 908eef5dddfad924ead50091f5c641b3, type: 3}
+      propertyPath: m_Spacing.y
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 874849201303006085, guid: 908eef5dddfad924ead50091f5c641b3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -530,6 +538,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1707686298880624033, guid: 908eef5dddfad924ead50091f5c641b3, type: 3}
+      propertyPath: 'Items.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 57d739ce42ffc854b907351b6e94e1f3, type: 2}
+    - target: {fileID: 1707686298880624033, guid: 908eef5dddfad924ead50091f5c641b3, type: 3}
+      propertyPath: 'Items.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 5ffd0b72786b5004f807a2730db4ec29, type: 2}
     - target: {fileID: 5925841243018841550, guid: 908eef5dddfad924ead50091f5c641b3, type: 3}
       propertyPath: m_Name
       value: Market
