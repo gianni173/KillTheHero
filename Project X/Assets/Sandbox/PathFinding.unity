@@ -163,7 +163,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a8a93954f346da43a92b273518d1c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentIndex: 0
+  _currentIndex: 0
+  _targetIndex: 2
+  _currentPath:
+    _path: 
   _grid:
     _maxSize: {x: 0, y: 0}
     _currentSize: {x: 0, y: 0}
@@ -311,6 +314,12 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: _roomSize
+      Entry: 3
+      Data: 0
+    - Name: _contents
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -337,6 +346,12 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 8
+      Data: 
+    - Name: _roomSize
+      Entry: 3
+      Data: 0
+    - Name: _contents
+      Entry: 6
       Data: 
     - Name: 
       Entry: 8
@@ -365,6 +380,12 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: _roomSize
+      Entry: 3
+      Data: 0
+    - Name: _contents
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -391,6 +412,12 @@ MonoBehaviour:
       Data: 0
     - Name: 
       Entry: 8
+      Data: 
+    - Name: _roomSize
+      Entry: 3
+      Data: 0
+    - Name: _contents
+      Entry: 6
       Data: 
     - Name: 
       Entry: 8
@@ -419,6 +446,12 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: _roomSize
+      Entry: 3
+      Data: 0
+    - Name: _contents
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -446,6 +479,12 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: _roomSize
+      Entry: 3
+      Data: 0
+    - Name: _contents
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -467,7 +506,7 @@ MonoBehaviour:
       Data: 2
     - Name: 
       Entry: 12
-      Data: 5
+      Data: 6
     - Name: 
       Entry: 7
       Data: 
@@ -597,6 +636,30 @@ MonoBehaviour:
     - Name: 
       Entry: 3
       Data: 20
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 20
+    - Name: $v
+      Entry: 7
+      Data: 15|System.Int32[], mscorlib
+    - Name: 
+      Entry: 14
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 11
     - Name: 
       Entry: 13
       Data: 
