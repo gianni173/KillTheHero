@@ -6,7 +6,7 @@ public interface IDraggable : IPointerEnterHandler, IPointerExitHandler, IBeginD
 {
     public Action<Vector3>  OnPickupProperty { get; set; }
     public Action<Vector3> OnReleaseProperty { get; set; }
-    public bool IsDragging { get; }
+    public bool IsDragging { get; set; }
     public bool IsDraggable { get; set; }
     public bool IsValidDropPosition(Vector3 position);
 }
