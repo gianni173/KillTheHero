@@ -5,6 +5,7 @@ using Sirenix.Serialization;
 using Sirenix.OdinInspector;
 public class RoomDraggableSystem : SerializedMonoBehaviour
 {
+    public static RoomDraggableSystem Instance;
     [OdinSerialize]
     private List<IDraggable> _draggables = new();
     private IDraggable _currentDraggedItem;
@@ -12,7 +13,16 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
     private Vector3 _originalPosition;
     private void Awake()
     {
-        RegisterAllDraggables();
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        //TODO: move it to Room script
+        //RegisterAllDraggables();
     }
 
     private void Start()
@@ -24,33 +34,20 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
 
     private void Update()
     {
-        //DEBUG: Call RegisterAllDraggables() on runtime with a key, since it registers draggables before they can be built.
-        if (Input.GetKeyDown(KeyCode.V)) 
-        {
-            RegisterAllDraggables();
-        }
+        // //DEBUG: Call RegisterAllDraggables() on runtime with a key, since it registers draggables before they can be built.
+        // if (Input.GetKeyDown(KeyCode.V)) 
+        // {
+        //     RegisterAllDraggables();
+        // }
     }
 
-    private void RegisterAllDraggables()
-    {
-        Room[] allRooms = FindObjectsByType<Room>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-    
-        foreach (Room room in allRooms)
-        {
-            RegisterDraggable(room);
-            Debug.Log($"Registered Room: {room.name}");
-        }
-    
-        Debug.Log($"Total registered draggables: {_draggables.Count}");
-    }
-    
     public void RegisterDraggable(IDraggable draggable)
     {
         if (draggable == null || _draggables.Contains(draggable)) return;
         
         _draggables.Add(draggable);
         
-        // Sottoscrivi agli eventi
+        // Event subscription
         draggable.OnPickupProperty += OnDraggablePickup;
         draggable.OnDragProperty += OnDraggableDrag;
         draggable.OnReleaseProperty += OnDraggableRelease;
@@ -67,7 +64,7 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
         draggable.OnDragProperty -= OnDraggableDrag;
         draggable.OnReleaseProperty -= OnDraggableRelease;
     }
-
+    #region event handlers
     private void OnDraggablePickup(IDraggable invokedDraggable)
     {
         _currentDraggedItem = invokedDraggable;
@@ -120,6 +117,7 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
         _currentDraggedItem.IsDragging = false;
         _currentDraggedItem = null;
     }
+    #endregion
     private Vector3 GetMouseWorldPosition()
     {
         if (_camera == null)
