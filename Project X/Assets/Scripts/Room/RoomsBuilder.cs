@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -10,6 +11,10 @@ public class RoomsBuilder : MonoBehaviour
     [SerializeField] 
     private Transform _roomsContainer;
 
+    private List<Room> _rooms = new();
+    private List<RoomContent> _roomContents = new();
+    private List<Room> Rooms => _rooms;
+    private List<RoomContent> RoomContents => _roomContents;
     private GridManager _gridManager;
     private GridManager GridManager
     {
@@ -65,7 +70,10 @@ public class RoomsBuilder : MonoBehaviour
                     Debug.LogError($"The prefab connected to {nameof(RoomsBuilder)} has no {nameof(Room)} component");
                     continue;
                 }
+                RoomDraggableSystem.Instance.RegisterDraggable(room);
+                _rooms.Add(room);
                 room.Init(roomData);
+                //TODO: add to _roomContents
             }
         }
     }
