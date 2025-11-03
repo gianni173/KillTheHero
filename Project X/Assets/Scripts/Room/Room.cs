@@ -40,15 +40,18 @@ public class Room : SerializedMonoBehaviour, IDraggable
     public void OnPointerEnter(PointerEventData eventData)
     {
         // TODO:maybe when mouse enters the tile becomes highlighted?
+        Debug.Log("[ROOM] Mouse entered.");
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         // TODO:revert onPointerEnter highlight
+        Debug.Log("[ROOM] Mouse exited.");
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        Debug.Log("[ROOM] Mouse picked up.");
         if (!IsDraggable) return;
         OnPickupProperty?.Invoke(this);
     }
