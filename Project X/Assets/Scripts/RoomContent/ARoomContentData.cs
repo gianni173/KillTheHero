@@ -1,12 +1,14 @@
 ﻿using System;
+using UnityEngine;
 
 [Serializable]
 public abstract class ARoomContentData : IEntityInteractable
 {
-    protected string _name;
-    protected int _usage;
-    protected EntityTag[] _interactableTagMask;
-    protected bool _isUsable = true;
+    public Sprite Sprite;
+    protected string Name;
+    protected int Usage;
+    protected EntityTag[] InteractableTagMask;
+    protected bool IsUsable = true;
     
     public virtual void Interact(Entity entity)
     {
@@ -16,6 +18,6 @@ public abstract class ARoomContentData : IEntityInteractable
 
     public void Reset()
     {
-        _isUsable = true;
+        IsUsable = true;
     }
 }
