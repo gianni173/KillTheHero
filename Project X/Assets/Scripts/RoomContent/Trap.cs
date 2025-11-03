@@ -1,3 +1,6 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "RoomContent_Trap", menuName = "RoomContent/Trap")]
 public class Trap : ARoomContentData
 {
     private EntityTag[] _disarmTagMask;

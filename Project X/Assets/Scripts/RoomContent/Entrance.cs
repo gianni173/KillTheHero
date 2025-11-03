@@ -1,3 +1,6 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "RoomContent_Entrance", menuName = "RoomContent/Entrance")]
 public class Entrance : ARoomContentData
 {
     public override void Interact(Entity entity)
