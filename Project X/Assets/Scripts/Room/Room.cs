@@ -10,9 +10,10 @@ public class Room : SerializedMonoBehaviour, IDraggable
     [OdinSerialize]
     private RoomData Data { get; set; }
 
-    public Action<Vector3> OnPickupProperty { get; set; }
-    public Action<Vector3, PointerEventData> OnDragProperty { get; set; }
-    public Action<Vector3> OnReleaseProperty { get; set; }
+    public Action<IDraggable> OnPickupProperty { get; set; }
+    public Action<IDraggable, PointerEventData> OnDragProperty { get; set; }
+    public Action<IDraggable> OnReleaseProperty { get; set; }
+
 
     public bool IsDragging { get; set; }
     
@@ -38,32 +39,31 @@ public class Room : SerializedMonoBehaviour, IDraggable
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // maybe when mouse enters the tile becomes highlighted?
+        // TODO:maybe when mouse enters the tile becomes highlighted?
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // revert onPointerEnter highlight
+        // TODO:revert onPointerEnter highlight
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!IsDraggable) return;
-        OnPickupProperty?.Invoke(transform.position);
+        OnPickupProperty?.Invoke(this);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         if (!IsDraggable || !IsDragging) return;
-        OnDragProperty?.Invoke(transform.position, eventData);
+        OnDragProperty?.Invoke(this, eventData);
 
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         if (!IsDraggable) return;
-        OnReleaseProperty?.Invoke(transform.position);
-
+        OnReleaseProperty?.Invoke(this);
     }
     #endregion
 }

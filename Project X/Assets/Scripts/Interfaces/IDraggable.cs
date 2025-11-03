@@ -4,10 +4,11 @@ using UnityEngine.EventSystems;
 
 public interface IDraggable : IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public Action<Vector3>  OnPickupProperty { get; set; }
-    public Action<Vector3, PointerEventData> OnDragProperty { get; set; }
+    public Action<IDraggable> OnPickupProperty { get; set; }
+    public Action<IDraggable, PointerEventData> OnDragProperty { get; set; }
+    public Action<IDraggable> OnReleaseProperty { get; set; }
 
-    public Action<Vector3> OnReleaseProperty { get; set; }
+
     
     public bool IsDragging { get; set; }
     public bool IsDraggable { get; set; }
