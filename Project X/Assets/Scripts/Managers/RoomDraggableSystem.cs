@@ -66,7 +66,7 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
         _currentDraggedItem.IsDragging = true;
         
         // Ottieni il Transform dell'oggetto
-        Transform draggedTransform = getTransformFromDraggedRoom(_currentDraggedItem);
+        Transform draggedTransform = GetTransformFromDraggedRoom(_currentDraggedItem);
         if (draggedTransform == null) return;
         
         _originalPosition = draggedTransform.position;
@@ -79,7 +79,7 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
     {
         if (_currentDraggedItem == null || !_currentDraggedItem.IsDragging) return;
 
-        Transform draggedTransform = getTransformFromDraggedRoom(_currentDraggedItem);
+        Transform draggedTransform = GetTransformFromDraggedRoom(_currentDraggedItem);
         if (draggedTransform == null) return;
         
         Vector3 mouseWorldPos = _camera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, 10f));
@@ -92,7 +92,7 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
     private void OnDraggableRelease(IDraggable invokedDraggable)
     {
         if (_currentDraggedItem == null) return;
-        Transform draggedTransform = getTransformFromDraggedRoom(_currentDraggedItem);
+        Transform draggedTransform = GetTransformFromDraggedRoom(_currentDraggedItem);
         if (draggedTransform == null) return;
         
         // TODO: GridManager will decide where to drop this Room
@@ -122,12 +122,12 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
         Vector3 worldPos = _camera.ScreenToWorldPoint(mouseScreenPos);
         return worldPos;
     }
-    private Transform getTransformFromDraggedRoom(IDraggable draggable)
+    private Transform GetTransformFromDraggedRoom(IDraggable draggable)
     {
         return ((MonoBehaviour)draggable).transform;
     }
 
-    private bool checkGridPosition(Vector3 position)
+    private bool CheckGridPosition(Vector3 position)
     {
         // TODO: GridManager interaction
         return true;
