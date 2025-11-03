@@ -17,6 +17,9 @@ public class Room : SerializedMonoBehaviour, IDraggable
     [SerializeField] 
     private SpriteRenderer _bgRenderer;
     
+    private Color _originalColor;
+    private Color _newColor = Color.red;
+    
     public Action<IDraggable> OnPickupProperty { get; set; }
     public Action<IDraggable, PointerEventData> OnDragProperty { get; set; }
     public Action<IDraggable> OnReleaseProperty { get; set; }
@@ -31,7 +34,10 @@ public class Room : SerializedMonoBehaviour, IDraggable
         get => _isDraggable;
         set => _isDraggable = value;
     }
-
+    private void Start()
+    {
+        _originalColor = _bgRenderer.color;
+    }
     public void Init(RoomData roomData)
     {
         Data = roomData;
@@ -50,12 +56,14 @@ public class Room : SerializedMonoBehaviour, IDraggable
     {
         // TODO:maybe when mouse enters the tile becomes highlighted?
         Debug.Log("[ROOM] Mouse entered.");
+        _bgRenderer.color = _newColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         // TODO:revert onPointerEnter highlight
         Debug.Log("[ROOM] Mouse exited.");
+        _bgRenderer.color = _originalColor;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
