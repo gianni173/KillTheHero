@@ -4,11 +4,12 @@ using System;
 
 public class PhaseManager : Singleton<PhaseManager>
 {
+    public Action<PhaseType> OnPhaseChanged;
 
-    [SerializeField]
+    [SerializeField] 
     private PhaseType _currentPhase;
     public PhaseType CurrentPhase => _currentPhase;
-    public Action<PhaseType> OnPhaseChanged;
+
     [Button]
     public void SetPhase(PhaseType newPhase)
     {
