@@ -12,11 +12,13 @@ public class PlayerStats
 
     private Resource[] _resources;
     private List<Purchasable> _purchasedItems = new();
+    private Inventory _playerInventory;
     
     //public Purchasable[] PurchasableItems;
     private PlayerStats()
     {
         InitializeResources();
+        InitializeInventory();
     }
 
     private void InitializeResources()
@@ -27,6 +29,11 @@ public class PlayerStats
         
         // when is ready do the same logic for PurchasableItems
         Debug.Log($"Resources initialized: {_resources[0].Name}({_resources[0].Quantity}), {_resources[1].Name}({_resources[1].Quantity})");
+    }
+
+    private void InitializeInventory()
+    {
+        _playerInventory = new Inventory();
     }
 
     public void AddResource(ResourceType type, int quantity)
@@ -54,8 +61,11 @@ public class PlayerStats
         }
         return 0;
     }
-    
-    
+
+    public Inventory GetInventory()
+    {
+        return _playerInventory;
+    }
 
     public void AddPurchasableItem(Purchasable purchasableItem)
     {

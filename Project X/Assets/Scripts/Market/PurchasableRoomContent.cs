@@ -2,10 +2,13 @@ using UnityEngine;
 
 public class PurchasableRoomContent : Purchasable
 {
+    public string Name;
+    public ARoomContentData RoomContentType;
+    
     public override void Purchase()
     {
         base.Purchase();
         
-        //TODO: add to the inventory once it's created.
+        PlayerStats.Instance.GetInventory().AddItemToInventory(RoomContentType);
     }
 }
