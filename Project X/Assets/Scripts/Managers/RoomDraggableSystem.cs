@@ -15,7 +15,13 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
         RegisterAllDraggables();
     }
 
+    private void Start()
     {
+        _camera = Camera.main;
+        if (_camera == null)
+            _camera = FindAnyObjectByType<Camera>();
+    }
+
     private void RegisterAllDraggables()
     {
         Room[] allRooms = FindObjectsByType<Room>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
@@ -53,10 +59,79 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
         draggable.OnReleaseProperty -= OnDraggableRelease;
     }
 
+    private void OnDraggablePickup(IDraggable invokedDraggable)
     {
+        _currentDraggedItem = invokedDraggable;
+        if (_currentDraggedItem == null) return;
+        _currentDraggedItem.IsDragging = true;
+        
+        // Ottieni il Transform dell'oggetto
+        Transform draggedTransform = getTransformFromDraggedRoom(_currentDraggedItem);
+        if (draggedTransform == null) return;
+        
+        _originalPosition = draggedTransform.position;
+        
+        Vector3 mouseWorldPos = GetMouseWorldPosition();
+        draggedTransform.position = new Vector3(mouseWorldPos.x, mouseWorldPos.y, _originalPosition.z);
+    }
 
+    private void OnDraggableDrag(IDraggable invokedDraggable, PointerEventData eventData)
+    {
+        if (_currentDraggedItem == null || !_currentDraggedItem.IsDragging) return;
 
-}
+        Transform draggedTransform = getTransformFromDraggedRoom(_currentDraggedItem);
+        if (draggedTransform == null) return;
+        
+        Vector3 mouseWorldPos = _camera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, 10f));
+        mouseWorldPos.z = _originalPosition.z;
+        
+        Vector3 newPosition = new Vector3(mouseWorldPos.x, mouseWorldPos.y, _originalPosition.z);
+        draggedTransform.position = newPosition;
+    }
+
+    private void OnDraggableRelease(IDraggable invokedDraggable)
+    {
+        if (_currentDraggedItem == null) return;
+        Transform draggedTransform = getTransformFromDraggedRoom(_currentDraggedItem);
+        if (draggedTransform == null) return;
+        
+        // TODO: GridManager will decide where to drop this Room
+        // for now will just leave the current position
+        if (true)
+        {
+            Vector3 dropPosition = draggedTransform.position;
+            draggedTransform.position = dropPosition;
+        }
+        else
+        {
+            // reset position
+            draggedTransform.position = _originalPosition;
+        }
+        // reset values
+        _currentDraggedItem.IsDragging = false;
+        _currentDraggedItem = null;
+    }
+    private Vector3 GetMouseWorldPosition()
+    {
+        if (_camera == null)
+        {
+            Debug.LogError("Camera Missing - cannot get mouse world position");
+            return Vector3.zero;
+        }
+        Vector3 mouseScreenPos = Input.mousePosition;
+        Vector3 worldPos = _camera.ScreenToWorldPoint(mouseScreenPos);
+        return worldPos;
+    }
+    private Transform getTransformFromDraggedRoom(IDraggable draggable)
+    {
+        return ((MonoBehaviour)draggable).transform;
+    }
+
+    private bool checkGridPosition(Vector3 position)
+    {
+        // TODO: GridManager interaction
+        return true;
+    }
     private void OnDestroy()
     {
         // Cleanup quando il sistema viene distrutto
