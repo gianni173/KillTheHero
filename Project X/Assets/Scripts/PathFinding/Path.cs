@@ -17,7 +17,7 @@ public class Path
     }
     public bool HasNextStep()
     {
-        return _currentStep < _path.Length;
+        return _currentStep + 1 < _path.Length;
     }
 
     public int GetNextStep()
