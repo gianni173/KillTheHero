@@ -7,7 +7,6 @@ using UnityEngine.Serialization;
 public class InventoryViewer : MonoBehaviour
 {
     [SerializeField] private GameObject _RoomContentPrefab;
-    [FormerlySerializedAs("_purchasables")] [SerializeField] 
     private Inventory _inventory;
     
     public int  MaxColumn = 5;
