@@ -7,6 +7,9 @@ public class RoomsBuilder : MonoBehaviour
     [SerializeField, AssetsOnly] 
     private GameObject _roomsPrefab;
 
+    [SerializeField, AssetsOnly]
+    private GameObject _roomSlot;
+
     [SerializeField] 
     private Transform _roomsContainer;
 
@@ -50,6 +53,10 @@ public class RoomsBuilder : MonoBehaviour
             {
                 var coord = new Vector2Int(x, y);
                 var index = grid.GridCoordToIndex(coord);
+                
+                Vector3 pos = grid.GridCoordToWorldCoord(new Vector2Int(x, y));
+                var roomSlot = Instantiate(_roomSlot, pos, Quaternion.identity, _roomsContainer);
+                
                 var content = grid.GetGridContent(index);
                 if (content is not RoomData roomData)
                 {
