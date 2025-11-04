@@ -50,7 +50,6 @@ public class RoomsBuilder : MonoBehaviour
             {
                 var coord = new Vector2Int(x, y);
                 var index = grid.GridCoordToIndex(coord);
-                
                 var content = grid.GetGridContent(index);
                 if (content is not RoomData roomData)
                 {
