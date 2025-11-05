@@ -212,6 +212,7 @@ public class Grid
     // toggle connection between two grid indices
     public void ToggleConnection(int fromIndex, int toIndex)
     {
+        if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
         // get current neighbors
         var neighbors = new List<int>();
         if (_connections.ContainsKey(fromIndex))
@@ -242,6 +243,7 @@ public class Grid
 
     public void AddConnection(int fromIndex, int toIndex)
     {
+        if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
         // get current neighbors
         var neighbors = new List<int>();
         if (_connections.ContainsKey(fromIndex))
@@ -270,6 +272,7 @@ public class Grid
 
     public void RemoveConnection(int fromIndex, int toIndex)
     {
+        if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
         // get current neighbors
         var neighbors = new List<int>();
         if (_connections.ContainsKey(fromIndex))
@@ -312,9 +315,18 @@ public class Grid
     {
         var neighbors = GetNeighborsIndices(index);
         _connections[index] = neighbors;
-        foreach(var neighborIndex in neighbors)
+        foreach (var neighborIndex in neighbors)
         {
             AddConnection(neighborIndex, index);
         }
+    }
+    
+    private bool CheckConnectionIsValid(int fromIndex, int toIndex)
+    {
+        if (fromIndex == toIndex) return false;
+        if (!_content.ContainsKey(fromIndex) || !_content.ContainsKey(toIndex)) return false;
+        if (GetGridContent(fromIndex) == null || GetGridContent(toIndex) == null) return false;
+
+        return true;
     }
 }
