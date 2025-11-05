@@ -297,4 +297,20 @@ public class Grid
         _connections[fromIndex] = neighbors.ToArray();
         _connections[toIndex] = reverseNeighbors.ToArray();
     }
+
+    // connect all available neighboring grid indices
+    public void ConnectAllNeighbors()
+    {
+        var availableIndices = GetAvailableGridIndices();
+        foreach (var index in availableIndices)
+        {
+            ConnectNeighbors(index);
+        }
+    }
+
+    public void ConnectNeighbors(int index)
+    {
+        var neighbors = GetNeighborsIndices(index);
+        _connections[index] = neighbors;
+    }
 }
