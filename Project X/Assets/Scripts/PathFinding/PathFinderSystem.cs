@@ -48,7 +48,6 @@ public class PathFinderSystem : MonoBehaviour
             return;
         }
 
-        UpdatePath();
         UpdatePositionToCurrentStep();
     }
 
