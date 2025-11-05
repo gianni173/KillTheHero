@@ -81,6 +81,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4713e6bf6375f074ab8556690b10b2d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _room: {fileID: 4743201404605790969}
+  _connectedVisual: {fileID: 5265448412189847242}
 --- !u!61 &5379043751097581655
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -172,6 +174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4713e6bf6375f074ab8556690b10b2d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _room: {fileID: 4743201404605790969}
+  _connectedVisual: {fileID: 5435499377911928836}
 --- !u!61 &5283205259062737552
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -263,6 +267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4713e6bf6375f074ab8556690b10b2d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _room: {fileID: 4743201404605790969}
+  _connectedVisual: {fileID: 5963156870279474014}
 --- !u!61 &9091537863622045806
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -384,7 +390,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c59fb161949619142a5a0b7ff9b09045, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -471,7 +477,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: fffdcbce53073fb47b893bce4005398f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -558,7 +564,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: e1872a647a514644c944e918e4a51a72, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -619,14 +625,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
-    SerializedBytes: 2d01040000004400610074006100
+    SerializedFormat: 2
+    SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: Data
+      Entry: 6
+      Data: 
   _roomContent: {fileID: 1977337008037840556}
   _bgRenderer: {fileID: 4050045376011496821}
   _isDraggable: 1
@@ -751,7 +760,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 9a946efb8ce59cf48a6f37f779ba877d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -930,6 +939,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4713e6bf6375f074ab8556690b10b2d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _room: {fileID: 4743201404605790969}
+  _connectedVisual: {fileID: 6298029607701968501}
 --- !u!61 &5987664923267053839
 BoxCollider2D:
   m_ObjectHideFlags: 0
