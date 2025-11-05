@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    static public Action<Entity> OnDeath;
     public List <EntityTag> TagMask = new();
     private Resource[] _resourcesGained;
     private bool _hasReachedMimik = false;
@@ -63,5 +65,6 @@ public class Entity : MonoBehaviour
             PlayerStats.Instance.AddResource(ResourceType.Fame, FameGained);
         }
         gameObject.SetActive(false);
+        OnDeath?.Invoke(this);
     }
 }
