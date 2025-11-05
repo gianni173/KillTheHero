@@ -27,7 +27,12 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
     // Update is called once per frame
     void Update()
     {
-        // NextStep();
+        // GET FIRST HERO
+        // SET ACTIVE TRUE
+        // PathFinderSystem.NextStep() : index in the grid
+        // GRID GET CONTENT;
+        // Interact with entity in the room
+        // ON DEATH advance list to next hero
     }
 
     public void StartExploration(PhaseType newPhase)
