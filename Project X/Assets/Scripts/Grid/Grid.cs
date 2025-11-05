@@ -311,7 +311,7 @@ public class Grid
         OnChanged?.Invoke(this);
     }
 
-    private void ConnectNeighbors(int index)
+    public void ConnectNeighbors(int index)
     {
         var neighbors = GetNeighborsIndices(index);
         _connections[index] = neighbors;
