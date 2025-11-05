@@ -23,6 +23,7 @@ public class ConnectionToggle : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if(eventData.button != PointerEventData.InputButton.Right) return;
         var Grid = GridManager.Instance.Grid;
         Grid.ToggleConnection(_roomIndex, _connectionIndex);
     }
