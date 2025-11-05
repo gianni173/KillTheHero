@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -98,6 +99,14 @@ public class RoomsBuilder : MonoBehaviour
             {
                 Destroy(child.gameObject);
             }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var room in _rooms)
+        {
+            RoomDraggableSystem.Instance.UnregisterDraggable(room);
         }
     }
 }

@@ -162,13 +162,4 @@ public class RoomDraggableSystem : SerializedMonoBehaviour
     {
         return ((MonoBehaviour)draggable).transform;
     }
-    private void OnDestroy()
-    {
-        // Cleanup quando il sistema viene distrutto
-        foreach (IDraggable draggable in _draggables)
-        {
-            UnregisterDraggable(draggable);
-        }
-        _draggables.Clear();
-    }
 }
