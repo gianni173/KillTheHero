@@ -237,6 +237,7 @@ public class Grid
         }
         _connections[fromIndex] = neighbors.ToArray();
         _connections[toIndex] = reverseNeighbors.ToArray();
+        OnChanged?.Invoke(this);
     }
 
     public void AddConnection(int fromIndex, int toIndex)
@@ -264,6 +265,7 @@ public class Grid
         }
         _connections[fromIndex] = neighbors.ToArray();
         _connections[toIndex] = reverseNeighbors.ToArray();
+        OnChanged?.Invoke(this);
     }
 
     public void RemoveConnection(int fromIndex, int toIndex)
@@ -291,6 +293,7 @@ public class Grid
         }
         _connections[fromIndex] = neighbors.ToArray();
         _connections[toIndex] = reverseNeighbors.ToArray();
+        OnChanged?.Invoke(this);
     }
 
     // connect all available neighboring grid indices
@@ -301,9 +304,11 @@ public class Grid
         {
             ConnectNeighbors(index);
         }
+
+        OnChanged?.Invoke(this);
     }
 
-    public void ConnectNeighbors(int index)
+    private void ConnectNeighbors(int index)
     {
         var neighbors = GetNeighborsIndices(index);
         _connections[index] = neighbors;
