@@ -321,7 +321,7 @@ public class Grid
         }
     }
     
-    private bool CheckConnectionIsValid(int fromIndex, int toIndex)
+    public bool CheckConnectionIsValid(int fromIndex, int toIndex)
     {
         if (fromIndex == toIndex){
             Debug.LogWarning("Cannot create connection to the same index");
