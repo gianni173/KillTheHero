@@ -212,7 +212,7 @@ public class Grid
     // toggle connection between two grid indices
     public void ToggleConnection(int fromIndex, int toIndex)
     {
-        if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
+        // if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
         // get current neighbors
         var neighbors = new List<int>();
         if (_connections.ContainsKey(fromIndex))
@@ -239,11 +239,12 @@ public class Grid
         _connections[fromIndex] = neighbors.ToArray();
         _connections[toIndex] = reverseNeighbors.ToArray();
         OnChanged?.Invoke(this);
+        Debug.Log($"Toggled connection between {fromIndex} and {toIndex}");
     }
 
     public void AddConnection(int fromIndex, int toIndex)
     {
-        if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
+        // if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
         // get current neighbors
         var neighbors = new List<int>();
         if (_connections.ContainsKey(fromIndex))
@@ -272,7 +273,7 @@ public class Grid
 
     public void RemoveConnection(int fromIndex, int toIndex)
     {
-        if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
+        // if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
         // get current neighbors
         var neighbors = new List<int>();
         if (_connections.ContainsKey(fromIndex))
@@ -324,15 +325,12 @@ public class Grid
     public bool CheckConnectionIsValid(int fromIndex, int toIndex)
     {
         if (fromIndex == toIndex){
-            Debug.LogWarning("Cannot create connection to the same index");
             return false;
         }
         if (!_content.ContainsKey(fromIndex) || !_content.ContainsKey(toIndex)) {
-            Debug.LogWarning("Out of bounds indices for connection");
             return false;
         }
         if (GetGridContent(fromIndex) == null || GetGridContent(toIndex) == null) {
-            Debug.LogWarning("One of the indices does not contain any content");
             return false;
         }
 
