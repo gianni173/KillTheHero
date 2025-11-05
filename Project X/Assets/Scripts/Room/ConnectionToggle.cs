@@ -1,8 +1,7 @@
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ConnectionToggle : MonoBehaviour, IPointerClickHandler
+public class ConnectionToggle : MonoBehaviour
 {
     [SerializeField]
     private GameObject _parent;
@@ -14,21 +13,27 @@ public class ConnectionToggle : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     private GameObject _connectedVisual;
 
+    [SerializeField]
+    private LayerMask _connectionLayerMask;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Init();
     }
 
-
-    public void OnPointerClick(PointerEventData eventData)
+    public void Update()
     {
-        if(eventData.button != PointerEventData.InputButton.Right) return;
-        var Grid = GridManager.Instance.Grid;
-        Debug.Log($"Toggling connection between {_roomIndex} and {_connectionIndex}");
-        Grid.ToggleConnection(_roomIndex, _connectionIndex);
+        if (Input.GetButtonDown("Fire2"))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, _connectionLayerMask);
+            if (hit.collider != null && hit.collider.gameObject == gameObject)
+            {
+                var Grid = GridManager.Instance.Grid;
+                Grid.ToggleConnection(_roomIndex, _connectionIndex);
+            }
+        }
     }
-
     public void Init()
     {
         if (Room == null)
