@@ -64,16 +64,18 @@ public class PathFinderSystem : MonoBehaviour
     }
 
     [Button]
-    public void NextStep()
+    public int NextStep()
     {
         if (_currentPath == null || !_currentPath.HasNextStep())
         {
             Debug.LogWarning("[PathFinderSystem] No current path to follow.");
-            return;
+            return -1;
         }
 
         _currentIndex = _currentPath.GetNextStep();
         UpdatePositionToCurrentStep();
+
+        return _currentIndex;
     }
 
     public void UpdatePositionToCurrentStep()
