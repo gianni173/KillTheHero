@@ -26,7 +26,7 @@ public class Grid
     public Dictionary<int, AGridContent> Content => _content;
     [OdinSerialize] private Dictionary<int, int[]> _connections = new();
     public Dictionary<int, int[]> Connections => _connections;
-    
+
     public static Grid DefaultGrid()
     {
         return new Grid
@@ -39,6 +39,7 @@ public class Grid
     }
 
     #region Grid position helpers
+
     public Vector2Int IndexToGridCoord(int index)
     {
         var X = index % _maxSize.x;
@@ -59,7 +60,7 @@ public class Grid
             _origin.z
         );
     }
-    
+
     public Vector2Int WorldCoordToGridCoord(Vector3 worldCoord)
     {
         var coord = new Vector2Int(
@@ -74,9 +75,11 @@ public class Grid
         var coord = WorldCoordToGridCoord(worldCoord);
         return GridCoordToIndex(coord);
     }
+
     #endregion
-    
+
     #region Grid room helpers
+
     public AGridContent GetGridContent(int index)
     {
         if (!_content.ContainsKey(index))
@@ -86,7 +89,7 @@ public class Grid
 
         return _content[index];
     }
-    
+
     public void RemoveGridContent(int index)
     {
         //TODO: Salvo la reference per un futuro Destroy() o SetActive(false)
@@ -100,11 +103,29 @@ public class Grid
         _content.Add(index, content);
         OnChanged?.Invoke(this);
     }
-        
+
+    public void MoveRoom(int fromIndex, int toIndex, AGridContent content)
+    {
+        // Rimuovi dalla posizione originale
+        if (_content.ContainsKey(fromIndex))
+        {
+            _content.Remove(fromIndex);
+        }
+
+        // Aggiungi alla nuova posizione
+        if (content != null)
+        {
+            _content[toIndex] = content;
+        }
+
+        OnChanged?.Invoke(this);
+    }
+
     public Vector2Int GetGridCurrentSize()
     {
         return _currentSize;
     }
+
     public void SetCurrentSize(Vector2Int newSize)
     {
         // check size 
@@ -125,9 +146,11 @@ public class Grid
         Debug.Log($"[Grid] Visible grid updated at: {_currentSize}");
         OnChanged?.Invoke(this);
     }
+
     #endregion
-    
+
     #region Grid pathfinding helpers
+
     public int[] GetAvailableGridIndices()
     {
         var availableIndices = new List<int>();
@@ -164,6 +187,7 @@ public class Grid
                 {
                     continue;
                 }
+
                 var neighborIndex = GridCoordToIndex(new Vector2Int((int)neighborCoord.x, (int)neighborCoord.y));
                 neighbors.Add(neighborIndex);
             }
@@ -171,5 +195,6 @@ public class Grid
 
         return neighbors.ToArray();
     }
+
     #endregion
 }
