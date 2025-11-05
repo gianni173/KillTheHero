@@ -82,4 +82,9 @@ public class Room : SerializedMonoBehaviour, IDraggable
         OnReleaseProperty?.Invoke(this);
     }
     #endregion
+
+    public ARoomContentData[] GetRoomContent()
+    {
+        return Data.Contents;
+    }
 }
