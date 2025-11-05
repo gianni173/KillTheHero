@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.Serialization;
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 
 [Serializable]
@@ -23,9 +24,22 @@ public class Grid
 
 
     [OdinSerialize] private Dictionary<int, AGridContent> _content = new();
+    public Dictionary<int, AGridContent> Content => _content;
     [OdinSerialize] private Dictionary<int, int[]> _connections = new();
     public Dictionary<int, int[]> Connections => _connections;
 
+    public static Grid DefaultGrid()
+    {
+        return new Grid
+        {
+            _maxSize = new Vector2Int(10, 10),
+            _currentSize = new Vector2Int(3, 3),
+            _origin = Vector3.zero,
+            _worldCellSize = Vector2.one
+        };
+    }
+
+    #region Grid position helpers
 
     public Vector2Int IndexToGridCoord(int index)
     {
@@ -47,6 +61,25 @@ public class Grid
             _origin.z
         );
     }
+
+    public Vector2Int WorldCoordToGridCoord(Vector3 worldCoord)
+    {
+        var coord = new Vector2Int(
+            Mathf.FloorToInt((worldCoord.x - _origin.x) / _worldCellSize.x),
+            Mathf.FloorToInt((worldCoord.y - _origin.y) / _worldCellSize.y)
+        );
+        return coord;
+    }
+
+    public int WorldCoordToGridIndex(Vector3 worldCoord)
+    {
+        var coord = WorldCoordToGridCoord(worldCoord);
+        return GridCoordToIndex(coord);
+    }
+
+    #endregion
+
+    #region Grid room helpers
 
     public AGridContent GetGridContent(int index)
     {
@@ -72,6 +105,35 @@ public class Grid
         OnChanged?.Invoke(this);
     }
 
+    public void MoveRoom(int fromIndex, int toIndex, AGridContent content)
+    {
+        
+        // Remove old room data and connections
+        var oldNeighbors = GetNeighborsIndices(fromIndex);
+        _content.Remove(fromIndex);
+        _connections.Remove(fromIndex);
+        // update room with new data's position 
+        if (content != null)
+        {
+            _content[toIndex] = content;
+            ConnectNeighbors(toIndex);
+        }
+        
+        foreach (var oldNeighborIndex in oldNeighbors)
+        {
+            if (_content.ContainsKey(oldNeighborIndex))
+            {
+                ConnectNeighbors(oldNeighborIndex);
+            }
+        }
+        OnChanged?.Invoke(this);
+    }
+
+    public Vector2Int GetGridCurrentSize()
+    {
+        return _currentSize;
+    }
+
     public void SetCurrentSize(Vector2Int newSize)
     {
         // check size 
@@ -87,16 +149,15 @@ public class Grid
             return;
         }
 
-        // Se arriviamo qui, i valori sono validi
+        // If all is good, set the new player visible grid
         _currentSize = newSize;
         Debug.Log($"[Grid] Visible grid updated at: {_currentSize}");
         OnChanged?.Invoke(this);
     }
 
-    public Vector2Int GetGridCurrentSize()
-    {
-        return _currentSize;
-    }
+    #endregion
+
+    #region Grid pathfinding helpers
 
     public int[] GetAvailableGridIndices()
     {
@@ -113,43 +174,166 @@ public class Grid
         return availableIndices.ToArray();
     }
 
-    public static Grid DefaultGrid()
-    {
-        return new Grid
-        {
-            _maxSize = new Vector2Int(10, 10),
-            _currentSize = new Vector2Int(3, 3),
-            _origin = Vector3.zero,
-            _worldCellSize = Vector2.one
-        };
-    }
-
     public int[] GetNeighborsIndices(int index)
     {
         var coord = IndexToGridCoord(index);
         var neighbors = new List<int>();
-        for (var x = -1; x <= 1; x++)
+
+        // only look for cardinal direction, no diagonals
+        Vector2Int[] directions = {
+            new(-1, 0),  // Left
+            new(1, 0),   // Right
+            new(0, 1),   // Up
+            new(0, -1)   // Down
+        };
+
+        foreach (var direction in directions)
         {
-            for (var y = -1; y <= 1; y++)
+            var neighborCoord = new Vector2Int(coord.x + direction.x, coord.y + direction.y);
+
+            // Check if neighbor is within bounds
+            if (!(neighborCoord.x >= 0) || !(neighborCoord.x < _maxSize.x) ||
+                !(neighborCoord.y >= 0) || !(neighborCoord.y < _maxSize.y) ||
+                !_content.ContainsKey(GridCoordToIndex(new Vector2Int(neighborCoord.x, neighborCoord.y))))
             {
-                if (x == 0 && y == 0)
-                {
-                    continue; // Skip the current cell
-                }
-
-                var neighborCoord = new Vector2(coord.x + x, coord.y + y);
-
-                // Check if neighbor is within bounds
-                if (!(neighborCoord.x >= 0) || !(neighborCoord.x < _maxSize.x) ||
-                    !(neighborCoord.y >= 0) || !(neighborCoord.y < _maxSize.y))
-                {
-                    continue;
-                }
-                var neighborIndex = GridCoordToIndex(new Vector2Int((int)neighborCoord.x, (int)neighborCoord.y));
-                neighbors.Add(neighborIndex);
+                continue;
             }
+
+            var neighborIndex = GridCoordToIndex(neighborCoord);
+            neighbors.Add(neighborIndex);
+
         }
 
         return neighbors.ToArray();
+    }
+
+    #endregion
+
+    // toggle connection between two grid indices
+    public void ToggleConnection(int fromIndex, int toIndex)
+    {
+        if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
+        // get current neighbors
+        var neighbors = new List<int>();
+        if (_connections.ContainsKey(fromIndex))
+        {
+            neighbors = new List<int>(_connections[fromIndex]);
+        }
+        // get reverse neighbors
+        var reverseNeighbors = new List<int>();
+        if (_connections.ContainsKey(toIndex))
+        {
+            reverseNeighbors = new List<int>(_connections[toIndex]);
+        }
+        // toggle connection
+        if (neighbors.Contains(toIndex))
+        {
+            neighbors.Remove(toIndex);
+            reverseNeighbors.Remove(fromIndex);
+        }
+        else
+        {
+            neighbors.Add(toIndex);
+            reverseNeighbors.Add(fromIndex);
+        }
+        _connections[fromIndex] = neighbors.ToArray();
+        _connections[toIndex] = reverseNeighbors.ToArray();
+        OnChanged?.Invoke(this);
+        Debug.Log($"Toggled connection between {fromIndex} and {toIndex}");
+    }
+
+    public void AddConnection(int fromIndex, int toIndex)
+    {
+        if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
+        // get current neighbors
+        var neighbors = new List<int>();
+        if (_connections.ContainsKey(fromIndex))
+        {
+            neighbors = new List<int>(_connections[fromIndex]);
+        }
+        // get reverse neighbors
+        var reverseNeighbors = new List<int>();
+        if (_connections.ContainsKey(toIndex))
+        {
+            reverseNeighbors = new List<int>(_connections[toIndex]);
+        }
+        // add connection
+        if (!neighbors.Contains(toIndex))
+        {
+            neighbors.Add(toIndex);
+        }
+        if (!reverseNeighbors.Contains(fromIndex))
+        {
+            reverseNeighbors.Add(fromIndex);
+        }
+        _connections[fromIndex] = neighbors.ToArray();
+        _connections[toIndex] = reverseNeighbors.ToArray();
+        OnChanged?.Invoke(this);
+    }
+
+    public void RemoveConnection(int fromIndex, int toIndex)
+    {
+        if(!CheckConnectionIsValid(fromIndex, toIndex)) return;
+        // get current neighbors
+        var neighbors = new List<int>();
+        if (_connections.ContainsKey(fromIndex))
+        {
+            neighbors = new List<int>(_connections[fromIndex]);
+        }
+        // get reverse neighbors
+        var reverseNeighbors = new List<int>();
+        if (_connections.ContainsKey(toIndex))
+        {
+            reverseNeighbors = new List<int>(_connections[toIndex]);
+        }
+        // add connection
+        if (neighbors.Contains(toIndex))
+        {
+            neighbors.Remove(toIndex);
+        }
+        if (reverseNeighbors.Contains(fromIndex))
+        {
+            reverseNeighbors.Remove(fromIndex);
+        }
+        _connections[fromIndex] = neighbors.ToArray();
+        _connections[toIndex] = reverseNeighbors.ToArray();
+        OnChanged?.Invoke(this);
+    }
+
+    // connect all available neighboring grid indices
+    public void ConnectAllNeighbors()
+    {
+        var availableIndices = GetAvailableGridIndices();
+        foreach (var index in availableIndices)
+        {
+            ConnectNeighbors(index);
+        }
+
+        OnChanged?.Invoke(this);
+    }
+
+    public void ConnectNeighbors(int index)
+    {
+        var neighbors = GetNeighborsIndices(index);
+        _connections[index] = neighbors;
+        foreach (var neighborIndex in neighbors)
+        {
+            AddConnection(neighborIndex, index);
+        }
+    }
+    
+    public bool CheckConnectionIsValid(int fromIndex, int toIndex)
+    {
+        if (fromIndex == toIndex){
+            return false;
+        }
+        if (!_content.ContainsKey(fromIndex) || !_content.ContainsKey(toIndex)) {
+            return false;
+        }
+        if (GetGridContent(fromIndex) == null || GetGridContent(toIndex) == null) {
+            return false;
+        }
+
+        return true;
     }
 }

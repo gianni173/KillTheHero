@@ -9,8 +9,6 @@ public class Market : MonoBehaviour
     
     private void Awake()
     {
-        
-        
         foreach (Purchasable item in Items)
         {
             MarketSlot marketSlot = Instantiate(MarketSlotPrefab, Container.transform);

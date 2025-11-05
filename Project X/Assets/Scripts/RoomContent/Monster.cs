@@ -1,3 +1,6 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "RoomContent_Monster", menuName = "RoomContent/Monster")]
 public class Monster : ARoomContentData
 {
     private int _fameReward;
