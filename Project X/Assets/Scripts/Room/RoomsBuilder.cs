@@ -16,10 +16,10 @@ public class RoomsBuilder : MonoBehaviour
 
     private List<Room> _rooms = new();
     private List<RoomContent> _roomContents = new();
-    private List<Room> Rooms => _rooms;
-    private List<RoomContent> RoomContents => _roomContents;
+    public List<Room> Rooms => _rooms;
+    public List<RoomContent> RoomContents => _roomContents;
     private GridManager _gridManager;
-    private GridManager GridManager
+    public GridManager GridManager
     {
         get
         {
@@ -59,27 +59,33 @@ public class RoomsBuilder : MonoBehaviour
                 var coord = new Vector2Int(x, y);
                 var index = grid.GridCoordToIndex(coord);
                 
+                // check slot in grid coordinates x,y
                 Vector3 pos = grid.GridCoordToWorldCoord(new Vector2Int(x, y));
-                var roomSlot = Instantiate(_roomSlot, pos, Quaternion.identity, _roomsContainer);
+                // immediately instantiate a free slot
+                Instantiate(_roomSlot, pos, Quaternion.identity, _roomsContainer);
                 
+                // check if there is a room in the grid coordinates x,y, if not, go to the next cycle
                 var content = grid.GetGridContent(index);
                 if (content is not RoomData roomData)
                 {
                     continue;
                 }
-                
+                // otherwise, turn the grid coordinates into world position, and then instantiate a room under _roomsContainer's transform parent
                 var worldPos = grid.GridCoordToWorldCoord(coord);
                 var roomObject = Instantiate(_roomsPrefab, worldPos, Quaternion.identity, _roomsContainer);
                 var room = roomObject.GetComponent<Room>();
+                // quick check if the prefab room has no room component
                 if (room == null)
                 {
                     Debug.LogError($"The prefab connected to {nameof(RoomsBuilder)} has no {nameof(Room)} component");
                     continue;
                 }
+                // register the room to the drag system, and initialize the room data
                 RoomDraggableSystem.Instance.RegisterDraggable(room);
                 _rooms.Add(room);
                 room.Init(roomData);
                 //TODO: add to _roomContents
+                GridManager.Grid.GetAvailableGridIndices();
             }
         }
     }
