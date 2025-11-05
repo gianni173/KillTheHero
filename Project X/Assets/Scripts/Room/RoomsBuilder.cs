@@ -104,9 +104,9 @@ public class RoomsBuilder : MonoBehaviour
 
     private void OnDestroy()
     {
-        foreach (var room in _rooms)
-        {
-            RoomDraggableSystem.Instance.UnregisterDraggable(room);
-        }
+        // foreach (var room in _rooms)
+        // {
+        //     RoomDraggableSystem.Instance.UnregisterDraggable(room);
+        // }
     }
 }
