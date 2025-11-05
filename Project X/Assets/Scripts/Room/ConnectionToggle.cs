@@ -23,7 +23,8 @@ public class ConnectionToggle : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Clicked on ConnectionToggle");
+        var Grid = GridManager.Instance.Grid;
+        Grid.ToggleConnection(_roomIndex, _connectionIndex);
     }
 
     public void Init()
@@ -84,6 +85,7 @@ public class ConnectionToggle : MonoBehaviour, IPointerClickHandler
     public void UpdateVisual()
     {
         bool isConnected = CheckConnection();
-        _connectedVisual.SetActive(isConnected);
+        if(_connectedVisual != null)
+            _connectedVisual.SetActive(!isConnected);
     }
 }
