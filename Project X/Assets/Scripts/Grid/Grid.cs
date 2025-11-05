@@ -323,9 +323,18 @@ public class Grid
     
     private bool CheckConnectionIsValid(int fromIndex, int toIndex)
     {
-        if (fromIndex == toIndex) return false;
-        if (!_content.ContainsKey(fromIndex) || !_content.ContainsKey(toIndex)) return false;
-        if (GetGridContent(fromIndex) == null || GetGridContent(toIndex) == null) return false;
+        if (fromIndex == toIndex){
+            Debug.LogWarning("Cannot create connection to the same index");
+            return false;
+        }
+        if (!_content.ContainsKey(fromIndex) || !_content.ContainsKey(toIndex)) {
+            Debug.LogWarning("Out of bounds indices for connection");
+            return false;
+        }
+        if (GetGridContent(fromIndex) == null || GetGridContent(toIndex) == null) {
+            Debug.LogWarning("One of the indices does not contain any content");
+            return false;
+        }
 
         return true;
     }
