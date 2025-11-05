@@ -54,22 +54,17 @@ public class Room : SerializedMonoBehaviour, IDraggable
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // TODO:maybe when mouse enters the tile becomes highlighted?
-        Debug.Log("[ROOM] Mouse entered.");
         _bgRenderer.color = _newColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // TODO:revert onPointerEnter highlight
-        Debug.Log("[ROOM] Mouse exited.");
         _bgRenderer.color = _originalColor;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!IsDraggable) return;
-        Debug.Log("[ROOM] Mouse clicked.");
         OnPickupProperty?.Invoke(this);
     }
 
@@ -83,7 +78,6 @@ public class Room : SerializedMonoBehaviour, IDraggable
     public void OnEndDrag(PointerEventData eventData)
     {
         if (!IsDraggable) return;
-        Debug.Log("[ROOM] Mouse released.");
         OnReleaseProperty?.Invoke(this);
     }
     #endregion
