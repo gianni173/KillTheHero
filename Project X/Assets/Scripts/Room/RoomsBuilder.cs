@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class RoomsBuilder : Singleton<RoomsBuilder>
+public class RoomsBuilder : SingletonDDOL<RoomsBuilder>
 {
     [Header("Prefabs to spawn")] 
     [SerializeField, AssetsOnly] 
