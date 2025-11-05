@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 public class ConnectionToggle : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
-    private Room _room;
-    public Room Room => _room;
+    private GameObject _parent;
+    public GameObject Room => _parent;
 
     private int _roomIndex;
     private int _connectionIndex;
@@ -25,19 +25,20 @@ public class ConnectionToggle : MonoBehaviour, IPointerClickHandler
     {
         if(eventData.button != PointerEventData.InputButton.Right) return;
         var Grid = GridManager.Instance.Grid;
+        Debug.Log($"Toggling connection between {_roomIndex} and {_connectionIndex}");
         Grid.ToggleConnection(_roomIndex, _connectionIndex);
     }
 
     public void Init()
     {
-        if (_room == null)
+        if (Room == null)
         {
             Debug.LogWarning("Room or Room Data or Connections is null");
             return;
         }
 
         var Grid = GridManager.Instance.Grid;
-        var roomCoord = Grid.WorldCoordToGridCoord(_room.transform.position);
+        var roomCoord = Grid.WorldCoordToGridCoord(Room.transform.position);
         _roomIndex = Grid.GridCoordToIndex(roomCoord);
 
         var connectedGrid = Vector2Int.zero;
@@ -66,7 +67,7 @@ public class ConnectionToggle : MonoBehaviour, IPointerClickHandler
 
     public bool CheckConnection()
     {
-        if (_room == null)
+        if (Room == null)
         {
             Debug.LogWarning("Room or Room Data or Connections is null");
             return false;
