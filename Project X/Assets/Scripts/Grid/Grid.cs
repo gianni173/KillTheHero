@@ -116,19 +116,14 @@ public class Grid
         if (content != null)
         {
             _content[toIndex] = content;
-            _connections[toIndex] = GetNeighborsIndices(toIndex);
-            var newNeighbors = GetNeighborsIndices(toIndex);
-            foreach (var neighborIndex in newNeighbors)
-            {
-                _connections[neighborIndex] = GetNeighborsIndices(neighborIndex);
-            }
+            ConnectNeighbors(toIndex);
         }
         
         foreach (var oldNeighborIndex in oldNeighbors)
         {
             if (_content.ContainsKey(oldNeighborIndex))
             {
-                _connections[oldNeighborIndex] = GetNeighborsIndices(oldNeighborIndex);
+                ConnectNeighbors(oldNeighborIndex);
             }
         }
         OnChanged?.Invoke(this);
@@ -312,5 +307,9 @@ public class Grid
     {
         var neighbors = GetNeighborsIndices(index);
         _connections[index] = neighbors;
+        foreach(var neighborIndex in neighbors)
+        {
+            AddConnection(neighborIndex, index);
+        }
     }
 }
