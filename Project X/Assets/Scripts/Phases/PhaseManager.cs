@@ -2,7 +2,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
 
-public class PhaseManager : SingletonDDOL<PhaseManager>
+public class PhaseManager : Singleton<PhaseManager>
 {
     public Action<PhaseType> OnPhaseChanged;
 
