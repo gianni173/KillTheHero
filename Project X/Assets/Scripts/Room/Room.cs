@@ -64,6 +64,7 @@ public class Room : SerializedMonoBehaviour, IDraggable
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if(eventData.button != PointerEventData.InputButton.Left) return;
         if (!IsDraggable) return;
         OnPickupProperty?.Invoke(this);
     }
