@@ -112,6 +112,11 @@ public class PathFinderSystem : MonoBehaviour
         transform.position = worldPos + offset;
     }
 
+    public void SetPath(Path path)
+    {
+        _currentPath = path;
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
