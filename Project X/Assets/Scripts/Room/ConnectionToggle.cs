@@ -1,5 +1,5 @@
+using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class ConnectionToggle : MonoBehaviour
 {
@@ -78,8 +78,15 @@ public class ConnectionToggle : MonoBehaviour
             return false;
         }
         var Grid = GridManager.Instance.Grid;
+        bool isConnected = Grid.Connections.ContainsKey(_roomIndex) &&
+                           Grid.Connections[_roomIndex].Contains(_connectionIndex);
 
-        return Grid.CheckConnectionIsValid(_roomIndex, _connectionIndex);
+        // Also check if the neighbor room has a connection back to this room and that the neighbor room exists
+        bool isNeighborConnected = Grid.Connections.ContainsKey(_connectionIndex) &&
+                           Grid.Connections[_connectionIndex].Contains(_roomIndex)
+                           && Grid.GetGridContent(_connectionIndex) != null;
+
+        return Grid.CheckConnectionIsValid(_roomIndex, _connectionIndex) && isConnected && isNeighborConnected;
     }
     
     public void UpdateVisual()
