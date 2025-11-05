@@ -45,4 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _heroToSpawn: {x: 3, y: 7}
+  _heroTagsRange: {x: 2, y: 5}
   _heroPrefab: {fileID: 2007510645466157406, guid: c4a549f69f215134c9fe37b184566c1e, type: 3}
