@@ -23,10 +23,22 @@ public class Grid
 
 
     [OdinSerialize] private Dictionary<int, AGridContent> _content = new();
+    public Dictionary<int, AGridContent> Content => _content;
     [OdinSerialize] private Dictionary<int, int[]> _connections = new();
     public Dictionary<int, int[]> Connections => _connections;
+    
+    public static Grid DefaultGrid()
+    {
+        return new Grid
+        {
+            _maxSize = new Vector2Int(10, 10),
+            _currentSize = new Vector2Int(3, 3),
+            _origin = Vector3.zero,
+            _worldCellSize = Vector2.one
+        };
+    }
 
-
+    #region Grid position helpers
     public Vector2Int IndexToGridCoord(int index)
     {
         var X = index % _maxSize.x;
@@ -47,7 +59,24 @@ public class Grid
             _origin.z
         );
     }
+    
+    public Vector2Int WorldCoordToGridCoord(Vector3 worldCoord)
+    {
+        var coord = new Vector2Int(
+            Mathf.FloorToInt((worldCoord.x - _origin.x) / _worldCellSize.x),
+            Mathf.FloorToInt((worldCoord.y - _origin.y) / _worldCellSize.y)
+        );
+        return coord;
+    }
 
+    public int WorldCoordToGridIndex(Vector3 worldCoord)
+    {
+        var coord = WorldCoordToGridCoord(worldCoord);
+        return GridCoordToIndex(coord);
+    }
+    #endregion
+    
+    #region Grid room helpers
     public AGridContent GetGridContent(int index)
     {
         if (!_content.ContainsKey(index))
@@ -57,7 +86,7 @@ public class Grid
 
         return _content[index];
     }
-
+    
     public void RemoveGridContent(int index)
     {
         //TODO: Salvo la reference per un futuro Destroy() o SetActive(false)
@@ -71,7 +100,11 @@ public class Grid
         _content.Add(index, content);
         OnChanged?.Invoke(this);
     }
-
+        
+    public Vector2Int GetGridCurrentSize()
+    {
+        return _currentSize;
+    }
     public void SetCurrentSize(Vector2Int newSize)
     {
         // check size 
@@ -92,12 +125,9 @@ public class Grid
         Debug.Log($"[Grid] Visible grid updated at: {_currentSize}");
         OnChanged?.Invoke(this);
     }
-
-    public Vector2Int GetGridCurrentSize()
-    {
-        return _currentSize;
-    }
-
+    #endregion
+    
+    #region Grid pathfinding helpers
     public int[] GetAvailableGridIndices()
     {
         var availableIndices = new List<int>();
@@ -111,17 +141,6 @@ public class Grid
         }
 
         return availableIndices.ToArray();
-    }
-
-    public static Grid DefaultGrid()
-    {
-        return new Grid
-        {
-            _maxSize = new Vector2Int(10, 10),
-            _currentSize = new Vector2Int(3, 3),
-            _origin = Vector3.zero,
-            _worldCellSize = Vector2.one
-        };
     }
 
     public int[] GetNeighborsIndices(int index)
@@ -152,4 +171,5 @@ public class Grid
 
         return neighbors.ToArray();
     }
+    #endregion
 }
