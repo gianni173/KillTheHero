@@ -14,9 +14,13 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
     private int _entranceRoomIndex = -1;
     private int _mimikRoomIndex = -1;
 
-    private Path _pathToMimik = null; 
+    private Path _pathToMimik = null;
+
+    private Grid _grid;
 
     private List<GameObject> _heroInstances = new List<GameObject>();
+    
+    private int indexMovingHero = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,6 +39,21 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
         // ON DEATH advance list to next hero
     }
 
+    public void MoveHero()
+    {
+        if (_heroInstances[indexMovingHero] == null)
+        {
+            indexMovingHero++;
+        }
+        var movingHero = _heroInstances[indexMovingHero];
+        movingHero.SetActive(true);
+        var pathFinderSystem = movingHero.GetComponent<PathFinderSystem>();
+        var indexToGrid = pathFinderSystem.NextStep();
+        Debug.Log(indexToGrid);
+        var gridCoord =_grid.IndexToGridCoord(indexToGrid);
+        
+        movingHero.transform.position = new Vector3 (gridCoord.x, gridCoord.y, 0);
+    }
     public void StartExploration(PhaseType newPhase)
     {
         if (newPhase != PhaseType.Exploration)
@@ -66,6 +85,8 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
             hero.SetActive(false); // will be activated when the phase starts
             _heroInstances.Add(hero);
         }
+        
+        MoveHero();
     }
 
     public Room FindSpecificRoom<T>() where T : ARoomContentData
