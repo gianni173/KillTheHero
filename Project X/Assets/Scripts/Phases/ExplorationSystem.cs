@@ -49,10 +49,7 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
         movingHero.SetActive(true);
         var pathFinderSystem = movingHero.GetComponent<PathFinderSystem>();
         var indexToGrid = pathFinderSystem.NextStep();
-        Debug.Log(indexToGrid);
-        var gridCoord =_grid.IndexToGridCoord(indexToGrid);
         
-        movingHero.transform.position = new Vector3 (gridCoord.x, gridCoord.y, 0);
     }
     public void StartExploration(PhaseType newPhase)
     {
