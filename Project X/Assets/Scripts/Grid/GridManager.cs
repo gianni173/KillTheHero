@@ -9,6 +9,9 @@ public class GridManager : SerializedMonoBehaviour
 
     public static GridManager Instance;
 
+    [SerializeField]
+    private bool _activateDebugGizmos = true;
+
     private void Awake()
     {
         if (Instance != null)
@@ -38,12 +41,17 @@ public class GridManager : SerializedMonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        if (_grid == null)
+        if (!_activateDebugGizmos)
         {
             return;
         }
 
+        if (_grid == null)
+        {
+            return;
+        }
+        Gizmos.color = Color.red;
+        // Draw grid
         var cellOffset = new Vector3(_grid.WorldCellSize.x / 2, _grid.WorldCellSize.y / 2, 0);
         var cellDimention = new Vector3(_grid.WorldCellSize.x, _grid.WorldCellSize.y, 0);
         for (var x = 0; x < _grid.MaxSize.x; x++)
@@ -61,6 +69,7 @@ public class GridManager : SerializedMonoBehaviour
             var cellCoord = Grid.IndexToGridCoord(_gridIndices[i]);
             var cellPos = _grid.GridCoordToWorldCoord(cellCoord);
             Gizmos.color = Color.black;
+            // Grid cell
             Gizmos.DrawWireCube(cellPos + cellOffset, cellDimention);
             var content = _grid.GetGridContent(_gridIndices[i]);
             if (content == null)
@@ -68,13 +77,13 @@ public class GridManager : SerializedMonoBehaviour
                 continue;
             }
 
-            // Gizmos.color = Color.black;
+            //Grid Center
             Gizmos.DrawSphere(cellPos + cellOffset, .2f);
             if (!_grid.Connections.ContainsKey(_gridIndices[i]))
             {
                 continue;
             }
-
+            // connections
             var connections = _grid.Connections[_gridIndices[i]];
             Gizmos.color = Color.blue;
             for (var j = 0; j < connections.Length; j++)
