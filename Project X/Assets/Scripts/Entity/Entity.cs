@@ -6,7 +6,7 @@ public class Entity : MonoBehaviour
 {
     static public Action<Entity> OnDeath;
     public List <EntityTag> TagMask = new();
-    private Resource[] _resourcesGained;
+    private Dictionary<ResourceType,Resource> _resourcesGained = new ();
     private bool _hasReachedMimik = false;
 
     [SerializeField]
@@ -24,9 +24,8 @@ public class Entity : MonoBehaviour
 
     private void InitializeEntityResources()
     {
-        _resourcesGained = new Resource[2];
-        _resourcesGained[0] = new Resource { Name = "Fame", Type = ResourceType.Fame, Quantity = UnityEngine.Random.Range(_fameRange.x, _fameRange.y + 1) };
-        _resourcesGained[1] = new Resource { Name = "Gold", Type = ResourceType.Gold, Quantity = UnityEngine.Random.Range(_goldRange.x, _goldRange.y + 1) };
+        _resourcesGained.Add(ResourceType.Fame, new Resource { Name = "Fame", Type = ResourceType.Fame, Quantity = UnityEngine.Random.Range(_fameRange.x, _fameRange.y + 1) });
+        _resourcesGained.Add(ResourceType.Gold, new Resource { Name = "Gold", Type = ResourceType.Gold, Quantity = UnityEngine.Random.Range(_goldRange.x, _goldRange.y + 1) });
     }
 
     private void InitTags()
@@ -47,15 +46,11 @@ public class Entity : MonoBehaviour
 
     public void AddEntityResource(ResourceType type, int quantity)
     {
-        foreach (var resource in _resourcesGained)
-        {
-            if (resource.Type == type)
-            {
-                resource.Quantity += quantity;
-                Debug.Log($"Added Entity {quantity} {type}. Total: {resource.Quantity}");
-                return;
-            }
-        }
+        if (_resourcesGained.ContainsKey(type) == false)
+            return;
+
+        _resourcesGained[type].Quantity += quantity;
+        Debug.Log($"Added Entity {quantity} {type}. Total: {_resourcesGained[type].Quantity}");
     }
     // Check if the entity has a specific tag
     public bool CheckEntityTag(EntityTag enemyEntityTag)
@@ -78,15 +73,11 @@ public class Entity : MonoBehaviour
     {
         if (_hasReachedMimik)
         {
-            var GoldGained = _resourcesGained[1].Quantity;
-            PlayerStats.Instance.AddResource(ResourceType.Gold, GoldGained);
+            PlayerStats.Instance.AddResource(_resourcesGained[ResourceType.Gold]);
         }
         else
         {
-            var FameGained =
-                _resourcesGained[0].Quantity; // Jachy Hu 31/10: Horrendous, you need to know which slot in [] 
-            // contains the specific type of resource, need to fix later
-            PlayerStats.Instance.AddResource(ResourceType.Fame, FameGained);
+            PlayerStats.Instance.AddResource(_resourcesGained[ResourceType.Fame]);
         }
         gameObject.SetActive(false);
         OnDeath?.Invoke(this);
