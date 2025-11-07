@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class RoomsBuilder : Singleton<RoomsBuilder>
 {
+    public static RoomsBuilder Instance;
+    
     [Header("Prefabs to spawn")] 
     [SerializeField, AssetsOnly] 
     private GameObject _roomsPrefab;
@@ -27,6 +29,17 @@ public class RoomsBuilder : Singleton<RoomsBuilder>
             _gridManager = GridManager.Instance;
             return _gridManager;
         }
+    }
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
     
     private void Start()
@@ -85,6 +98,8 @@ public class RoomsBuilder : Singleton<RoomsBuilder>
                 RoomDraggableSystem.Instance.RegisterDraggable(room);
                 _rooms.Add(room);
                 room.Init(roomData);
+                RoomContentDraggableSystem.Instance.RegisterDraggable(room.RoomContent);
+                _roomContents.Add(room.RoomContent);
                 //TODO: add to _roomContents
                 GridManager.Grid.GetAvailableGridIndices();
             }
