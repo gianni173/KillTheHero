@@ -103,8 +103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TagMask: 
   _tagRange: {x: 2, y: 5}
-  _goldRange: {x: 5, y: 15}
-  _fameRange: {x: 2, y: 7}
+  _goldRange: {x: 10, y: 15}
+  _fameRange: {x: 2, y: 5}
 --- !u!114 &1592899137307010837
 MonoBehaviour:
   m_ObjectHideFlags: 0

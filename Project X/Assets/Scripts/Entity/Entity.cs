@@ -6,8 +6,8 @@ public class Entity : MonoBehaviour
 {
     static public Action<Entity> OnDeath;
     public List <EntityTag> TagMask = new();
-    private Dictionary<ResourceType,Resource> _resourcesGained = new ();
-    private bool _hasReachedMimik = false;
+    private Dictionary<ResourceType, Resource> _resourcesGained = new();
+    public Dictionary<ResourceType, Resource> ResourcesGained => _resourcesGained;
 
     [SerializeField]
     private Vector2Int _tagRange = Vector2Int.zero;
@@ -71,14 +71,6 @@ public class Entity : MonoBehaviour
     //i don't know TagMask is public, maybe directly on AItem interact()?
     public void Die()
     {
-        if (_hasReachedMimik)
-        {
-            PlayerStats.Instance.AddResource(_resourcesGained[ResourceType.Gold]);
-        }
-        else
-        {
-            PlayerStats.Instance.AddResource(_resourcesGained[ResourceType.Fame]);
-        }
         gameObject.SetActive(false);
         OnDeath?.Invoke(this);
     }

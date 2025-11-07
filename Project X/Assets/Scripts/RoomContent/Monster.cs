@@ -13,7 +13,10 @@ public class Monster : ARoomContentData
         if(entity.CheckEntityTag(_killTagMask))
             Kill(entity);
         if (entity.CheckEntityTag(InteractableTagMask))
+        {
+            PlayerStats.Instance.AddResource(entity.ResourcesGained[ResourceType.Fame]);
             entity.Die();
+        }
     }
 
     public void Kill(Entity entity)
