@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class FadeSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        //_phaseManager.OnPhaseChanged += EnterFade;
+        _phaseManager.OnCallFade += EnterFade;
     }
 
     private void EnterFade() 

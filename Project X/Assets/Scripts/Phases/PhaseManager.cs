@@ -5,6 +5,7 @@ using System;
 public class PhaseManager : Singleton<PhaseManager>
 {
     public Action<PhaseType> OnPhaseChanged;
+    public Action OnCallFade;
 
     [SerializeField] 
     private PhaseType _currentPhase;
@@ -15,5 +16,6 @@ public class PhaseManager : Singleton<PhaseManager>
     {
         _currentPhase = newPhase;
         OnPhaseChanged?.Invoke(_currentPhase);
+        OnCallFade?.Invoke();
     }
 }
