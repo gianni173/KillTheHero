@@ -13,18 +13,24 @@ public class Room : SerializedMonoBehaviour, IDraggable
 
     [SerializeField] 
     private RoomContent _roomContent;
+
+    public RoomContent RoomContent
+    {
+        get => _roomContent;
+        set => _roomContent = value;
+    }
     
     [SerializeField] 
     private SpriteRenderer _bgRenderer;
     
     private Color _originalColor;
     private Color _newColor = Color.red;
+
+    private Camera _camera;
     
     public Action<IDraggable> OnPickupProperty { get; set; }
     public Action<IDraggable, PointerEventData> OnDragProperty { get; set; }
     public Action<IDraggable> OnReleaseProperty { get; set; }
-
-
     public bool IsDragging { get; set; }
     
     [SerializeField] 
@@ -37,6 +43,8 @@ public class Room : SerializedMonoBehaviour, IDraggable
     private void Start()
     {
         _originalColor = _bgRenderer.color;
+        
+        _camera = Camera.main;
     }
     public void Init(RoomData roomData)
     {
@@ -61,7 +69,7 @@ public class Room : SerializedMonoBehaviour, IDraggable
     {
         _bgRenderer.color = _originalColor;
     }
-
+    
     public void OnBeginDrag(PointerEventData eventData)
     {
         if(eventData.button != PointerEventData.InputButton.Left) return;

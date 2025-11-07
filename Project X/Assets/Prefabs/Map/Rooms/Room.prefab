@@ -596,7 +596,7 @@ GameObject:
   - component: {fileID: 7421112580408979059}
   - component: {fileID: 4743201404605790969}
   - component: {fileID: 9181668009654135155}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Room
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -647,6 +647,9 @@ MonoBehaviour:
       Data: 
   _roomContent: {fileID: 1977337008037840556}
   _bgRenderer: {fileID: 4050045376011496821}
+  RoomContentLayer:
+    serializedVersion: 2
+    m_Bits: 0
   _isDraggable: 1
 --- !u!61 &9181668009654135155
 BoxCollider2D:
@@ -1011,6 +1014,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoomContent
       objectReference: {fileID: 0}
+    - target: {fileID: 2912721586987207316, guid: 2f84f385e49077349bb4c43a75d9b768, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2912721586987207316, guid: 2f84f385e49077349bb4c43a75d9b768, type: 3}
     - target: {fileID: 8054859038855040600, guid: 2f84f385e49077349bb4c43a75d9b768, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
