@@ -99,6 +99,6 @@ public class Room : SerializedMonoBehaviour, IDraggable
 
     public ARoomContentData[] GetRoomContent()
     {
-        return Data.Contents;
+        return Data.Contents.ToArray();
     }
 }

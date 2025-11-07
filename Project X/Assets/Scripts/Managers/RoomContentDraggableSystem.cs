@@ -132,7 +132,7 @@ public class RoomContentDraggableSystem : SerializedMonoBehaviour
             }
             // moved roomContent from grid to inventory
             PlayerStats.Instance.PlayerInventory.AddItemToInventory(startingRoomData.Contents[0]);
-            startingRoomData.Contents = Array.Empty<ARoomContentData>();
+            startingRoomData.Contents.Clear();
             _gridManager.Grid.TriggerChange();
             return;
         }
@@ -146,13 +146,12 @@ public class RoomContentDraggableSystem : SerializedMonoBehaviour
         Debug.Log(_currentDraggedItem);
         var monobehaviour = GetTransformFromDraggedRoom(_currentDraggedItem);
         var currentDraggedData = monobehaviour.GetComponent<RoomContent>();
-        if (destinationRoomData.Contents.Length == 0)
+        if (destinationRoomData.Contents.Count == 0)
         {
-            destinationRoomData.Contents = new ARoomContentData[1];
-            destinationRoomData.Contents[0] = currentDraggedData.GetRoomContentData();  
+            destinationRoomData.Contents.Add(currentDraggedData.GetRoomContentData());  
             if (startingRoomData != null)
             {
-                startingRoomData.Contents = Array.Empty<ARoomContentData>();
+                startingRoomData.Contents.Clear();
             }
             else
             {

@@ -6,8 +6,7 @@ public class PurchasableRoom : Purchasable
     //checks if there are any free slots in the grid
     public override bool CanPurchase()
     {
-        
-        return  base.CanPurchase() && GridManager.Instance.Grid.GetAvailableGridIndices().Length != 0;
+        return  base.CanPurchase() && GridManager.Instance.Grid.GetAvailableAndEmptyGridIndices().Length > 0;
     }
     
     public override void Purchase()
@@ -21,9 +20,7 @@ public class PurchasableRoom : Purchasable
         //if there are choose a random slot on the grid and place it there.
         base.Purchase();
         
-        var availableIndices = GridManager.Instance.Grid.GetAvailableGridIndices();
-        var chosenIndex = Random.Range(0, availableIndices.Length);
-        
-        GridManager.Instance.Grid.AddContent(availableIndices[chosenIndex], new RoomData());
+        var availableIndices = GridManager.Instance.Grid.GetAvailableAndEmptyGridIndices();
+        GridManager.Instance.Grid.AddContent(availableIndices[0], new RoomData());
     }
 }

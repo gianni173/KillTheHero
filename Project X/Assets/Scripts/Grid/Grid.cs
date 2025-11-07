@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.Serialization;
 using UnityEngine;
 
@@ -104,7 +105,7 @@ public class Grid
     }
 
     public void AddContent(int index, AGridContent content)
-    {
+    { 
         _content.Add(index, content);
         OnGridChanged?.Invoke(this);
     }
@@ -178,6 +179,11 @@ public class Grid
         return availableIndices.ToArray();
     }
 
+    public int[] GetAvailableAndEmptyGridIndices()
+    {
+        var availableIndices = GetAvailableGridIndices();
+        return availableIndices.Where(index => GetGridContent(index) == null).ToArray();
+    }
     public int[] GetNeighborsIndices(int index)
     {
         var coord = IndexToGridCoord(index);
