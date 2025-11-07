@@ -919,27 +919,6 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 2928063363815798690, guid: 943e14055e962c2479965bf489fb9401, type: 3}
-    - target: {fileID: 2928063363815798690, guid: 943e14055e962c2479965bf489fb9401, type: 3}
-      propertyPath: serializationData.PrefabModifications.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2928063363815798690, guid: 943e14055e962c2479965bf489fb9401, type: 3}
-      propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
-      value: '"path":"_grid._maxSize","value":{"$id":0,"$type":"UnityEngine.Vector2Int,
-        UnityEngine.CoreModule",5,10}'
-      objectReference: {fileID: 0}
-    - target: {fileID: 2928063363815798690, guid: 943e14055e962c2479965bf489fb9401, type: 3}
-      propertyPath: 'serializationData.PrefabModifications.Array.data[1]'
-      value: '"path":"_grid._maxSize.x","value":{"$id":0,"$type":"System.Int32, mscorlib",5}'
-      objectReference: {fileID: 0}
-    - target: {fileID: 2928063363815798690, guid: 943e14055e962c2479965bf489fb9401, type: 3}
-      propertyPath: 'serializationData.PrefabModifications.Array.data[2]'
-      value: '"path":"_grid._maxSize.y","value":{"$id":0,"$type":"System.Int32, mscorlib",5}'
-      objectReference: {fileID: 0}
-    - target: {fileID: 2928063363815798690, guid: 943e14055e962c2479965bf489fb9401, type: 3}
-      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
