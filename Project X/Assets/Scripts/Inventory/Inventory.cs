@@ -18,13 +18,13 @@ public class Inventory
     {
         _purchasedRoomContents ??= new List<ARoomContentData>();
         _purchasedRoomContents.Add(item);
-        //OnInventoryChanged.Invoke(this);
+        OnInventoryChanged?.Invoke(this);
     }
 
     public void RemoveItemFromInventory(ARoomContentData item)
     {
         _purchasedRoomContents ??= new List<ARoomContentData>();
         _purchasedRoomContents.Remove(item);
-        OnInventoryChanged.Invoke(this);
+        OnInventoryChanged?.Invoke(this);
     }
 }
