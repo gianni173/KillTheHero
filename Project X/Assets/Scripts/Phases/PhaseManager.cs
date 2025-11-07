@@ -11,6 +11,15 @@ public class PhaseManager : Singleton<PhaseManager>
     private PhaseType _currentPhase;
     public PhaseType CurrentPhase => _currentPhase;
 
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            SetPhase(_currentPhase == PhaseType.Exploration ? PhaseType.Construction : PhaseType.Exploration);
+        }
+    }
+
     [Button]
     public void SetPhase(PhaseType newPhase)
     {

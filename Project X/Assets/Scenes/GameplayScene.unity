@@ -390,6 +390,52 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02ff585107ea7ab45a9e4e2f3b5e22ea, type: 3}
+--- !u!1 &975792428
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 975792430}
+  - component: {fileID: 975792429}
+  m_Layer: 0
+  m_Name: DebuggerInput - Restart Game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &975792429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975792428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e781308f1e4d4a48b156259d8928c36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scene: StartupScene
+  _button: 114
+--- !u!4 &975792430
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975792428}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 928.31714, y: 291.3393, z: -6.799264}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1270938842 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5665894196757835797, guid: 5d9b9084402fd7c4e86e540674bbe82b, type: 3}
@@ -478,7 +524,7 @@ GameObject:
   - component: {fileID: 1657475767}
   - component: {fileID: 1657475766}
   m_Layer: 0
-  m_Name: DebuggerInput
+  m_Name: DebuggerInput - Main Scene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -496,7 +542,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e781308f1e4d4a48b156259d8928c36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainScene: MainScene
+  _scene: MainScene
+  _button: 27
 --- !u!4 &1657475767
 Transform:
   m_ObjectHideFlags: 0
@@ -1139,6 +1186,7 @@ SceneRoots:
   - {fileID: 3312350945674575541}
   - {fileID: 6639567664600584379}
   - {fileID: 1657475767}
+  - {fileID: 975792430}
   - {fileID: 758996172}
   - {fileID: 1331454944}
   - {fileID: 7877371455066933793}
