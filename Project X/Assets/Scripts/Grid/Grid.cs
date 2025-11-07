@@ -149,7 +149,7 @@ public class Grid
 
         if (newSize.x > _maxSize.x || newSize.y > _maxSize.y)
         {
-            Debug.LogError($"new grid dimension not valid: ({newSize}) bigger than ({_maxSize})!");
+            Debug.Log($"new grid dimension not valid: ({newSize}) bigger than ({_maxSize})!");
             return;
         }
 
