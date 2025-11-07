@@ -29,6 +29,9 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
     [SerializeField]
     private float _timeBetweenHeroMoves = 2f;
 
+    [SerializeField]
+    private float _firstTimeDelay = 2f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -137,6 +140,7 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
 
     public IEnumerator HeroMovements(float delay)
     {
+        yield return new WaitForSeconds(_firstTimeDelay);
         while (_indexMovingHero < _heroInstances.Count)
         {
             var hero = _heroInstances[_indexMovingHero];
