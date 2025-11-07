@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class RoomsBuilder : MonoBehaviour
+public class RoomsBuilder : Singleton<RoomsBuilder>
 {
     public static RoomsBuilder Instance;
     

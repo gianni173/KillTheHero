@@ -52,6 +52,7 @@ public class PlayerStats
             {
                 resource.Quantity += quantity;
                 Debug.Log($"Added {quantity} {type}. Total: {resource.Quantity}");
+                Market.Instance.UpdateTexts();
                 return;
             }
         }

@@ -48,7 +48,6 @@ public class PathFinderSystem : MonoBehaviour
             return;
         }
 
-        UpdatePath();
         UpdatePositionToCurrentStep();
     }
 
@@ -86,16 +85,18 @@ public class PathFinderSystem : MonoBehaviour
     }
 
     [Button]
-    public void NextStep()
+    public int NextStep()
     {
         if (_currentPath == null || !_currentPath.HasNextStep())
         {
             Debug.LogWarning("[PathFinderSystem] No current path to follow.");
-            return;
+            return -1;
         }
 
         _currentIndex = _currentPath.GetNextStep();
         UpdatePositionToCurrentStep();
+
+        return _currentIndex;
     }
 
     public void UpdatePositionToCurrentStep()
@@ -109,6 +110,11 @@ public class PathFinderSystem : MonoBehaviour
         Vector3 worldPos = _grid.GridCoordToWorldCoord(_grid.IndexToGridCoord(_currentIndex));
         Vector3 offset = new Vector3(_grid.WorldCellSize.x / 2, _grid.WorldCellSize.y / 2, 0);
         transform.position = worldPos + offset;
+    }
+
+    public void SetPath(Path path)
+    {
+        _currentPath = path;
     }
 
     void OnDrawGizmos()
