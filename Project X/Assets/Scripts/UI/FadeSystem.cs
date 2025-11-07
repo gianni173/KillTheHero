@@ -16,6 +16,10 @@ public class FadeSystem : SerializedMonoBehaviour
     private void Awake()
     {
         _canvasGroup = this.GetComponent<CanvasGroup>();
+        if (_canvasGroup.alpha == 0) 
+        {
+            SetBlockRaycast(false);
+        }
     }
     private void OnEnable()
     {
@@ -31,6 +35,7 @@ public class FadeSystem : SerializedMonoBehaviour
         if (_fadeToBlack == null)
         {
             _fadeToBlack = StartCoroutine(FadeToBlack());
+            SetBlockRaycast(true);
         }
         else 
         {
@@ -62,6 +67,11 @@ public class FadeSystem : SerializedMonoBehaviour
         }
         _canvasGroup.alpha = 0;
         _fadeToBlack = null;
+        SetBlockRaycast(false);
     }
 
+    private void SetBlockRaycast(bool toggle)
+    {
+        _canvasGroup.blocksRaycasts = toggle;
+    }
 }
