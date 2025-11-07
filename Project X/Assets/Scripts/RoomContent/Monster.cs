@@ -3,7 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "RoomContent_Monster", menuName = "RoomContent/Monster")]
 public class Monster : ARoomContentData
 {
+    [SerializeField]
     private int _fameReward;
+    [SerializeField]
     private EntityTag[] _killTagMask;
 
     public override void Interact(Entity entity)

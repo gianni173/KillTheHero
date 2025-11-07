@@ -3,15 +3,13 @@ using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using System.Collections;
+using Sirenix.Utilities;
 
 public class ExplorationSystem : Singleton<ExplorationSystem>
 {
-    [SerializeField]
-    private Vector2Int _heroToSpawn = Vector2Int.zero;
-    [SerializeField]
-    private Vector2Int _heroTagsRange = Vector2Int.zero;
-    [SerializeField]
-    private GameObject _heroPrefab = null;
+    [SerializeField] private Vector2Int _heroToSpawn = Vector2Int.zero;
+    [SerializeField] private Vector2Int _heroTagsRange = Vector2Int.zero;
+    [SerializeField] private GameObject _heroPrefab = null;
 
     private int _entranceRoomIndex = -1;
     private int _mimikRoomIndex = -1;
@@ -26,11 +24,9 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
 
     Coroutine _activateHeroCoroutine;
 
-    [SerializeField]
-    private float _timeBetweenHeroMoves = 2f;
+    [SerializeField] private float _timeBetweenHeroMoves = 2f;
 
-    [SerializeField]
-    private float _firstTimeDelay = 2f;
+    [SerializeField] private float _firstTimeDelay = 2f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,7 +39,6 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     [Button]
@@ -54,14 +49,15 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
         var indexToGrid = pathFinderSystem.NextStep();
         var entity = movingHero.GetComponent<Entity>();
         var roomData = _grid.GetGridContent(indexToGrid) as RoomData;
-        foreach(var content in roomData.Contents)
+        foreach (var content in roomData.Contents)
         {
-            if(content != null && content.IsUsable)
+            if (content != null && content.IsUsable)
             {
                 content.Interact(entity);
             }
         }
     }
+
     public void StartExploration(PhaseType newPhase)
     {
         if (newPhase != PhaseType.Exploration)
@@ -80,39 +76,40 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
             hero.SetActive(false); // will be activated when the phase starts
             _heroInstances.Add(hero);
         }
+
         _activateHeroCoroutine = StartCoroutine(HeroMovements(_timeBetweenHeroMoves));
     }
 
-    public Room FindSpecificRoom<T>() where T : ARoomContentData
+    public int FindSpecificRoom<T>() where T : ARoomContentData
     {
-        List<Room> rooms = RoomsBuilder.Instance.Rooms;
-        foreach (var room in rooms)
+        var roomIndexes = _grid.GetAvailableGridIndices();
+        foreach (var index in roomIndexes)
         {
-            var contentDatas = room.GetRoomContent();
-            foreach (var content in contentDatas)
+            if (_grid.GetGridContent(index) == null ||
+                _grid.GetGridContent(index) is not RoomData roomData ||
+                roomData.Contents.IsNullOrEmpty())
+                continue;
+            var content = roomData.Contents[0];
+
+            if (content != null && content is T)
             {
-                if (content != null && content is T)
-                {
-                    return room;
-                }
+                return index;
             }
         }
 
-        return null;
+        return -1;
     }
 
     private void GetRoomIndices()
     {
-        var mimik = FindSpecificRoom<Mimik>();
-        var entrance = FindSpecificRoom<Entrance>();
-
-        if (mimik == null || entrance == null)
+        _mimikRoomIndex = FindSpecificRoom<Mimik>();
+        _entranceRoomIndex = FindSpecificRoom<Entrance>();
+        
+        if (_mimikRoomIndex == -1 || _entranceRoomIndex == -1)
         {
             Debug.LogError("Mimik or Entrance room not found!");
             return;
         }
-        _mimikRoomIndex = _grid.WorldCoordToGridIndex(mimik.transform.position);
-        _entranceRoomIndex = _grid.WorldCoordToGridIndex(entrance.transform.position);
 
         _pathToMimik = PathFinder.AStarPathFinding(_grid, _entranceRoomIndex, _mimikRoomIndex);
     }
@@ -121,7 +118,7 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
     {
         if (PhaseManager.Instance.CurrentPhase != PhaseType.Exploration)
             return;
-        
+
         _heroInstances[_indexMovingHero].SetActive(false);
         _indexMovingHero++;
         _pathToMimik.ResetPath();
@@ -148,8 +145,8 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
                 hero.SetActive(true);
             yield return new WaitForSeconds(delay);
             MoveHero();
-
         }
+
         yield return null;
     }
 
@@ -160,6 +157,7 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
         {
             Destroy(hero);
         }
+
         _heroInstances.Clear();
         _indexMovingHero = 0;
         if (_activateHeroCoroutine != null)
