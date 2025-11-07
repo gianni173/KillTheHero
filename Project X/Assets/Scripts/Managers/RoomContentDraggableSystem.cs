@@ -106,17 +106,12 @@ public class RoomContentDraggableSystem : SerializedMonoBehaviour
         var draggedTransform = GetTransformFromDraggedRoom(_currentDraggedItem);
         if (draggedTransform == null) return;
 
-        // Reset drag values
-        _currentDraggedItem.IsDragging = false;
-        _currentDraggedItem = null;
-
         // Memorize room's before moving grid position
         var originalIndex = GridManager.Grid.WorldCoordToGridIndex(_originalPosition);
 
         // Jachy Hu 07/11: same stuff as RoomDraggableSystem
         var roomPosition = new Vector3(draggedTransform.position.x + 0.5f, draggedTransform.position.y + 0.5f,
             draggedTransform.position.z);
-        Debug.Log("1");
         // Check if dragged room is released in the current visible grid
         var roomGridPosition = GridManager.Grid.WorldCoordToGridCoord(roomPosition);
         var roomIndex = GridManager.Grid.GridCoordToIndex(roomGridPosition);
@@ -124,40 +119,53 @@ public class RoomContentDraggableSystem : SerializedMonoBehaviour
                                   roomGridPosition.x < GridManager.Grid.CurrentSize.x &&
                                   roomGridPosition.y >= 0 &&
                                   roomGridPosition.y < GridManager.Grid.CurrentSize.y;
+        var startingRoomIndex = _gridManager.Grid.WorldCoordToGridIndex(_originalPosition);
+        var startingRoomData = _gridManager.Grid.GetGridContent(startingRoomIndex) as RoomData;
 
         if (!isWithinCurrentSize)
         {
-            Debug.Log("logica reset in inventario");
+            // moved roomContent from grid to inventory
+            PlayerStats.Instance.PlayerInventory.AddItemToInventory(startingRoomData.Contents[0]);
+            startingRoomData.Contents = Array.Empty<ARoomContentData>();
+            _gridManager.Grid.TriggerChange();
             return;
         }
         // Check if there is an existing room   
-        var existingContent = GridManager.Grid.GetGridContent(roomIndex);
         var destinationRoomData = _gridManager.Grid.GetGridContent(roomIndex) as RoomData;
-        var startingRoomIndex = _gridManager.Grid.WorldCoordToGridIndex(_originalPosition);
-        var startingRoomData = _gridManager.Grid.GetGridContent(startingRoomIndex) as RoomData;
-        var currentDraggedData = _currentDraggedItem as RoomContent;
-
+        if (destinationRoomData == null)
+        {
+            draggedTransform.position = _originalPosition;
+            return;
+        }
+        Debug.Log(_currentDraggedItem);
+        var monobehaviour = GetTransformFromDraggedRoom(_currentDraggedItem);
+        var currentDraggedData = monobehaviour.GetComponent<RoomContent>();
         if (destinationRoomData.Contents.Length == 0)
         {
             destinationRoomData.Contents = new ARoomContentData[1];
-            destinationRoomData.Contents[0] = currentDraggedData.GetRoomContentData();
-            startingRoomData.Contents = Array.Empty<ARoomContentData>();
+            destinationRoomData.Contents[0] = currentDraggedData.GetRoomContentData();  
+            if (startingRoomData != null)
+            {
+                startingRoomData.Contents = Array.Empty<ARoomContentData>();
+            }
+            else
+            {
+                //remove roomContent from inventory and place it on grid
+                PlayerStats.Instance.PlayerInventory.RemoveItemFromInventory(currentDraggedData.GetRoomContentData());
+            }
         }
         else
         {
+            //swap logic
             (destinationRoomData.Contents[0], startingRoomData.Contents[0]) = (startingRoomData.Contents[0], destinationRoomData.Contents[0]);
         }
         
         RoomsBuilder.Instance.Refresh();
         draggedTransform.position = GridManager.Grid.GridCoordToWorldCoord(GridManager.Grid.IndexToGridCoord(roomIndex));
-        if (existingContent != null)
-        {
-            Debug.Log("room trovata, fare altro check per vedere se c'è un content, poi fare logica");
-            return;
-        }
         
-        Debug.Log("qui ha trovato una stanza vuota, rifare logica");
-        
+        // Reset drag values
+        _currentDraggedItem.IsDragging = false;
+        _currentDraggedItem = null;
     }
 
     #endregion
