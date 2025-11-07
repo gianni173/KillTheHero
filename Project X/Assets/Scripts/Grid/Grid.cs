@@ -81,6 +81,11 @@ public class Grid
 
     #region Grid room helpers
 
+    public void TriggerChange()
+    {
+        OnGridChanged?.Invoke(this);
+    }
+
     public AGridContent GetGridContent(int index)
     {
         if (!_content.ContainsKey(index))
