@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class RoomData : AGridContent
 {
+    [InlineEditor]
     public List<ARoomContentData> Contents;
 
     [SerializeField] private int _roomSize = 1;
