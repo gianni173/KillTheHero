@@ -9,7 +9,7 @@ public class FadeSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        _phaseManager.OnPhaseChanged += EnterFade;
+        //_phaseManager.OnPhaseChanged += EnterFade;
     }
 
     private void EnterFade() 
