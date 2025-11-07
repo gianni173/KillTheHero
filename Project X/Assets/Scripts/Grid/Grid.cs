@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class Grid
 {
-    public Action<Grid> OnChanged;
+    public Action<Grid> OnGridChanged;
 
     [Header("Grid Dimensions")] [SerializeField]
     private Vector2Int _maxSize; // max grid dimension
@@ -80,6 +80,11 @@ public class Grid
 
     #region Grid room helpers
 
+    public void TriggerChange()
+    {
+        OnGridChanged?.Invoke(this);
+    }
+
     public AGridContent GetGridContent(int index)
     {
         if (!_content.ContainsKey(index))
@@ -95,13 +100,13 @@ public class Grid
         //TODO: Salvo la reference per un futuro Destroy() o SetActive(false)
         //AGridContent gridContent = _content[index]; 
         _content.Remove(index);
-        OnChanged?.Invoke(this);
+        OnGridChanged?.Invoke(this);
     }
 
     public void AddContent(int index, AGridContent content)
     {
         _content.Add(index, content);
-        OnChanged?.Invoke(this);
+        OnGridChanged?.Invoke(this);
     }
 
     public void MoveRoom(int fromIndex, int toIndex, AGridContent content)
@@ -125,7 +130,7 @@ public class Grid
                 ConnectNeighbors(oldNeighborIndex);
             }
         }
-        OnChanged?.Invoke(this);
+        OnGridChanged?.Invoke(this);
     }
 
     public Vector2Int GetGridCurrentSize()
@@ -144,14 +149,14 @@ public class Grid
 
         if (newSize.x > _maxSize.x || newSize.y > _maxSize.y)
         {
-            Debug.LogError($"new grid dimension not valid: ({newSize}) bigger than ({_maxSize})!");
+            Debug.Log($"new grid dimension not valid: ({newSize}) bigger than ({_maxSize})!");
             return;
         }
 
         // If all is good, set the new player visible grid
         _currentSize = newSize;
         Debug.Log($"[Grid] Visible grid updated at: {_currentSize}");
-        OnChanged?.Invoke(this);
+        OnGridChanged?.Invoke(this);
     }
 
     #endregion
@@ -237,7 +242,7 @@ public class Grid
         }
         _connections[fromIndex] = neighbors.ToArray();
         _connections[toIndex] = reverseNeighbors.ToArray();
-        OnChanged?.Invoke(this);
+        OnGridChanged?.Invoke(this);
         Debug.Log($"Toggled connection between {fromIndex} and {toIndex}");
     }
 
@@ -267,7 +272,7 @@ public class Grid
         }
         _connections[fromIndex] = neighbors.ToArray();
         _connections[toIndex] = reverseNeighbors.ToArray();
-        OnChanged?.Invoke(this);
+        OnGridChanged?.Invoke(this);
     }
 
     public void RemoveConnection(int fromIndex, int toIndex)
@@ -296,7 +301,7 @@ public class Grid
         }
         _connections[fromIndex] = neighbors.ToArray();
         _connections[toIndex] = reverseNeighbors.ToArray();
-        OnChanged?.Invoke(this);
+        OnGridChanged?.Invoke(this);
     }
 
     // connect all available neighboring grid indices
@@ -308,7 +313,7 @@ public class Grid
             ConnectNeighbors(index);
         }
 
-        OnChanged?.Invoke(this);
+        OnGridChanged?.Invoke(this);
     }
 
     public void ConnectNeighbors(int index)

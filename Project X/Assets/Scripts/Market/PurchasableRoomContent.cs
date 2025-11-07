@@ -10,6 +10,6 @@ public class PurchasableRoomContent : Purchasable
     {
         base.Purchase();
         
-        PlayerStats.Instance.GetInventory().AddItemToInventory(Instantiate(RoomContentType));
+        PlayerStats.Instance.PlayerInventory.AddItemToInventory(Instantiate(RoomContentType));
     }
 }

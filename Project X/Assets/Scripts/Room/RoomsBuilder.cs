@@ -18,8 +18,8 @@ public class RoomsBuilder : Singleton<RoomsBuilder>
     private Transform _roomsContainer;
 
     private List<Room> _rooms = new();
-    private List<RoomContent> _roomContents = new();
     public List<Room> Rooms => _rooms;
+    private List<RoomContent> _roomContents = new();
     public List<RoomContent> RoomContents => _roomContents;
     private GridManager _gridManager;
     public GridManager GridManager
@@ -50,7 +50,7 @@ public class RoomsBuilder : Singleton<RoomsBuilder>
             return;
         }
 
-        GridManager.Grid.OnChanged += _ => Refresh();
+        GridManager.Grid.OnGridChanged += _ => Refresh();
         
         Refresh();
     }
@@ -65,7 +65,6 @@ public class RoomsBuilder : Singleton<RoomsBuilder>
     {
         var grid = GridManager.Grid;
         var size = grid.CurrentSize;
-
         for (var x = 0; x < size.x; x++)
         {
             for (var y = 0; y < size.y; y++)
@@ -96,10 +95,10 @@ public class RoomsBuilder : Singleton<RoomsBuilder>
                 }
                 // register the room to the drag system, and initialize the room data
                 RoomDraggableSystem.Instance.RegisterDraggable(room);
-                _rooms.Add(room);
+                Rooms.Add(room);
                 room.Init(roomData);
                 RoomContentDraggableSystem.Instance.RegisterDraggable(room.RoomContent);
-                _roomContents.Add(room.RoomContent);
+                RoomContents.Add(room.RoomContent);
                 //TODO: add to _roomContents
                 GridManager.Grid.GetAvailableGridIndices();
             }
@@ -110,18 +109,15 @@ public class RoomsBuilder : Singleton<RoomsBuilder>
     {
         foreach (var child in _roomsContainer.GetComponentsInChildren<Transform>())
         {
+            var room = child.GetComponent<Room>();
+            if (room != null)
+            {
+                RoomDraggableSystem.Instance.UnregisterDraggable(room);
+            }
             if (child.parent == _roomsContainer)
             {
                 Destroy(child.gameObject);
             }
         }
-    }
-
-    private void OnDestroy()
-    {
-        // foreach (var room in _rooms)
-        // {
-        //     RoomDraggableSystem.Instance.UnregisterDraggable(room);
-        // }
     }
 }

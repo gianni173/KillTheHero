@@ -50,6 +50,7 @@ public class Room : SerializedMonoBehaviour, IDraggable
     {
         Data = roomData;
         _roomContent.Init(roomData.Contents.IsNullOrEmpty() ? null : roomData.Contents[0]);
+        RoomContentDraggableSystem.Instance.RegisterDraggable(_roomContent);
         UpdateGraphics();
     }
 
@@ -90,6 +91,11 @@ public class Room : SerializedMonoBehaviour, IDraggable
         OnReleaseProperty?.Invoke(this);
     }
     #endregion
+
+    private void OnDestroy()
+    {
+        RoomContentDraggableSystem.Instance.UnregisterDraggable(_roomContent);
+    }
 
     public ARoomContentData[] GetRoomContent()
     {

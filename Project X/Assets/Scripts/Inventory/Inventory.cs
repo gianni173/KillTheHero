@@ -1,13 +1,12 @@
+using System;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
-using UnityEngine;
-using UnityEngine.Events;
+using Sirenix.Serialization;
 
 public class Inventory
 {
-    [ShowInInspector, DisableInEditorMode]
-    private List<ARoomContentData>  _purchasedRoomContents = new();
-    public UnityEvent OnInventoryChanged = new();
+    public Action<Inventory>OnInventoryChanged;
+
+    [OdinSerialize] private List<ARoomContentData> _purchasedRoomContents;
     
     public List<ARoomContentData> GetInventoryContents()
     {
@@ -19,16 +18,13 @@ public class Inventory
     {
         _purchasedRoomContents ??= new List<ARoomContentData>();
         _purchasedRoomContents.Add(item);
-        Debug.Log(OnInventoryChanged);
-        OnInventoryChanged.Invoke();
+        OnInventoryChanged?.Invoke(this);
     }
 
     public void RemoveItemFromInventory(ARoomContentData item)
     {
         _purchasedRoomContents ??= new List<ARoomContentData>();
         _purchasedRoomContents.Remove(item);
-        OnInventoryChanged.Invoke();
+        OnInventoryChanged?.Invoke(this);
     }
-    
-    //TODO: add logic to instantiate inventory UI whenever the contents change.
 }

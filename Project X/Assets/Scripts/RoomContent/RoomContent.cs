@@ -1,35 +1,40 @@
 using System;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class RoomContent : SerializedMonoBehaviour, IDraggable
 {
-    public bool IsDragging { get; set; }
-
-    public bool IsDraggable
-    {
-        get => _isDraggable; 
-        set => _isDraggable = value;
-    }
-
+    [SerializeField] 
+    private SpriteRenderer _contentRenderer;
+    public SpriteRenderer ContentRenderer;
+    
+    [OdinSerialize]
+    private ARoomContentData Data { get; set; }
     public Action<IDraggable> OnPickupProperty { get; set; }
     public Action<IDraggable, PointerEventData> OnDragProperty { get; set; }
     public Action<IDraggable> OnReleaseProperty { get; set; }
+    public bool IsDragging { get; set; }
+    [SerializeField] 
+    private bool _isDraggable = true;
+    public bool IsDraggable
+    {
+        get => _isDraggable;
+        set => _isDraggable = value;
+    }
     
-    public SpriteRenderer ContentRenderer;
-
-    private ARoomContentData Data { get; set; }
 
     private Color _originalColor;
     private Color _newColor = Color.red;
     
-    [SerializeField]
-    private bool _isDraggable = true;
-    
     public void Init(ARoomContentData roomContentData)
     {
         Data = roomContentData;
+        if (roomContentData == null)
+        {
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
         UpdateGraphics();
     }
 
@@ -54,7 +59,7 @@ public class RoomContent : SerializedMonoBehaviour, IDraggable
     {
         return Data;
     }
-    
+    #region IDraggable Implementation
     public void OnPointerEnter(PointerEventData eventData)
     {
         ContentRenderer.color = _newColor;
@@ -84,4 +89,5 @@ public class RoomContent : SerializedMonoBehaviour, IDraggable
         if (!IsDraggable) return;
         OnReleaseProperty?.Invoke(this);
     }
+    #endregion
 }

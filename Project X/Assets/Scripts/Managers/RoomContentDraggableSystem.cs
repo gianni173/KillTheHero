@@ -1,14 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Sirenix.Serialization;
+using Sirenix.OdinInspector;
 
 public class RoomContentDraggableSystem : SerializedMonoBehaviour
 {
     public static RoomContentDraggableSystem Instance;
+    [OdinSerialize] [Header("Draggable Contents")] 
+    private List<IDraggable> _draggables = new();
+    private IDraggable _currentDraggedItem;
+    private Camera _camera;
+    private Vector3 _originalPosition;
+    private GridManager _gridManager;
+
     public GridManager GridManager
     {
         get
@@ -17,15 +23,7 @@ public class RoomContentDraggableSystem : SerializedMonoBehaviour
             return _gridManager;
         }
     }
-    
-    [OdinSerialize] [Header("Draggable Contents")]
-    private List<IDraggable> _draggables = new();
-    private GridManager _gridManager;
-    private Camera _camera;
-    private IDraggable _currentDraggedContent;
-    private Room _originalRoom;
-    private Vector3 _originalPosition;
-    
+
     private void Awake()
     {
         if (Instance != null)
@@ -41,137 +39,143 @@ public class RoomContentDraggableSystem : SerializedMonoBehaviour
     private void Start()
     {
         _camera = Camera.main;
-
         if (_camera == null)
-        {
             _camera = FindAnyObjectByType<Camera>();
-        }
     }
-
+    #region Event registration and unregistration
     public void RegisterDraggable(IDraggable draggable)
     {
-        if (draggable == null || _draggables.Contains(draggable))
-        {
-            return;
-        }
-        
+        if (draggable == null || _draggables.Contains(draggable)) return;
+
         _draggables.Add(draggable);
 
+        // Event subscription
         draggable.OnPickupProperty += OnDraggablePickup;
         draggable.OnDragProperty += OnDraggableDrag;
         draggable.OnReleaseProperty += OnDraggableRelease;
     }
 
-    private void OnDraggablePickup(IDraggable draggable)
+    public void UnregisterDraggable(IDraggable draggable)
     {
-        _currentDraggedContent = draggable;
-        if (_currentDraggedContent == null)
-        {
-            return;
-        }
+        if (draggable == null || !_draggables.Contains(draggable)) return;
 
-        _currentDraggedContent.IsDragging = true;
-        //save original room
-        _originalRoom = GetRoomFromContent(_currentDraggedContent);
-        
-        //get dragged Transform
-        var draggedTransform = GetDraggedContentTransform();
-        if (draggedTransform == null)
-        {
-            return;
-        }
-        
+        _draggables.Remove(draggable);
+
+        // Rimuovi sottoscrizione agli eventi
+        draggable.OnPickupProperty -= OnDraggablePickup;
+        draggable.OnDragProperty -= OnDraggableDrag;
+        draggable.OnReleaseProperty -= OnDraggableRelease;
+    }
+    #endregion
+    #region event handlers
+
+    private void OnDraggablePickup(IDraggable invokedDraggable)
+    {
+        _currentDraggedItem = invokedDraggable;
+        if (_currentDraggedItem == null) return;
+        _currentDraggedItem.IsDragging = true;
+
+        // Get dragged object's transform
+        Transform draggedTransform = GetTransformFromDraggedRoom(_currentDraggedItem);
+        if (draggedTransform == null) return;
+
         _originalPosition = draggedTransform.position;
         
-        //mouse follow
-        var mouseWorldPos = GetMouseWorldPosition();
-        
-        //subtract 0.5 from the x and y values to keep in consideration the offset of the room content's position
-        draggedTransform.position = new Vector3(mouseWorldPos.x - 0.5f, mouseWorldPos.y - 0.5f, _originalPosition.z);
+        // mouse follow 
+        Vector3 mouseWorldPos = GetMouseWorldPosition();
+        draggedTransform.position = new Vector3(mouseWorldPos.x, mouseWorldPos.y, _originalPosition.z);
     }
 
-    private void OnDraggableDrag(IDraggable draggable, PointerEventData eventData)
+    private void OnDraggableDrag(IDraggable invokedDraggable, PointerEventData eventData)
     {
-        if (_currentDraggedContent is not { IsDragging : true })
-        {
-            return;
-        }
-        
-        var draggedTransform = GetDraggedContentTransform();
-        if (draggedTransform == null)
-        {
-            return;
-        }
-        
+        if (_currentDraggedItem is not { IsDragging: true }) return;
+
+        var draggedTransform = GetTransformFromDraggedRoom(_currentDraggedItem);
+        if (draggedTransform == null) return;
+
         var mouseWorldPos = _camera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y));
-        mouseWorldPos.z =  _originalPosition.z;
-        
-        draggedTransform.position = new Vector3(mouseWorldPos.x - 0.5f, mouseWorldPos.y - 0.5f, _originalPosition.z);
-        
+        mouseWorldPos.z = _originalPosition.z;
+        // Jachy Hu 07/11: same stuff as RoomDraggableSystem
+        var newPosition = new Vector3(mouseWorldPos.x - 0.5f, mouseWorldPos.y - 0.5f, _originalPosition.z);
+        draggedTransform.position = newPosition;
     }
 
-    private void OnDraggableRelease(IDraggable draggable)
+    private void OnDraggableRelease(IDraggable invokedDraggable)
     {
-        if (_currentDraggedContent == null)
-        {
-            return;
-        }
-        var draggedTransform = GetDraggedContentTransform();
-        if (draggedTransform == null)
-        {
-            return;
-        }
-        
-        //get the index of the room the content is currently on top.
-        var roomIndex = GridManager.Grid.WorldCoordToGridIndex(GetMouseWorldPosition());
+        if (_currentDraggedItem == null) return;
+        var draggedTransform = GetTransformFromDraggedRoom(_currentDraggedItem);
+        if (draggedTransform == null) return;
 
-        if (roomIndex < 0 || roomIndex > (GridManager.Grid.CurrentSize.x * GridManager.Grid.CurrentSize.x))
-        {
-            draggedTransform.position = _originalPosition;
-            return;
-        }
-        
-        //check if the grid has a room placed at the given index
-        if (_gridManager.Grid.GetGridContent(roomIndex) == null)
-        {
-            draggedTransform.position = _originalPosition;
-            return;
-        }
-        
-        var destinationRoomData = _gridManager.Grid.GetGridContent(roomIndex) as RoomData;
-        var startingRoomIndex = _gridManager.Grid.WorldCoordToGridIndex(_originalRoom.transform.position);
+        // Memorize room's before moving grid position
+        var originalIndex = GridManager.Grid.WorldCoordToGridIndex(_originalPosition);
+
+        // Jachy Hu 07/11: same stuff as RoomDraggableSystem
+        var roomPosition = new Vector3(draggedTransform.position.x + 0.5f, draggedTransform.position.y + 0.5f,
+            draggedTransform.position.z);
+        // Check if dragged room is released in the current visible grid
+        var roomGridPosition = GridManager.Grid.WorldCoordToGridCoord(roomPosition);
+        var roomIndex = GridManager.Grid.GridCoordToIndex(roomGridPosition);
+        var isWithinCurrentSize = roomGridPosition.x >= 0 &&
+                                  roomGridPosition.x < GridManager.Grid.CurrentSize.x &&
+                                  roomGridPosition.y >= 0 &&
+                                  roomGridPosition.y < GridManager.Grid.CurrentSize.y;
+        var startingRoomIndex = _gridManager.Grid.WorldCoordToGridIndex(_originalPosition);
         var startingRoomData = _gridManager.Grid.GetGridContent(startingRoomIndex) as RoomData;
-        var currentDraggedData = _currentDraggedContent as RoomContent;
 
+        if (!isWithinCurrentSize)
+        {
+            if (startingRoomData == null)
+            {
+                // moving from inventory to outside grid check
+                draggedTransform.position = _originalPosition;
+                return;
+            }
+            // moved roomContent from grid to inventory
+            PlayerStats.Instance.PlayerInventory.AddItemToInventory(startingRoomData.Contents[0]);
+            startingRoomData.Contents = Array.Empty<ARoomContentData>();
+            _gridManager.Grid.TriggerChange();
+            return;
+        }
+        // Check if there is an existing room   
+        var destinationRoomData = _gridManager.Grid.GetGridContent(roomIndex) as RoomData;
+        if (destinationRoomData == null)
+        {
+            draggedTransform.position = _originalPosition;
+            return;
+        }
+        Debug.Log(_currentDraggedItem);
+        var monobehaviour = GetTransformFromDraggedRoom(_currentDraggedItem);
+        var currentDraggedData = monobehaviour.GetComponent<RoomContent>();
         if (destinationRoomData.Contents.Length == 0)
         {
             destinationRoomData.Contents = new ARoomContentData[1];
-            destinationRoomData.Contents[0] = currentDraggedData.GetRoomContentData();
-            startingRoomData.Contents = Array.Empty<ARoomContentData>();
+            destinationRoomData.Contents[0] = currentDraggedData.GetRoomContentData();  
+            if (startingRoomData != null)
+            {
+                startingRoomData.Contents = Array.Empty<ARoomContentData>();
+            }
+            else
+            {
+                //remove roomContent from inventory and place it on grid
+                PlayerStats.Instance.PlayerInventory.RemoveItemFromInventory(currentDraggedData.GetRoomContentData());
+            }
         }
         else
         {
+            //swap logic
             (destinationRoomData.Contents[0], startingRoomData.Contents[0]) = (startingRoomData.Contents[0], destinationRoomData.Contents[0]);
         }
         
         RoomsBuilder.Instance.Refresh();
-
         draggedTransform.position = GridManager.Grid.GridCoordToWorldCoord(GridManager.Grid.IndexToGridCoord(roomIndex));
         
-        _currentDraggedContent.IsDragging = false;
-        _currentDraggedContent = null;
+        // Reset drag values
+        _currentDraggedItem.IsDragging = false;
+        _currentDraggedItem = null;
     }
 
-    private Room GetRoomFromContent(IDraggable draggable)
-    {
-        return ((MonoBehaviour)draggable).GetComponentInParent<Room>();
-    }
+    #endregion
 
-    private Transform GetDraggedContentTransform()
-    {
-        return ((MonoBehaviour)_currentDraggedContent).transform;
-    }
-    
     private Vector3 GetMouseWorldPosition()
     {
         if (_camera == null)
@@ -183,5 +187,10 @@ public class RoomContentDraggableSystem : SerializedMonoBehaviour
         Vector3 mouseScreenPos = Input.mousePosition;
         Vector3 worldPos = _camera.ScreenToWorldPoint(mouseScreenPos);
         return worldPos;
+    }
+
+    private Transform GetTransformFromDraggedRoom(IDraggable draggable)
+    {
+        return ((MonoBehaviour)draggable).transform;
     }
 }

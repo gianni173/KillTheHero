@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 
 [System.Serializable]
@@ -11,12 +12,14 @@ public class PlayerStats
     // class, in order to avoid creating
     // a playerStats manager
 
-    [ShowInInspector, DisableInEditorMode] 
+    [SerializeField] 
     private Resource[] _resources;
-    [ShowInInspector, DisableInEditorMode] 
+    [SerializeField] 
     private List<Purchasable> _purchasedItems = new();  
-    [ShowInInspector, DisableInEditorMode] 
+    [OdinSerialize] 
     private Inventory _playerInventory;
+
+    public Inventory PlayerInventory => _playerInventory;
 
     private const int STARTING_GOLD = 100;
     private const int STARTING_FAME = 50;
@@ -41,7 +44,7 @@ public class PlayerStats
 
     private void InitializeInventory()
     {
-        _playerInventory = new Inventory();
+        _playerInventory = new();
     }
 
     public void AddResource(ResourceType type, int quantity)
@@ -83,11 +86,6 @@ public class PlayerStats
         }
 
         return 0;
-    }
-
-    public Inventory GetInventory()
-    {
-        return _playerInventory;
     }
 
     public void AddPurchasableItem(Purchasable purchasableItem)

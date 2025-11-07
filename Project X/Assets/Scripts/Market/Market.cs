@@ -1,9 +1,16 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Market : MonoBehaviour
 {
+    [Header("Market Settings")]
+    [SerializeField]
+    private Button _toggleMarket;
+
+    private bool _isMarketToggled;
+    [SerializeField] 
     public Purchasable[] Items;
     public MarketSlot MarketSlotPrefab;
     public GameObject Container;
@@ -27,6 +34,7 @@ public class Market : MonoBehaviour
             MarketSlot marketSlot = Instantiate(MarketSlotPrefab, Container.transform);
             marketSlot.Initialize(item , this);
         }
+        _toggleMarket?.onClick.AddListener(ActivateMarket);
         UpdateTexts();
     }
 
@@ -34,6 +42,22 @@ public class Market : MonoBehaviour
     {
         _goldText.text = "Gold: " + PlayerStats.Instance.GetResourceQuantity(ResourceType.Gold);
         _fameText.text = "Fame: " + PlayerStats.Instance.GetResourceQuantity(ResourceType.Fame);
+    }
+    private void ActivateMarket()
+    {
+        var canvasGroup = GetComponentInParent<CanvasGroup>();
+        if (!_isMarketToggled)
+        {
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.alpha = 1;
+            _isMarketToggled = true;
+            return;
+        }
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+        canvasGroup.alpha = 0;
+        _isMarketToggled = false;
     }
     
 

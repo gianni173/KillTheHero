@@ -9,16 +9,12 @@ public class GridDebugButtons : MonoBehaviour
     
     [SerializeField] 
     private Button _addHeight;
-    
-    [SerializeField]
-    private RoomsBuilder _roomBuilder;
 
     private GridManager GridManager => GridManager.Instance;
     
     
     private void Awake()
     {
-        _roomBuilder = FindFirstObjectByType<RoomsBuilder>();
         _addWidth?.onClick.AddListener(AddWidth);
         _addHeight?.onClick.AddListener(AddHeight);
     }
