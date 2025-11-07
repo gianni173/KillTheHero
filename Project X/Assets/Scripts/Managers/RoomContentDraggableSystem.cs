@@ -124,6 +124,12 @@ public class RoomContentDraggableSystem : SerializedMonoBehaviour
 
         if (!isWithinCurrentSize)
         {
+            if (startingRoomData == null)
+            {
+                // moving from inventory to outside grid check
+                draggedTransform.position = _originalPosition;
+                return;
+            }
             // moved roomContent from grid to inventory
             PlayerStats.Instance.PlayerInventory.AddItemToInventory(startingRoomData.Contents[0]);
             startingRoomData.Contents = Array.Empty<ARoomContentData>();
