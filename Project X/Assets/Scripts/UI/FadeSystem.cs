@@ -1,29 +1,67 @@
 using System;
 using System.Collections;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class FadeSystem : MonoBehaviour
+public class FadeSystem : SerializedMonoBehaviour
 {
     private Coroutine _fadeToBlack;
+    //[SerializeField]
+    //private AnimationCurve _fadeCurve;
+    private CanvasGroup _canvasGroup;
     [SerializeField]
-    private PhaseManager _phaseManager;
-
+    private float _fadeTime = 1f;
+    [SerializeField]
+    private float _cooldown = 1f;
+    private void Awake()
+    {
+        _canvasGroup = this.GetComponent<CanvasGroup>();
+    }
     private void OnEnable()
     {
-        _phaseManager.OnCallFade += EnterFade;
+        PhaseManager.OnCallFade += EnterFade;
+    }
+    private void OnDisable()
+    {
+        PhaseManager.OnCallFade -= EnterFade;
     }
 
     private void EnterFade() 
     {
-        if (_fadeToBlack == null) 
+        if (_fadeToBlack == null)
         {
             _fadeToBlack = StartCoroutine(FadeToBlack());
+        }
+        else 
+        {
+            Debug.LogWarning("[FADESYSTEM] Wait for coroutine to end!");
         }
     }
 
     private IEnumerator FadeToBlack() 
     {
-        yield return null;
+        float t = 0;
+        while (t < 1) 
+        {
+            _canvasGroup.alpha = Mathf.Lerp(0, 1, t);
+            t += Time.deltaTime / _fadeTime;
+            yield return new WaitForEndOfFrame();
+        }
+        _canvasGroup.alpha = 1;
+        yield return new WaitForSeconds(_cooldown);
+        StartCoroutine(FadeFromBlack());
+    }
+    private IEnumerator FadeFromBlack()
+    {
+        float t = 0;
+        while (t < 1)
+        {
+            _canvasGroup.alpha = Mathf.Lerp(1, 0, t);
+            t += Time.deltaTime / _fadeTime;
+            yield return new WaitForEndOfFrame();
+        }
+        _canvasGroup.alpha = 0;
+        _fadeToBlack = null;
     }
 
 }

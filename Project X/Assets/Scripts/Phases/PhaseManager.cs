@@ -5,7 +5,7 @@ using System;
 public class PhaseManager : Singleton<PhaseManager>
 {
     public Action<PhaseType> OnPhaseChanged;
-    public Action OnCallFade;
+    public static event Action OnCallFade;
 
     [SerializeField] 
     private PhaseType _currentPhase;
