@@ -4,15 +4,10 @@ using UnityEngine;
 public class PurchasableRoom : Purchasable
 {
     //checks if there are any free slots in the grid
-    private bool CanPurchase()
+    public override bool CanPurchase()
     {
-        if (GridManager.Instance.Grid.GetAvailableGridIndices().Length == 0)
-        {
-            return false;
-        }
         
-        Purchase();
-        return true;
+        return  base.CanPurchase() && GridManager.Instance.Grid.GetAvailableGridIndices().Length != 0;
     }
     
     public override void Purchase()

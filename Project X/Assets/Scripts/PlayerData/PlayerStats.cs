@@ -55,6 +55,20 @@ public class PlayerStats
             {
                 resource.Quantity += quantity;
                 Debug.Log($"Added {quantity} {type}. Total: {resource.Quantity}");
+                Market.Instance.UpdateTexts();
+                return;
+            }
+        }
+    }
+    public void AddResource(Resource addedResource)
+    {
+        foreach (var resource in _resources)
+        {
+            if (resource.Type == addedResource.Type)
+            {
+                resource.Quantity += addedResource.Quantity;
+                Debug.Log($"Added {addedResource.Quantity} {addedResource.Type}. Total: {resource.Quantity}");
+                Market.Instance.UpdateTexts();
                 return;
             }
         }

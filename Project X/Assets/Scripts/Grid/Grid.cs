@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.Serialization;
-using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 
 [Serializable]

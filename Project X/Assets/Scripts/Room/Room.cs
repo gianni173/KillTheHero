@@ -96,4 +96,9 @@ public class Room : SerializedMonoBehaviour, IDraggable
     {
         RoomContentDraggableSystem.Instance.UnregisterDraggable(_roomContent);
     }
+
+    public ARoomContentData[] GetRoomContent()
+    {
+        return Data.Contents;
+    }
 }

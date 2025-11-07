@@ -49,7 +49,7 @@ public class Path
 
         return _grid.IndexToGridCoord(_path[_currentStep]);
     }
-    
+
     public Vector3 GetCurrentStepWorldCoord()
     {
         if (_currentStep > _path.Length)
@@ -59,5 +59,10 @@ public class Path
 
         var gridCoord = _grid.IndexToGridCoord(_path[_currentStep]);
         return _grid.GridCoordToWorldCoord(gridCoord);
+    }
+    
+    public void ResetPath()
+    {
+        _currentStep = 0;
     }
 }
