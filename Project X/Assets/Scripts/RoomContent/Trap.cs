@@ -19,6 +19,7 @@ public class Trap : ARoomContentData
 
         if (entity.CheckEntityTag(InteractableTagMask))
         {
+            PlayerStats.Instance.AddResource(entity.ResourcesGained[ResourceType.Fame]);
             entity.Die();
         }
     }

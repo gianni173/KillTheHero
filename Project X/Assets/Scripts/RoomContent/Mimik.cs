@@ -5,6 +5,7 @@ public class Mimik : ARoomContentData
 {
     public override void Interact(Entity entity)
     {
+        PlayerStats.Instance.AddResource(entity.ResourcesGained[ResourceType.Gold]);
         entity.Die();
     }
 }
