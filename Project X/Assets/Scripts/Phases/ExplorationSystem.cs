@@ -34,6 +34,7 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
     {
         PhaseManager.Instance.OnPhaseChanged += StartExploration;
         Entity.OnDeath += OnHeroDeath;
+        _grid = GridManager.Instance.Grid;
     }
 
     // Update is called once per frame
@@ -49,8 +50,7 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
         var pathFinderSystem = movingHero.GetComponent<PathFinderSystem>();
         var indexToGrid = pathFinderSystem.NextStep();
         var entity = movingHero.GetComponent<Entity>();
-        var grid = GridManager.Instance.Grid;
-        var roomData = grid.GetGridContent(indexToGrid) as RoomData;
+        var roomData = _grid.GetGridContent(indexToGrid) as RoomData;
         foreach(var content in roomData.Contents)
         {
             if(content != null && content.IsUsable)
@@ -108,11 +108,10 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
             Debug.LogError("Mimik or Entrance room not found!");
             return;
         }
-        var grid = GridManager.Instance.Grid;
-        _mimikRoomIndex = grid.WorldCoordToGridIndex(mimik.transform.position);
-        _entranceRoomIndex = grid.WorldCoordToGridIndex(entrance.transform.position);
+        _mimikRoomIndex = _grid.WorldCoordToGridIndex(mimik.transform.position);
+        _entranceRoomIndex = _grid.WorldCoordToGridIndex(entrance.transform.position);
 
-        _pathToMimik = PathFinder.AStarPathFinding(grid, _entranceRoomIndex, _mimikRoomIndex);
+        _pathToMimik = PathFinder.AStarPathFinding(_grid, _entranceRoomIndex, _mimikRoomIndex);
     }
 
     private void OnHeroDeath(Entity deadHero)
