@@ -21,7 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 21300000, guid: 5f4964693a67fb343809f3b96c48fb42, type: 3}
   MaxPurchases: 5
   Price: 10
   FameNeeded: 100
