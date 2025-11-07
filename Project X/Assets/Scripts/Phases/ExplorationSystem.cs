@@ -71,19 +71,6 @@ public class ExplorationSystem : Singleton<ExplorationSystem>
         {
             var hero = Instantiate(_heroPrefab);
             var pathFinderSystem = hero.GetComponent<PathFinderSystem>();
-            var entity = hero.GetComponent<Entity>();
-            //get all hero tags
-            var Tags = new List<EntityTag>(Enum.GetValues(typeof(EntityTag)) as EntityTag[]);
-            int tagNumber = UnityEngine.Random.Range(_heroTagsRange.x, _heroTagsRange.y + 1);
-            entity.TagMask.Clear();
-            for (int j = 0; j < tagNumber; j++)
-            {
-                if (Tags.Count == 0)
-                    break;
-                int randomIndex = UnityEngine.Random.Range(0, Tags.Count);
-                entity.TagMask.Add(Tags[randomIndex]);
-                Tags.RemoveAt(randomIndex);
-            }
             pathFinderSystem.CurrentIndex = _entranceRoomIndex;
             pathFinderSystem.TargetIndex = _mimikRoomIndex;
             pathFinderSystem.SetPath(_pathToMimik);
