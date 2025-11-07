@@ -1,0 +1,30 @@
+using UnityEngine;
+using Sirenix.OdinInspector;
+using System;
+
+public class PhaseManager : Singleton<PhaseManager>
+{
+    public Action<PhaseType> OnPhaseChanged;
+    public static event Action OnCallFade;
+
+    [SerializeField] 
+    private PhaseType _currentPhase;
+    public PhaseType CurrentPhase => _currentPhase;
+
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            SetPhase(_currentPhase == PhaseType.Exploration ? PhaseType.Construction : PhaseType.Exploration);
+        }
+    }
+
+    [Button]
+    public void SetPhase(PhaseType newPhase)
+    {
+        _currentPhase = newPhase;
+        OnPhaseChanged?.Invoke(_currentPhase);
+        OnCallFade?.Invoke();
+    }
+}

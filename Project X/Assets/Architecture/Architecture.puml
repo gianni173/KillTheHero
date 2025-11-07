@@ -46,17 +46,16 @@ package ROOM_DATA
     -Vector2    : _worldCellSize
     -Dictionary<int, AGridContent> : _content
     -Dictionary<int, int[]> _connections
-    -Vector2Int : _availableTiles
     
     +IndexToGridCoord(int) : Vector2
-    +GridCoordToIndex(Vector2int) : int
-    +GridToWorldCoord(Vector2) : Vector3
+    +GridCoordToIndex(Vector2Int) : int
+    +GridCoordToWorldCoord(Vector2) : Vector3
     +GetGridContent(int) : GridContent
     +RemoveContent(int) : GridContent
     +AddContent(int, GridContent)
   }
     
-  class AGridContent
+  abstract AGridContent
   {
     +Vector2int : Size
   }
@@ -71,6 +70,7 @@ package ROOM_DATA
   {
     -Grid : _grid
     +SetGridSize(Vector2Int)
+    +GetGrid() : Grid
   }
 
 }
@@ -93,10 +93,13 @@ package PLAYER_DATA
     +int : Quantity
     +ResourceType : Type
   }
-   class PlayerStats
+   class PlayerStats <<singleton>>
    {
-     Resource[] : Resources
-     Purchasable[] : PurchasedItems
+     -Resource[] : resources
+     -Purchasable[] : purchasedItems
+     -initializeResources()
+     +AddResource(ResourceType, int)
+     +GetResourceQuantity(ResourceType)
    }
     
 }
@@ -117,6 +120,16 @@ package MARKET
     +TryPurchase(Purchasable) : bool
     +CanPurchase(Purchasable) : bool
   }
+  
+  class MarketSlot<<(M , lightblue)>>
+  {
+   +Purchasable : slotData
+   -Button : _button
+   -Image : _image
+   -Market : _market
+   +void : Initialize(Purchasable , Market)
+   +void : OnClick()
+  }
 
 }
 
@@ -128,6 +141,8 @@ package ENTITY
     +Dictionary<ResourceType,Resource> : ResourcesGained
     
     +AddResources(Resource) : void
+    +Die() : void
+    +CheckEntityTag(EntityTag) : bool --> con override per supportare List e array
   }
   
   enum EntityTag
@@ -137,11 +152,34 @@ package ENTITY
   }
 }
 
+package PATHFINDING
+{
+    class PathFinder
+    {
+        static GetGridPath(Grid, int fromIndex, int toIndex) : Path
+    }
+    
+    class Path{
+        -int[] : _path
+        -Grid : _grid
+        -int : _currenStep
+        NextStep();
+        PreviousStep();
+    }
+    
+    class EntityPath<<(M, lightblue)>>
+    {
+        -Entity : _entity
+        -Path : _path
+    }
+}
+
 package CONTENT {
   abstract class ARoomContentData{
-    -string : _name
-    -int : _usages
-    -EntityTag[] : _interactableTagMask
+    #string : _name
+    #int : _usages
+    #EntityTag[] : _interactableTagMask
+    #bool : _isUsable
     
     +Interact(Entity)
     +Reset()
@@ -159,7 +197,6 @@ package CONTENT {
   }
   
   class Trap{
-    -int : _damage
     -EntityTag[] : _disarmTagMask
     
     +Interact(Entity) --> kill Entity / Disarm() / ignore
@@ -167,8 +204,6 @@ package CONTENT {
   }
   
   class Monster{
-    -int : _health
-    -int : _damage
     -int : _fameReward
     -EntityTag[] : _killTagMask
     
@@ -184,11 +219,11 @@ package CONTENT {
   {
   treasure, sword, ...
   }
-  ARoomContentData o-- Entrance
-  ARoomContentData o-- Mimik
-  ARoomContentData o-- Trap
-  ARoomContentData o-- Monster
-  ARoomContentData o-- AItem
+  ARoomContentData <|-- Entrance
+  ARoomContentData <|-- Mimik
+  ARoomContentData <|-- Trap
+  ARoomContentData <|-- Monster
+  ARoomContentData <|-- AItem
   
   AItem --* Item
 }
@@ -203,7 +238,7 @@ PlayerStats --o SaveData
 GridManager *-- Grid
 
 Market *- Purchasable
-
+MarketSlot <- Market : Instantiate
 Market --> PlayerStats : uses
 
 EntityTag --* Entity
@@ -219,5 +254,9 @@ RoomData *-- ARoomContentData
 ARoomContentData -* RoomContent
 PlayerStats *- Resource
 Resource *- ResourceType
+
+PathFinder -> Path : uses
+EntityPath *-- Path
+Entity <-- EntityPath : interacts with
 @enduml
 

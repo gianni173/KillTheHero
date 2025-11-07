@@ -1,0 +1,26 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "PurchasableRoom_", menuName = "Purchasable/Room")]
+public class PurchasableRoom : Purchasable
+{
+    //checks if there are any free slots in the grid
+    public override bool CanPurchase()
+    {
+        return  base.CanPurchase() && GridManager.Instance.Grid.GetAvailableAndEmptyGridIndices().Length > 0;
+    }
+    
+    public override void Purchase()
+    {
+        //if there aren't any return immediately
+        if (!CanPurchase())
+        {
+            return;
+        }
+        
+        //if there are choose a random slot on the grid and place it there.
+        base.Purchase();
+        
+        var availableIndices = GridManager.Instance.Grid.GetAvailableAndEmptyGridIndices();
+        GridManager.Instance.Grid.AddContent(availableIndices[0], new RoomData());
+    }
+}
